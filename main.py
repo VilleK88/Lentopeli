@@ -2,8 +2,11 @@ import mysql.connector
 import threading
 import time
 from geopy.distance import geodesic
+from datetime import datetime, timedelta
 done = False
 update_distance = 0
+speed_kmh = 780
+time_multiplier = 70
 db_config = {
     "host": "localhost",
     "user": "VK88",
@@ -35,10 +38,12 @@ def calculate_distance(icao1, icao2):
     return geodesic(koord1, koord2).kilometers
 def update_loop():
     global update_distance, done
+    current_time = datetime.now()
     while update_distance > 0 and not done:
-        time.sleep(1)
-        update_distance -= 1
-        print(f"{update_distance:.2f} km")
+        time.sleep(1.2)
+        update_distance -= (speed_kmh * time_multiplier / 3600)
+        current_time += timedelta(seconds=time_multiplier)
+        print(f"{update_distance:.2f} km, {current_time.strftime("%H:%M")}")
 def main_program():
     global update_distance
     icao1 = input("1. ICAO-koodi: ").strip().upper()

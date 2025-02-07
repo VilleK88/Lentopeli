@@ -10,7 +10,7 @@ speed_kmh = 780
 fuel_capacity = 25941
 current_fuel = 0
 fuel_per_km = 2.6
-time_multiplier = 1
+time_multiplier = 100
 db_config = {
     "host": "localhost",
     "user": "VK88",
@@ -63,5 +63,6 @@ def main_program():
     t1 = threading.Thread(target=update_loop, daemon=True)
     t1.start()
     t1.join()
+    print(f"Saavuit {koord2[0]} {icao2}")
 if __name__ == '__main__':
     main_program()

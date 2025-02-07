@@ -5,8 +5,12 @@ from geopy.distance import geodesic
 from datetime import datetime, timedelta
 done = False
 update_distance = 0
+current_distance = 0
 speed_kmh = 780
-time_multiplier = 70
+fuel_capacity = 25941
+current_fuel = 0
+fuel_per_km = 2.6
+time_multiplier = 1
 db_config = {
     "host": "localhost",
     "user": "VK88",
@@ -21,7 +25,7 @@ def connect_db():
         return conn
     except mysql.connector.Error as err:
         print(f"Virhe yrittäessä yhdistää tietokantaan: {err}")
-        return False
+        return None
 def get_airport(icao):
     conn = connect_db()
     if conn:
@@ -37,22 +41,24 @@ def calculate_distance(icao1, icao2):
     koord2 = icao2[1], icao2[2]
     return geodesic(koord1, koord2).kilometers
 def update_loop():
-    global update_distance, done
+    global update_distance, current_fuel, done
     current_time = datetime.now()
     while update_distance > 0 and not done:
-        time.sleep(1.2)
+        time.sleep(1)
         update_distance -= (speed_kmh * time_multiplier / 3600)
+        current_fuel -= (fuel_per_km * (speed_kmh * time_multiplier / 3600))
         current_time += timedelta(seconds=time_multiplier)
-        print(f"{update_distance:.2f} km, {current_time.strftime("%H:%M")}")
+        print(f"distance: {update_distance:.2f} km, time: {current_time.strftime("%H:%M")} fuel: {current_fuel:.2f}")
 def main_program():
-    global update_distance
+    global update_distance, current_fuel
     icao1 = input("1. ICAO-koodi: ").strip().upper()
     icao2 = input("2. ICAO-koodi: ").strip().upper()
     koord1 = get_airport(icao1)
     koord2 = get_airport(icao2)
-    update_distance = calculate_distance(koord1, koord2)
     if not koord1 or not koord2:
         return
+    update_distance = calculate_distance(koord1, koord2)
+    current_fuel = fuel_capacity
     print(f"Lentoaseman {koord1[0]} {icao1} etäisyys {koord2[0]} {icao2} on {update_distance:.2f} kilometriä")
     t1 = threading.Thread(target=update_loop, daemon=True)
     t1.start()

@@ -4,12 +4,11 @@ from datetime import datetime, timedelta
 from db import get_airport_coords
 from utils import calculate_distance_between_airports, get_valid_icao
 distance_traveled = 0
-current_distance = 0
 speed_kmh = 780
 fuel_capacity = 25941
 current_fuel = 0
 fuel_per_km = 2.6
-time_multiplier = 200
+time_multiplier = 200 # tämä muuttuja määrittää pelin nopeuden
 def start():
     global distance_traveled, current_fuel, current_time
     current_time = datetime.now()

@@ -11,9 +11,10 @@ def get_airport_coords(icao):
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
-        sql = "select name, latitude_deg, longitude_deg from airport where ident = %s"
+        #sql = "select name, latitude_deg, longitude_deg from airport where ident = %s"
+        sql = "select name, ident, latitude_deg, longitude_deg from airport where ident = %s"
         cursor.execute(sql, (icao,))
         result = cursor.fetchone()
         conn.close()
-        return (result[0], result[1], result[2]) if result else None
+        return (result[0], result[1], result[2], result[3]) if result else None
     return False

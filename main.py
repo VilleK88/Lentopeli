@@ -8,7 +8,7 @@ speed_kmh = 780
 fuel_capacity = 25941
 current_fuel = 0
 fuel_per_km = 2.6
-time_multiplier = 200 # tämä muuttuja määrittää pelin nopeuden
+time_multiplier = 200 # tämä muuttuja määrittää lentokoneen nopeuden
 def start():
     global distance_traveled, current_fuel, current_time
     current_time = datetime.now()

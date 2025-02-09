@@ -2,7 +2,7 @@ import threading
 import time
 from datetime import datetime, timedelta
 from db import get_airport_coords
-from utils import calculate_distance_between_airports
+from utils import calculate_distance_between_airports, get_valid_icao
 distance_traveled = 0
 current_distance = 0
 speed_kmh = 780
@@ -11,10 +11,11 @@ current_fuel = 0
 fuel_per_km = 2.6
 time_multiplier = 200
 def start():
-    global distance_traveled, current_fuel
+    global distance_traveled, current_fuel, current_time
+    current_time = datetime.now()
     current_fuel = fuel_capacity
-    icao1 = input("1. ICAO-koodi: ").strip().upper()
-    icao2 = input("2. ICAO-koodi: ").strip().upper()
+    icao1 = get_valid_icao("1. ICAO-koodi: ")
+    icao2 = get_valid_icao("2. ICAO-koodi: ")
     koord1 = get_airport_coords(icao1)
     koord2 = get_airport_coords(icao2)
     if not koord1 or not koord2:
@@ -27,8 +28,7 @@ def start():
     print(f"Saavuit {koord2[0]} {icao2}")
     return icao2, koord2[0]
 def update_loop():
-    global distance_traveled, current_fuel, done
-    current_time = datetime.now()
+    global distance_traveled, current_fuel, current_time
     while distance_traveled > 0:
         time.sleep(1)
         distance_traveled -= (speed_kmh * time_multiplier / 3600)
@@ -41,12 +41,11 @@ def main_program():
     global distance_traveled
     current_icao, current_name = start()
     while True:
-        icao = input("2. ICAO-koodi: ").strip().upper()
+        icao = get_valid_icao("ICAO-koodi: ")
         koord1 = get_airport_coords(current_icao)
         koord2 = get_airport_coords(icao)
         if not koord1 or not koord2:
             return
-        distance_traveled = None
         distance_traveled = calculate_distance_between_airports(koord1, koord2)
         print(f"Lentoaseman {koord1[0]} {current_icao} etäisyys {koord2[0]} {icao} on {distance_traveled:.2f} kilometriä")
         t1 = threading.Thread(target=update_loop, daemon=True)

@@ -3,6 +3,7 @@ import threading
 import time
 from geopy.distance import geodesic
 from datetime import datetime, timedelta
+from config import db_config
 done = False
 update_distance = 0
 current_distance = 0
@@ -11,14 +12,6 @@ fuel_capacity = 25941
 current_fuel = 0
 fuel_per_km = 2.6
 time_multiplier = 100
-db_config = {
-    "host": "localhost",
-    "user": "VK88",
-    "password": "helppo",
-    "database": "flight_game",
-    "charset": "utf8mb4",
-    "collation": "utf8mb4_unicode_ci"
-}
 def connect_db():
     try:
         conn = mysql.connector.connect(**db_config)
@@ -49,8 +42,9 @@ def update_loop():
         current_fuel -= (fuel_per_km * (speed_kmh * time_multiplier / 3600))
         current_time += timedelta(seconds=time_multiplier)
         print(f"distance: {update_distance:.2f} km, time: {current_time.strftime("%H:%M")} fuel: {current_fuel:.2f}")
-def main_program():
+def start():
     global update_distance, current_fuel
+    current_fuel = fuel_capacity
     icao1 = input("1. ICAO-koodi: ").strip().upper()
     icao2 = input("2. ICAO-koodi: ").strip().upper()
     koord1 = get_airport(icao1)
@@ -58,11 +52,27 @@ def main_program():
     if not koord1 or not koord2:
         return
     update_distance = calculate_distance(koord1, koord2)
-    current_fuel = fuel_capacity
     print(f"Lentoaseman {koord1[0]} {icao1} etäisyys {koord2[0]} {icao2} on {update_distance:.2f} kilometriä")
     t1 = threading.Thread(target=update_loop, daemon=True)
     t1.start()
     t1.join()
     print(f"Saavuit {koord2[0]} {icao2}")
+    return icao2, koord2[0]
+def main_program():
+    #global update_distance, current_fuel
+    #current_fuel = fuel_capacity
+    current_icao, current_name = start()
+    while True:
+        icao = input("2. ICAO-koodi: ").strip().upper()
+        koord1 = get_airport(current_icao)
+        koord2 = get_airport(icao)
+        if not koord1 or not koord2:
+            return
+        update_distance = calculate_distance(koord1, koord2)
+        print(f"Lentoaseman {koord1[0]} {current_icao} etäisyys {koord2[0]} {icao} on {update_distance:.2f} kilometriä")
+        t1 = threading.Thread(target=update_loop, daemon=True)
+        t1.start()
+        t1.join()
+        print(f"Saavuit {koord2[0]} {icao}")
 if __name__ == '__main__':
     main_program()

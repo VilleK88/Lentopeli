@@ -21,12 +21,12 @@ def start():
         return
     distance_traveled = calculate_distance_between_airports(koord1, koord2)
     print(f"Lentoaseman {koord1[0]} {icao1} etäisyys {koord2[0]} {icao2} on {distance_traveled:.2f} kilometriä")
-    t1 = threading.Thread(target=update_loop, daemon=True)
+    t1 = threading.Thread(target=flight_loop, daemon=True)
     t1.start()
     t1.join()
     print(f"Saavuit {koord2[0]} {icao2}")
     return icao2, koord2[0]
-def update_loop():
+def flight_loop():
     global distance_traveled, current_fuel, current_time
     while distance_traveled > 0:
         time.sleep(1)
@@ -47,7 +47,7 @@ def main_program():
             return
         distance_traveled = calculate_distance_between_airports(koord1, koord2)
         print(f"Lentoaseman {koord1[0]} {current_icao} etäisyys {koord2[0]} {icao} on {distance_traveled:.2f} kilometriä")
-        t1 = threading.Thread(target=update_loop, daemon=True)
+        t1 = threading.Thread(target=flight_loop, daemon=True)
         t1.start() # update_loop käynnistyy tässä
         t1.join() # join -metodi varmistaa, että pääohjelma ei siirry seuraavaan osaan, ennen kuin update_loop on suorittanut loppuun
         print(f"Saavuit {koord2[0]} {icao}")

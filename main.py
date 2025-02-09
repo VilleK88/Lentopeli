@@ -63,11 +63,11 @@ def main_program():
             return
         distance_traveled = None
         distance_traveled = calculate_distance(koord1, koord2)
-        print(f"Koord1: {koord1} ja Koord2: {koord2}")
         print(f"Lentoaseman {koord1[0]} {current_icao} etäisyys {koord2[0]} {icao} on {distance_traveled:.2f} kilometriä")
         t1 = threading.Thread(target=update_loop, daemon=True)
         t1.start()
         t1.join()
         print(f"Saavuit {koord2[0]} {icao}")
+        current_icao = icao
 if __name__ == '__main__':
     main_program()

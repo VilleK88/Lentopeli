@@ -1,8 +1,6 @@
 from geopy.distance import geodesic
 from db import get_airport_coords
 def calculate_distance_between_airports(icao1, icao2):
-    #koord1 = icao1[1], icao1[2]
-    #koord2 = icao2[1], icao2[2]
     koord1 = icao1[2], icao1[3]
     koord2 = icao2[2], icao2[3]
     return geodesic(koord1, koord2).kilometers

@@ -1,3 +1,4 @@
+import msvcrt
 import sys
 import threading
 import time
@@ -12,9 +13,10 @@ current_speed_kmh = 0
 fuel_capacity = 25941
 current_fuel = 0
 fuel_per_km = 2.6
-time_multiplier = 50 # tämä muuttuja määrittää pelin nopeuden
+time_multiplier = 200 # tämä muuttuja määrittää pelin nopeuden
 current_time = None
 current_location = None # Latitude & Longitude tallennetaan tähän
+stop_flight = False
 def start():
     global remaining_distance, current_fuel, current_time, current_speed_kmh
     current_time = datetime.now()
@@ -30,14 +32,18 @@ def start():
     print(f"Saavuit {icao2[0]} {icao2[1]}")
     return icao2
 def flight_loop():
-    global remaining_distance, current_fuel, current_time, current_speed_kmh
+    global remaining_distance, current_fuel, current_time, current_speed_kmh, current_location
+    keyboard_thread = threading.Thread(target=keyboard_listener, daemon=True)
+    keyboard_thread.start()
+    print("\n📍 Paina '1' muuttaakseksi kurssia tai odota...\n")
     while remaining_distance > 0:
         time.sleep(1) # loopin nopeus
-        if keyboard.is_pressed("1"):
+        if stop_flight:
             # Tallennetaan nykyinen sijainti ja keskeytetään lento
             current_location = (current_time, remaining_distance)
             print("\n🔄 Kurssin muutos käynnistetty! Uusi määränpää valittava.")
             break
+        # Päivitetään matka, polttoaine ja aika
         remaining_distance -= (current_speed_kmh * time_multiplier / 3600)
         if remaining_distance < 0:
             remaining_distance = 0
@@ -57,23 +63,33 @@ def flight_loop():
                          f"✈️ {remaining_distance:.2f} km |"
                          f"⚡ {current_speed_kmh:.2f} km/h | "
                          f"⛽ {current_fuel:.2f} L {turbulence_warning } |")
-        sys.stdout.write("\n Paina '1' Muuttaaksesi kurssia")
+        #sys.stdout.write("\n Paina '1' Muuttaaksesi kurssia")
         sys.stdout.flush() # varmistetaan, että rivi päivittyy heti
         if current_fuel <= 0:
             print("\n⛽ Polttoaine loppui! Kone ei voi jatkaa matkaa.")
             remaining_distance = 0
             break
+def keyboard_listener():
+    # Kuuntelee näppäimistön syötettä taustalla
+    global stop_flight
+    while True:
+        if msvcrt.kbhit():
+            key = msvcrt.getch().decode("utf-8")
+            if key == "1":
+                stop_flight = True
+                break
 def main_program():
-    global remaining_distance
-    current_location = start()
+    global remaining_distance, stop_flight, current_location
+    current_icao = start()
     while True:
         icao = get_valid_icao("ICAO-koodi: ")
-        remaining_distance = calculate_distance_between_airports(current_location, icao)
-        print(f"Lentoaseman {current_location[0]} {current_location[1]} etäisyys {icao[0]} {icao[1]} on {remaining_distance:.2f} kilometriä")
+        remaining_distance = calculate_distance_between_airports(current_icao, icao)
+        print(f"Lentoaseman {current_icao[0]} {current_icao[1]} etäisyys {icao[0]} {icao[1]} on {remaining_distance:.2f} kilometriä")
+        stop_flight = False
         t1 = threading.Thread(target=flight_loop, daemon=True)
         t1.start() # update_loop käynnistyy tässä
         t1.join() # join -metodi varmistaa, että pääohjelma ei siirry seuraavaan osaan, ennen kuin update_loop on suorittanut loppuun
         print(f"Saavuit {icao[0]} {icao[1]}")
-        current_location = icao
+        current_icao = icao
 if __name__ == '__main__':
     main_program()

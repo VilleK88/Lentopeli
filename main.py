@@ -13,10 +13,12 @@ current_speed_kmh = 0
 fuel_capacity = 25941
 current_fuel = 0
 fuel_per_km = 2.6
-time_multiplier = 250 # tämä muuttuja määrittää pelin nopeuden
+time_multiplier = 60 # tämä muuttuja määrittää pelin nopeuden
 current_time = None
 current_location = None # Latitude & Longitude tallennetaan tähän
 stop_flight = False
+stop_event = threading.Event()
+keyboard_thread = None
 def keyboard_listener(): # Kuuntelee näppäimistön syötettä taustalla
     global stop_flight
     while True:
@@ -24,6 +26,15 @@ def keyboard_listener(): # Kuuntelee näppäimistön syötettä taustalla
             stop_flight = True
             print("\n🔄 Kurssin muutos käynnistetty! Uusi määränpää valittava.")
             break
+def start_keyboard_listener():
+    global keyboard_thread
+    stop_event.clear()
+    keyboard_thread = threading.Thread(target=keyboard_listener, daemon=True)
+    keyboard_thread.start()
+def stop_keyboard_listener():
+    stop_event.set()
+    if keyboard_thread and keyboard_thread.is_alive():
+        keyboard_thread.join()
 def start():
     global remaining_distance, current_fuel, current_time, current_speed_kmh,current_location
     current_time = datetime.now()
@@ -35,11 +46,11 @@ def start():
     print(f"\n✈️ Lähtö: {icao1[0]} {icao1[1]} ({icao1[2]:.5f}, {icao1[3]:.5f} |"
           f"\nMääränpää: {icao2[0]} {icao2[1]} ({icao2[2]:.5f}, {icao2[3]} |"
           f"\nEtäisyys: {remaining_distance:.2f} km")
-    keyboard_thread = threading.Thread(target=keyboard_listener, daemon=True)
-    keyboard_thread.start()
+    start_keyboard_listener()
     t1 = threading.Thread(target=flight_loop, daemon=True, args=((icao1[2], icao1[3]), (icao2[2], icao2[3])))
-    t1.start()
-    t1.join()
+    t1.start() # flight_loop käynnistyy tässä
+    t1.join() # join -metodi varmistaa, että pääohjelma ei siirry seuraavaan osaan, ennen kuin update_loop on suorittanut loppuun
+    stop_keyboard_listener()
     if remaining_distance <= 0:
         print(f"\nSaavuit {icao2[0]} {icao2[1]}")
     else:
@@ -96,21 +107,23 @@ def main_program():
     global remaining_distance, stop_flight, current_location
     current_icao = start()
     while True:
-        print(f"Remaining distance: {remaining_distance}")
-        print(f"Current location: {current_location}")
+        keyboard.clear_all_hotkeys()
+        #while keyboard.is_pressed("1"):
+            #keyboard.read_event()
         icao = get_valid_icao("ICAO-koodi: ")
-        if current_icao:
+        if remaining_distance <= 0:
             remaining_distance = calculate_distance_between_airports(current_icao, icao)
             print(f"Lentoaseman {current_icao[0]} {current_icao[1]} etäisyys {icao[0]} {icao[1]} on {remaining_distance:.2f} kilometriä")
         else:
             remaining_distance = calculate_distance(current_location, icao)
             print(f"Nykyisen sijaintisi {current_location[0]} {current_location[1]} etäisyys {icao[0]} {icao[1]} on {remaining_distance:.2f} kilometriä")
-        stop_flight = False
-        keyboard_thread = threading.Thread(target=keyboard_listener, daemon=True)
-        keyboard_thread.start()
+        #keyboard_thread = threading.Thread(target=keyboard_listener, daemon=True)
+        #keyboard_thread.start()
+        start_keyboard_listener()
         t1 = threading.Thread(target=flight_loop, daemon=True, args=(current_location, (icao[2], icao[3])))
-        t1.start() # update_loop käynnistyy tässä
+        t1.start() # flight_loop käynnistyy tässä
         t1.join() # join -metodi varmistaa, että pääohjelma ei siirry seuraavaan osaan, ennen kuin update_loop on suorittanut loppuun
+        stop_keyboard_listener()
         if remaining_distance <= 0:
             print(f"\nSaavuit {icao[0]} {icao[1]}")
         current_icao = icao

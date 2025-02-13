@@ -1,16 +1,10 @@
-import folium
 import requests
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, jsonify, request
 from flask_socketio import SocketIO
 import webbrowser
 import threading
 from http.server import SimpleHTTPRequestHandler
 import http.server
-import asyncio
-import websockets
-import json
-#import socketserver
-#from socketserver import TCPServer
 
 PORT = 8000
 FLASK_PORT = 5000
@@ -21,14 +15,18 @@ app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Alkukoordinaatit
-latitude, longitude = 60.1695, 24.9354
+latitude, longitude = None, None
 
-@app.route("/")
-def index():
-    return render_template("map.html")
-
+def update_map_html(lat, lon):
+    with open(file_path, "r", encoding="utf-8") as file:
+        content = file.read()
+        content = content.replace("var initialLat = 60.1695;", f"var initialLat = {lat};")
+        content = content.replace("var initialLon = 24.9354;", f"var initialLon = {lon};")
+        with open(file_path, "w", encoding="utf-8") as file:
+            file.write(content)
 @app.route("/location", methods=["GET"])
 def get_location():
+    global latitude, longitude
     return jsonify({"lat": latitude, "lon": longitude})
 
 @app.route("/update_location", methods=["POST"])
@@ -44,16 +42,11 @@ def run_flask():
     #app.run(host="127.0.0.1", port=FLASK_PORT, debug=False, use_reloader=False)
     socketio.run(app, host="127.0.0.1", port=FLASK_PORT, debug=False, use_reloader=False)
 
-def start_server(latitude, longitude, zoom):
-    #m = folium.Map(location=[latitude, longitude], zoom_start=zoom)
-    #m.save(file_path)
-    #def run_server():
-        #with http.server.HTTPServer(("127.0.0.1", PORT), http.server.SimpleHTTPRequestHandler) as httpd:
-            #print(f"Palvelin käynnissä osoitteessa: {url}")
-            #httpd.serve_forever()
-    #server_thread = threading.Thread(target=run_server, daemon=True)
-    #server_thread.start()
-    #webbrowser.open(url)
+def start_server(init_latitude, init_longitude, zoom):
+    #global latitude, longitude
+    #latitude = init_latitude
+    #longitude = init_longitude
+    update_map_html(init_latitude, init_longitude)
 
     flask_thread = threading.Thread(target=run_flask, daemon=True)
     flask_thread.start()
@@ -74,7 +67,4 @@ def start_server(latitude, longitude, zoom):
     webbrowser.open(url)
 
 def update_server(latitude, longitude, zoom):
-    #m = folium.Map(location=[latitude, longitude], zoom_start=zoom)
-    #m.save(file_path)
-    #webbrowser.open(url, new=0, autoraise=True)
     response = requests.post(f"http://127.0.0.1:5000/update_location", json={"lat": latitude, "lon": longitude})

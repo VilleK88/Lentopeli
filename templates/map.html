@@ -13,16 +13,31 @@
     <div id="map" style="width: 100%; height: 90vh;"></div>
 
     <script>
+
+        var initialLat = 60.3172;
+        var initialLon = 24.963301;
+
+        var map;
+        var marker;
+
+        function initializeMap(lat, lon) {
+            map = L.map('map').setView([lat, lon], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19
+            }).addTo(map);
+            marker = L.marker([lat, lon]).addTo(map);
+        }
+        initializeMap(initialLat, initialLon);
         // Alustetaan Leaflet-kartta
-        var map = L.map('map').setView([60.1695, 24.9354], 12);
+        //var map = L.map('map').setView([60.1695, 24.9354], 12);
 
         // Lisää OpenStreetMap-taustakartta
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19
-        }).addTo(map);
+        //L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            //maxZoom: 19
+        //}).addTo(map);
 
         // Lisätään markkeri lentokoneelle
-        var marker = L.marker([60.1695, 24.9354]).addTo(map);
+        //var marker = L.marker([60.1695, 24.9354]).addTo(map);
 
         // Alustetaan WebSocket-yhteys Flask-palvelimeen
         var socket = io.connect("http://127.0.0.1:5000");

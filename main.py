@@ -1,10 +1,10 @@
 import time
 import pygame
-import server
+from Routes import server
 from datetime import datetime, timedelta
 from geopy.distance import geodesic
-from utils import calculate_distance_between_airports, calculate_distance, get_valid_icao, get_text_input
-from weather import generate_random_weather
+from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao
+from Utils.weather import generate_random_weather
 
 # Lentokoneen tiedot
 remaining_distance = 0

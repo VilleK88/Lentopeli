@@ -1,5 +1,5 @@
 import mysql.connector
-from config import db_config
+from Routes.config import db_config
 def connect_db():
     try:
         conn = mysql.connector.connect(**db_config)

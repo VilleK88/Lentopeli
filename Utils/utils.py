@@ -1,5 +1,5 @@
 from geopy.distance import geodesic
-from db import get_airport_coords
+from Database.db import get_airport_coords
 import pygame
 def calculate_distance_between_airports(icao1, icao2):
     koord1 = icao1[2], icao1[3]
@@ -44,10 +44,3 @@ def get_text_input(screen, font, prompt):
                     input_text += event.unicode.upper()
 
     return input_text.strip()
-#def get_valid_icao(prompt):
-    #while True:
-        #icao = input(prompt).strip().upper()
-        #airport = get_airport_coords(icao)
-        #if airport:
-            #return airport
-        #print(f"Virhe: ICAO-koodia '{icao}' ei löytynyt. Yritä uudelleen.")

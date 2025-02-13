@@ -11,7 +11,7 @@ import json
 
 PORT = 8000
 WS_PORT = 8765
-file_path = "../templates/map.html"
+file_path = "templates/map.html"
 url = f"http://127.0.0.1:{PORT}/templates/map.html"
 clients = set()
 

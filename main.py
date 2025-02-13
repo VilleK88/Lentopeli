@@ -28,6 +28,8 @@ def start(screen, font):
     current_fuel = fuel_capacity
     current_speed_kmh = max_speed_kmh
 
+    # tänne huolto koodi
+
     icao1 = get_valid_icao(screen, font, "1. ICAO-koodi: ")
     icao2 = get_valid_icao(screen, font, "2. ICAO-koodi: ")
     ##icao1 = get_valid_icao("1. ICAO-koodi: ")
@@ -139,6 +141,8 @@ def main_program():
     font = pygame.font.Font(None, 30)
 
     current_icao, screen = start(screen, font)
+
+    # tänne huolto koodi
 
     while True:
         on_flight = False

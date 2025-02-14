@@ -7,16 +7,8 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
-</head>
-<body>
-    <h2>Live Updating Map with Flask WebSockets</h2>
-    <div id="map" style="width: 100%; height: 90vh;"></div>
 
     <script>
-
-        var initialLat = 60.3172;
-        var initialLon = 24.963301;
-
         var map;
         var marker;
 
@@ -27,7 +19,74 @@
             }).addTo(map);
             marker = L.marker([lat, lon]).addTo(map);
         }
-        initializeMap(initialLat, initialLon);
+    </script>
+
+</head>
+<body>
+    <h2>Live Updating Map with Flask WebSockets</h2>
+    <div id="map" style="width: 100%; height: 90vh;"></div>
+
+    <script>
+
+        //var initialLat = 60.3172;
+        //var initialLon = 24.963301;
+
+        var map;
+        var marker;
+
+        /*function initializeMap(lat, lon) {
+            map = L.map('map').setView([lat, lon], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19
+            }).addTo(map);
+            marker = L.marker([lat, lon]).addTo(map);
+        }*/
+
+
+        //initializeMap(initialLat, initialLon);
+
+        function fetchInitialLocation() {
+            fetch("http://127.0.0.1:5000/location")
+                .then(response => response.json())
+                .then(data => {
+                    if(data.lat && data.lon) {
+                        initializeMap(data.lat, data.lon);
+                        startLocationUpdates();
+                    } else {
+                        console.warn("Sijaintia ei ole vielä asetettu, yritetään uudelleen...")
+                        setTimeout(fetchInitialLocation, 100);
+                    }
+                })
+                .catch(error => {
+                    console.error("Virhe haettaessa sijaintia:", error);
+                    setTimeout(fetchInitialLocation, 100);
+                });
+        }
+
+        function updateLocation() {
+            fetch("http://127.0.0.1:5000/location")
+                .then(response => response.json())
+                .then(data => {
+                    if(!data.error) {
+                        console.log("Päivitetty sijainti:", data.lat, data.lon);
+                        marker.setLatLng([data.lat, data.lon]);
+                        map.panTo([data.lat, data.lon]);
+                    } else {
+                        console.warn("Virhe sijainnin päivityksessä, yritetään uudelleen...");
+                    }
+                })
+                .catch(error => {
+                    console.error("Virhe päivityksessä:", error);
+                });
+        }
+
+        function startLocationUpdates() {
+            console.log("Aloitetaan sijainnin päivitys...")
+            setInterval(updateLocation, 2000);
+        }
+
+        fetchInitialLocation();
+
         // Alustetaan Leaflet-kartta
         //var map = L.map('map').setView([60.1695, 24.9354], 12);
 
@@ -40,16 +99,16 @@
         //var marker = L.marker([60.1695, 24.9354]).addTo(map);
 
         // Alustetaan WebSocket-yhteys Flask-palvelimeen
-        var socket = io.connect("http://127.0.0.1:5000");
+        //var socket = io.connect("http://127.0.0.1:5000");
 
         // Kuunnellaan WebSocketia, kun uusi sijainti saapuu
-        socket.on("location_update", function(data) {
-            console.log("📡 Uusi sijainti WebSocketin kautta:", data.lat, data.lon);
+        //socket.on("location_update", function(data) {
+            //console.log("📡 Uusi sijainti WebSocketin kautta:", data.lat, data.lon);
 
             // Päivitä markkeri ja siirrä kartta uuteen sijaintiin
-            marker.setLatLng([data.lat, data.lon]);
-            map.panTo([data.lat, data.lon]);  // Siirretään näkymä uuteen sijaintiin
-        });
+            //marker.setLatLng([data.lat, data.lon]);
+            //map.panTo([data.lat, data.lon]);  // Siirretään näkymä uuteen sijaintiin
+        //});
     </script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 import requests
-from flask import Flask, jsonify, request
-from flask_socketio import SocketIO
+from flask import Flask, jsonify, request, send_from_directory
+import os
+from flask_cors import CORS
 import webbrowser
 import threading
 from http.server import SimpleHTTPRequestHandler
@@ -10,42 +11,45 @@ PORT = 8000
 FLASK_PORT = 5000
 file_path = "templates/map.html"
 url = f"http://127.0.0.1:{PORT}/templates/map.html"
-#clients = set()
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
+CORS(app)
 
 # Alkukoordinaatit
 latitude, longitude = None, None
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'templates'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 def update_map_html(lat, lon):
     with open(file_path, "r", encoding="utf-8") as file:
         content = file.read()
-        content = content.replace("var initialLat = 60.1695;", f"var initialLat = {lat};")
-        content = content.replace("var initialLon = 24.9354;", f"var initialLon = {lon};")
-        with open(file_path, "w", encoding="utf-8") as file:
-            file.write(content)
+    content = content.replace("var initialLat = 60.1695;", f"var initialLat = {lat};")
+    content = content.replace("var initialLon = 24.9354;", f"var initialLon = {lon};")
+    with open(file_path, "w", encoding="utf-8") as file:
+        file.write(content)
 @app.route("/location", methods=["GET"])
 def get_location():
     global latitude, longitude
-    return jsonify({"lat": latitude, "lon": longitude})
+    response = jsonify({"lat": latitude, "lon": longitude})
+    response.headers.add("Access-Control-Allow-Origin", "*") # Salli CORS
+    return response
 
 @app.route("/update_location", methods=["POST"])
 def update_location():
     global latitude, longitude
     data = request.get_json()
-    latitude = data["lat"]
-    longitude = data["lon"]
-    socketio.emit("location_update", {"lat": latitude, "lon": longitude})
-    return jsonify({"message": "Location updated", "lat": latitude, "lon": longitude})
+    latitude = data.get("lat")
+    longitude = data.get("lon")
+    response = jsonify({"message": "Location updated", "lat": latitude, "lon": longitude})
+    response.headers.add("Access-Control-Allow-Origin", "*") # Salli CORS
+    return response
 
 def run_flask():
-    #app.run(host="127.0.0.1", port=FLASK_PORT, debug=False, use_reloader=False)
-    socketio.run(app, host="127.0.0.1", port=FLASK_PORT, debug=False, use_reloader=False)
+    app.run(host="127.0.0.1", port=FLASK_PORT, debug=False, use_reloader=False)
 
 def start_server(init_latitude, init_longitude, zoom):
-    #global latitude, longitude
-    #latitude = init_latitude
-    #longitude = init_longitude
+
     update_map_html(init_latitude, init_longitude)
 
     flask_thread = threading.Thread(target=run_flask, daemon=True)
@@ -68,3 +72,8 @@ def start_server(init_latitude, init_longitude, zoom):
 
 def update_server(latitude, longitude, zoom):
     response = requests.post(f"http://127.0.0.1:5000/update_location", json={"lat": latitude, "lon": longitude})
+    try:
+        return response.json()
+    except requests.exceptions.JSONDecodeError:
+        print("Virhe: Palvelin ei palauttanut JSON-vastausta.")
+        return {"error": "Invalid response from server"}

@@ -50,7 +50,7 @@ def run_flask():
 
 def start_server(init_latitude, init_longitude, zoom):
 
-    update_map_html(init_latitude, init_longitude)
+    #update_map_html(init_latitude, init_longitude)
 
     flask_thread = threading.Thread(target=run_flask, daemon=True)
     flask_thread.start()

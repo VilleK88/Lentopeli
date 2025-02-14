@@ -7,8 +7,16 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+</head>
+<body>
+    <h2>Live Updating Map with Flask WebSockets</h2>
+    <div id="map" style="width: 100%; height: 90vh;"></div>
 
     <script>
+
+        var initialLat = 60.3172;
+        var initialLon = 24.963301;
+
         var map;
         var marker;
 
@@ -19,28 +27,6 @@
             }).addTo(map);
             marker = L.marker([lat, lon]).addTo(map);
         }
-    </script>
-
-</head>
-<body>
-    <h2>Live Updating Map with Flask WebSockets</h2>
-    <div id="map" style="width: 100%; height: 90vh;"></div>
-
-    <script>
-
-        //var initialLat = 60.3172;
-        //var initialLon = 24.963301;
-
-        var map;
-        var marker;
-
-        /*function initializeMap(lat, lon) {
-            map = L.map('map').setView([lat, lon], 12);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19
-            }).addTo(map);
-            marker = L.marker([lat, lon]).addTo(map);
-        }*/
 
 
         //initializeMap(initialLat, initialLon);
@@ -53,12 +39,10 @@
                         initializeMap(data.lat, data.lon);
                         startLocationUpdates();
                     } else {
-                        console.warn("Sijaintia ei ole vielä asetettu, yritetään uudelleen...")
                         setTimeout(fetchInitialLocation, 1000);
                     }
                 })
                 .catch(error => {
-                    console.error("Virhe haettaessa sijaintia:", error);
                     setTimeout(fetchInitialLocation, 1000);
                 });
         }
@@ -68,11 +52,8 @@
                 .then(response => response.json())
                 .then(data => {
                     if(!data.error) {
-                        console.log("Päivitetty sijainti:", data.lat, data.lon);
                         marker.setLatLng([data.lat, data.lon]);
                         map.panTo([data.lat, data.lon]);
-                    } else {
-                        console.warn("Virhe sijainnin päivityksessä, yritetään uudelleen...");
                     }
                 })
                 .catch(error => {
@@ -81,8 +62,7 @@
         }
 
         function startLocationUpdates() {
-            console.log("Aloitetaan sijainnin päivitys...")
-            setInterval(updateLocation, 2000);
+            setInterval(updateLocation, 1000);
         }
 
         fetchInitialLocation();

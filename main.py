@@ -1,9 +1,11 @@
 import time
 import pygame
+
+import Utils.utils
 from Routes import server
 from datetime import datetime, timedelta
 from geopy.distance import geodesic
-from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao
+from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao, draw_text, draw_arrived_airport
 from Utils.weather import generate_random_weather
 
 # Lentokoneen tiedot
@@ -13,7 +15,7 @@ current_speed_kmh = 0
 fuel_capacity = 25941
 current_fuel = 0
 fuel_per_km = 2.6
-time_multiplier = 100 # tämä muuttuja määrittää pelin nopeuden
+time_multiplier = 260 # tämä muuttuja määrittää pelin nopeuden
 current_time = None
 current_location = None # Latitude & Longitude tallennetaan tähän
 stop_flight = False
@@ -143,7 +145,8 @@ def main_program():
 
     while True:
         on_flight = False
-
+        draw_arrived_airport(current_icao[0], current_icao[1], screen, 20, 150, font)
+        time.sleep(2)
         icao = get_valid_icao(screen, font, "ICAO-koodi: ")
 
         if remaining_distance <= 0:

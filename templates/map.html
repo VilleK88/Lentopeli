@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Live Updating Map</title>
+    <title>Map</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
 </head>
 <body>
-    <h2>Live Updating Map with Flask WebSockets</h2>
+    
     <div id="map" style="width: 100%; height: 90vh;"></div>
 
     <script>
@@ -21,28 +20,42 @@
         var marker;
 
         function initializeMap(lat, lon) {
-            map = L.map('map').setView([lat, lon], 12);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19
-            }).addTo(map);
-            marker = L.marker([lat, lon]).addTo(map);
+            if(!map) {
+                // Alustetaan kartta
+                map = L.map('map').setView([lat, lon], 12);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19
+                }).addTo(map)
+                marker = L.marker([lat,  lon]).addTo(map);
+            } else {
+                // Päivitetään sijainti
+                marker.setLatLng([lat, lon]);
+                map.setView([lat, lon], 12);
+            }
         }
 
-
-        //initializeMap(initialLat, initialLon);
+        initializeMap(initialLat, initialLon);
 
         function fetchInitialLocation() {
             fetch("http://127.0.0.1:5000/location")
                 .then(response => response.json())
                 .then(data => {
+                    console.log("Saatiin sijainti:", data.lat, data.lon);
                     if(data.lat && data.lon) {
-                        initializeMap(data.lat, data.lon);
+                        if(!map) {
+                            initializeMap(data.lat, data.lon);
+                        } else {
+                            marker.setLatLng([data.lat, data.lon]);
+                            map.setView([data.lat, data.lon], 12);
+                        }
                         startLocationUpdates();
                     } else {
+                        console.warn("Virheellinen data, yritetään uudelleen...")
                         setTimeout(fetchInitialLocation, 1000);
                     }
                 })
                 .catch(error => {
+                    console.error("Virhe haettaessa sijaintia:", error);
                     setTimeout(fetchInitialLocation, 1000);
                 });
         }

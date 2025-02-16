@@ -21,13 +21,6 @@ latitude, longitude = None, None
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'templates'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
-def update_map_html(lat, lon):
-    with open(file_path, "r", encoding="utf-8") as file:
-        content = file.read()
-    content = content.replace("var initialLat = 60.1695;", f"var initialLat = {lat};")
-    content = content.replace("var initialLon = 24.9354;", f"var initialLon = {lon};")
-    with open(file_path, "w", encoding="utf-8") as file:
-        file.write(content)
 @app.route("/location", methods=["GET"])
 def get_location():
     global latitude, longitude
@@ -48,9 +41,7 @@ def update_location():
 def run_flask():
     app.run(host="127.0.0.1", port=FLASK_PORT, debug=False, use_reloader=False)
 
-def start_server(init_latitude, init_longitude, zoom):
-
-    #update_map_html(init_latitude, init_longitude)
+def start_server():
 
     flask_thread = threading.Thread(target=run_flask, daemon=True)
     flask_thread.start()

@@ -13,7 +13,7 @@ current_speed_kmh = 0
 fuel_capacity = 25941
 current_fuel = 0
 fuel_per_km = 2.6
-time_multiplier = 5 # tämä muuttuja määrittää pelin nopeuden
+time_multiplier = 100 # tämä muuttuja määrittää pelin nopeuden
 current_time = None
 current_location = None # Latitude & Longitude tallennetaan tähän
 stop_flight = False
@@ -32,8 +32,6 @@ def start(screen, font):
 
     icao1 = get_valid_icao(screen, font, "1. ICAO-koodi: ")
     icao2 = get_valid_icao(screen, font, "2. ICAO-koodi: ")
-    ##icao1 = get_valid_icao("1. ICAO-koodi: ")
-    ##icao2 = get_valid_icao("2. ICAO-koodi: ")
 
     remaining_distance = calculate_distance_between_airports(icao1, icao2)
 
@@ -41,7 +39,7 @@ def start(screen, font):
           f"\nMääränpää: {icao2[0]} {icao2[1]} ({icao2[2]:.5f}, {icao2[3]} |"
           f"\nEtäisyys: {remaining_distance:.2f} km")
 
-    server.start_server(icao1[2], icao1[3], zoom)
+    server.start_server()
 
     on_flight = True
     flight_loop(screen, font,(icao1[2], icao1[3]), (icao2[2], icao2[3]))
@@ -98,7 +96,6 @@ def flight_loop(screen, font, start_coords, end_coords):
         # Päivitä karttakuva
         server.update_server(new_lat, new_lon, zoom)
 
-
         # Päivitetään sää ja muutetaan lentonopeutta tarvittaessa
         weather = generate_random_weather()
         turbulence_warning = ""
@@ -148,7 +145,6 @@ def main_program():
         on_flight = False
 
         icao = get_valid_icao(screen, font, "ICAO-koodi: ")
-        #icao = get_valid_icao("ICAO-koodi: ")
 
         if remaining_distance <= 0:
             remaining_distance = calculate_distance_between_airports(current_icao, icao)

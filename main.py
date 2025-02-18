@@ -1,7 +1,5 @@
 import time
 import pygame
-
-import Utils.utils
 from Routes import server
 from datetime import datetime, timedelta
 from geopy.distance import geodesic
@@ -21,7 +19,7 @@ current_location = None # Latitude & Longitude tallennetaan tähän
 stop_flight = False
 on_flight = False
 keyboard_hook = None
-zoom = 12
+zoom = 10
 
 def start(screen, font):
     global remaining_distance, current_fuel, current_time, current_speed_kmh,current_location, on_flight, zoom
@@ -41,6 +39,7 @@ def start(screen, font):
           f"\nMääränpää: {icao2[0]} {icao2[1]} ({icao2[2]:.5f}, {icao2[3]} |"
           f"\nEtäisyys: {remaining_distance:.2f} km")
 
+    server.starting_coordinates(icao1[2], icao1[3])
     server.start_server()
 
     on_flight = True

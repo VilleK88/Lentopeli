@@ -12,10 +12,6 @@
     <div id="map" style="width: 100%; height: 90vh;"></div>
 
     <script>
-
-        var initialLat = 60.3172;
-        var initialLon = 24.963301;
-
         var map;
         var marker;
 
@@ -30,55 +26,40 @@
             } else {
                 // Päivitetään sijainti
                 marker.setLatLng([lat, lon]);
-                map.setView([lat, lon], 12);
+                map.panTo([lat, lon])
             }
         }
 
-        initializeMap(initialLat, initialLon);
+        async function fetchLocation() {
+            try {
+                let response = await fetch('location.json');
+                let data = await response.json();
+                if(data.lat && data.lon) {
+                    initializeMap(data.lat, data.lon)
+                }
+            } catch(error) {
+                console.error("Virhe haettaessa sijaintia:", error);
+            }
+        }
 
-        function fetchInitialLocation() {
-            fetch("http://127.0.0.1:5000/location")
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Saatiin sijainti:", data.lat, data.lon);
-                    if(data.lat && data.lon) {
-                        if(!map) {
-                            initializeMap(data.lat, data.lon);
-                        } else {
-                            marker.setLatLng([data.lat, data.lon]);
-                            map.setView([data.lat, data.lon], 12);
-                        }
-                        startLocationUpdates();
-                    } else {
-                        console.warn("Virheellinen data, yritetään uudelleen...")
-                        setTimeout(fetchInitialLocation, 1000);
-                    }
-                })
-                .catch(error => {
-                    console.error("Virhe haettaessa sijaintia:", error);
+        async function fetchInitialLocation() {
+            try {
+                let response = await fetch('/templates/location.json');
+                let data = await response.json();
+                if(data.lat && data.lon) {
+                    initializeMap(data.lat, data.lon);
+                } else {
+                    console.warn("Virheellinen data, yritetään uudelleen...");
                     setTimeout(fetchInitialLocation, 1000);
-                });
-        }
-
-        function updateLocation() {
-            fetch("http://127.0.0.1:5000/location")
-                .then(response => response.json())
-                .then(data => {
-                    if(!data.error) {
-                        marker.setLatLng([data.lat, data.lon]);
-                        map.panTo([data.lat, data.lon]);
-                    }
-                })
-                .catch(error => {
-                    console.error("Virhe päivityksessä:", error);
-                });
-        }
-
-        function startLocationUpdates() {
-            setInterval(updateLocation, 1000);
+                }
+            } catch(error) {
+                console.error("Virhe haettaessa sijaintia:", error);
+                setTimeout(fetchInitialLocation, 1000);
+            }
         }
 
         fetchInitialLocation();
+        setInterval(fetchLocation, 1000);
     </script>
 </body>
 </html>

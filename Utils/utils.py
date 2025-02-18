@@ -21,6 +21,16 @@ def draw_text(screen, text, x, y, font):
     rendered_text = font.render(text, True, (255, 255, 255))
     screen.blit(rendered_text, (x, y))
 
+def draw_arrived_airport(airport, icao, screen, x, y, font):
+    screen.fill((0, 0, 0))
+    pygame.display.flip()
+    airport_str = str(airport)
+    icao_str = str(icao)
+    print(f"DEBUG: airport_str = {airport_str}, icao_str = {icao_str}")
+    rendered_text = font.render(f"Saavuit {airport_str} {icao_str} lentokentälle.", True, (255, 255, 255))
+    screen.blit(rendered_text, (x, y))
+    pygame.display.update()
+
 def get_text_input(screen, font, prompt):
     input_text = ""
     active = True

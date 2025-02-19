@@ -1,6 +1,5 @@
 import webbrowser
 import threading
-from http.server import SimpleHTTPRequestHandler
 import http.server
 import json
 import requests

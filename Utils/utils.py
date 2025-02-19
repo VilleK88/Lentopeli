@@ -1,6 +1,12 @@
 from geopy.distance import geodesic
 from Database.db import get_airport_coords
 import pygame
+def initialize_pygame_screen():
+    pygame.init()
+    screen = pygame.display.set_mode((600, 400))
+    pygame.display.set_caption("Lentopeli")
+    font = pygame.font.Font(None, 30)
+    return screen, font
 def calculate_distance_between_airports(icao1, icao2):
     koord1 = icao1[2], icao1[3]
     koord2 = icao2[2], icao2[3]

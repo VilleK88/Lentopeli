@@ -6,7 +6,6 @@ import json
 import requests
 
 PORT = 8000
-FLASK_PORT = 5000
 map_file_path = "templates/map.html"
 location_file_path = "templates/location.json"
 url = f"http://127.0.0.1:{PORT}/templates/map.html"

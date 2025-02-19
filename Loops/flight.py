@@ -60,7 +60,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
         current_location = (new_lat, new_lon)
 
         # Päivitä karttakuva
-        server.update_server(new_lat, new_lon, zoom)
+        server.update_server(new_lat, new_lon)
 
         # Päivitetään sää ja muutetaan lentonopeutta tarvittaessa
         weather = generate_random_weather()

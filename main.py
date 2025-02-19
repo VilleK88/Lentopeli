@@ -53,13 +53,14 @@ def main_program():
 
     current_icao, screen = start()
 
-    # tänne huolto koodi
-
     # main loop
     while True:
         on_flight = False
         draw_arrived_airport(current_icao[0], current_icao[1], screen, 20, 150, font)
         time.sleep(2)
+
+        # tänne huolto koodi
+
         icao = get_valid_icao(screen, font, "ICAO-koodi: ")
 
         if remaining_distance <= 0:

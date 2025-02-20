@@ -1,11 +1,14 @@
 from Utils.utils import draw_user_list, draw_text, get_user_input, get_press_button
 import pygame
+from Database.db import show_current_users
 
+# user info
 user_name = ""
 user_id = ""
 logged_in = ""
 
-def user_menu(screen, font, data_list):
+def user_menu(screen, font):
+    data_list = show_current_users()
     input_text = ""
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3]
     active = True

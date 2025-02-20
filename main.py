@@ -3,7 +3,7 @@ from Loops import flight, user
 from Routes import server
 from datetime import datetime
 from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao, draw_arrived_airport, \
-    initialize_pygame_screen, draw_user_list, get_text_input
+    initialize_pygame_screen
 from Database.db import check_if_logged_in_exists, check_if_logged_in, show_current_users
 
 # Lentokoneen tiedot
@@ -34,11 +34,9 @@ def start():
 
     # tarkistaa onko kukaan pelaaja logged_in tilassa
     result = check_if_logged_in()
+    # ja jos ei ole niin mennään user_menuun
     if not result:
-        list = show_current_users()
-        #draw_list(screen, font, list)
-        user.user_menu(screen, font, list)
-        #user_input = input("Paina jotakin")
+        user.user_menu(screen, font)
 
     # Aika, polttoaine, nopeus ja zoom muuttujien alustus
     current_time = datetime.now()
@@ -46,7 +44,7 @@ def start():
     current_speed_kmh = max_speed_kmh
     flight.zoom = zoom
 
-    # tänne huolto koodi
+    """ tänne huolto koodi """
 
     icao1 = get_valid_icao(screen, font, "1. ICAO-koodi: ")
     icao2 = get_valid_icao(screen, font, "2. ICAO-koodi: ")
@@ -72,7 +70,7 @@ def main_program():
         draw_arrived_airport(current_icao[0], current_icao[1], screen, 20, 50, font)
         time.sleep(2)
 
-        # tänne huolto koodi
+        """ tänne huolto koodi """
 
         icao = get_valid_icao(screen, font, "ICAO-koodi: ")
 

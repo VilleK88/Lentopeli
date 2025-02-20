@@ -33,6 +33,16 @@ def draw_text(screen, text, x, y, font):
     rendered_text = font.render(text, True, (255, 255, 255))
     screen.blit(rendered_text, (x, y))
 
+def draw_user_list(screen, font, data_list):
+    header = font.render("ID    Nimi", True, (255, 255, 255))
+    screen.blit(header, (380, 30))
+
+    y_offset = 60
+    for row in data_list:
+        text = font.render(f"{row[0]:<5} {row[1]}", True, (255, 255, 255))
+        screen.blit(text, (380, y_offset))
+        y_offset += 30
+
 def draw_arrived_airport(airport, icao, screen, x, y, font):
     screen.fill((0, 0, 0))
     pygame.display.flip()
@@ -53,16 +63,31 @@ def get_text_input(screen, font, prompt):
         draw_text(screen, input_text, 20, 100, font)
         pygame.display.flip()
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    active = False
-                elif event.key == pygame.K_BACKSPACE:
-                    input_text = input_text[:-1]
-                else:
-                    input_text += event.unicode.upper()
+        input_text, active = get_user_input(input_text, active)
 
     return input_text.strip()
+
+def get_user_input(input_text, active):
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                active = False
+            elif event.key == pygame.K_BACKSPACE:
+                input_text = input_text[:-1]
+            else:
+                input_text += event.unicode.upper()
+    return input_text, active
+
+def get_press_button(key_list):
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key in key_list:
+                return event.key
+
+    return None

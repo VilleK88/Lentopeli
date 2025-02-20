@@ -35,3 +35,21 @@ def check_if_logged_in_exists():
             conn.close()
         else:
             print("Sarake 'logged_in' on jo olemassa.")
+
+def check_if_logged_in():
+    conn = connect_db()
+    if conn:
+        cursor = conn.cursor()
+        sql = "select id, screen_name from game where logged_in = 1"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        return result if result else None
+
+def show_current_users():
+    conn = connect_db()
+    if conn:
+        cursor = conn.cursor()
+        sql = "select id, screen_name from game"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return result if result else None

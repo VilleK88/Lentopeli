@@ -1,9 +1,10 @@
 import time
-from Loops import flight
+from Loops import flight, user
 from Routes import server
 from datetime import datetime
-from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao, draw_arrived_airport, initialize_pygame_screen
-from Database.db import check_if_logged_in_exists
+from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao, draw_arrived_airport, \
+    initialize_pygame_screen, draw_user_list, get_text_input
+from Database.db import check_if_logged_in_exists, check_if_logged_in, show_current_users
 
 # Lentokoneen tiedot
 remaining_distance = 0
@@ -28,8 +29,16 @@ def start():
 
     screen, font = initialize_pygame_screen()
 
-    # tarkista onko logged_in sarake jo olemassa tietokannassa ja jos ei ole niin tee se
+    # tarkistaa onko logged_in sarake jo olemassa tietokannassa, ja jos ei ole niin tekee sen
     check_if_logged_in_exists()
+
+    # tarkistaa onko kukaan pelaaja logged_in tilassa
+    result = check_if_logged_in()
+    if not result:
+        list = show_current_users()
+        #draw_list(screen, font, list)
+        user.user_menu(screen, font, list)
+        #user_input = input("Paina jotakin")
 
     # Aika, polttoaine, nopeus ja zoom muuttujien alustus
     current_time = datetime.now()

@@ -1,6 +1,7 @@
 import mysql.connector
 from Routes.config import db_config
 
+# Yhdistää tietokantaan
 def connect_db():
     try:
         conn = mysql.connector.connect(**db_config)
@@ -9,6 +10,7 @@ def connect_db():
         print(f"Virhe yrittäessä yhdistää tietokantaan: {err}")
         return None
 
+# Palauttaa lentokenttien koordinaatit
 def get_airport_coords(icao):
     conn = connect_db()
     if conn:
@@ -20,6 +22,7 @@ def get_airport_coords(icao):
         return (result[0], result[1], result[2], result[3]) if result else None
     return False
 
+# Tarkistaa onko logged_in sarake olemassa game -taulukossa ja jos ei ole niin tekee sen
 def check_if_logged_in_exists():
     conn = connect_db()
     if conn:
@@ -36,6 +39,7 @@ def check_if_logged_in_exists():
         else:
             print("Sarake 'logged_in' on jo olemassa.")
 
+# Tarkistaa onko kukaan käyttäjä kirjautuneena sisään
 def check_if_logged_in():
     conn = connect_db()
     if conn:
@@ -45,6 +49,7 @@ def check_if_logged_in():
         result = cursor.fetchone()
         return result if result else None
 
+# Palauttaa käyttäjä listan
 def show_current_users():
     conn = connect_db()
     if conn:

@@ -38,8 +38,8 @@ def check_if_logged_in_exists():
             sql = "alter table game add column current_fuel float default 25941"
             cursor.execute(sql)
             conn.commit()
-            sql = "alter table game modify id int auto_increment primary key"
-            cursor.execute(sql)
+            #sql = "alter table game modify id int auto_increment primary key"
+            #cursor.execute(sql)
             conn.commit()
             conn.close()
         else:

@@ -98,8 +98,9 @@ def check_if_name_in_db(name):
 def add_user_to_db(name, fuel):
     conn = connect_db()
     if conn:
+        random_id = str(uuid.uuid4())
         cursor = conn.cursor()
-        sql = "insert into game (screen_name, current_fuel) values (%s, %s)"
-        cursor.execute(sql, (name, fuel))
+        sql = "insert into game (id, screen_name, current_fuel) values (%s, %s, %s)"
+        cursor.execute(sql, (random_id, name, fuel))
         conn.commit()
         conn.close()

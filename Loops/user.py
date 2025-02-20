@@ -1,4 +1,5 @@
-from Utils.utils import draw_user_list, draw_text, get_press_button, get_user_input, get_text_input, wipe_pygame_screen, update_pygame_screen
+from Utils.utils import draw_user_list, draw_text, get_press_button, get_user_input, get_text_input, wipe_pygame_screen, \
+    update_pygame_screen, get_pygame_screen_size
 import pygame
 from Database.db import show_current_users, get_user_info, check_if_name_in_db, add_user_to_db
 import time
@@ -15,25 +16,41 @@ co2_budget = ""
 def user_menu(screen, font):
     data_list = show_current_users()
     input_text = ""
-    key_list = [pygame.K_1, pygame.K_2, pygame.K_3]
+    key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4]
     active = True
 
     while active:
         wipe_pygame_screen(screen)
-        draw_user_list(screen, font, data_list)
-        draw_text(screen, "1 - Tee uusi pelaaja", 80, 30, font)
-        draw_text(screen, "2 - Valitse pelaaja", 80, 60, font)
-        draw_text(screen, "3 - Aloita peli", 80, 90, font)
-        draw_text(screen, input_text, 80, 120, font)
+        screen_width, screen_height = get_pygame_screen_size(screen)
+        menu = ["1 - Tee uusi pelaaja", "2 - Valitse pelaaja",
+                "3 - Aloita peli", "4 - Käyttäjälista"]
+        y_start = 100
+        y_offset = 50
+        max_width = max(font.size(item)[0] for item in menu)
+
+        for i, item in enumerate(menu):
+            text_surface = font.render(item, True, (255, 255, 255))
+            text_x = (screen_width - max_width) // 2
+            text_y = y_start + i * y_offset
+            screen.blit(text_surface, (text_x, text_y))
+
+        #draw_text(screen, "1 - Tee uusi pelaaja", 80, 30, font)
+        #draw_text(screen, "2 - Valitse pelaaja", 80, 60, font)
+        #draw_text(screen, "3 - Aloita peli", 80, 90, font)
+        #draw_text(screen, "4 - Käyttäjälista", 80, 120, font)
+        #draw_text(screen, input_text, 80, 120, font)
         update_pygame_screen()
 
         char = get_press_button(key_list)
         if char == pygame.K_1:
             add_user(screen, font)
-        if char == pygame.K_2:
+        elif char == pygame.K_2:
             select_user(screen, font)
         elif char == pygame.K_3:
             active = False
+        elif char == pygame.K_4:
+            print("4 painettu")
+            draw_user_list(screen, font, data_list)
 
     return input_text.strip()
 

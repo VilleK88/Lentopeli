@@ -18,6 +18,10 @@ def wipe_pygame_screen(screen):
 def update_pygame_screen():
     pygame.display.flip()
 
+def get_pygame_screen_size(screen):
+    screen_width, screen_height = screen.get_size()
+    return screen_width, screen_height
+
 # Laskee lentokenttien välisen etäisyyden ICAO-koodien perusteella
 def calculate_distance_between_airports(icao1, icao2):
     koord1 = icao1[2], icao1[3]
@@ -48,14 +52,37 @@ def draw_text(screen, text, x, y, font):
 
 # Piirtää käyttäjä listan User menuun
 def draw_user_list(screen, font, data_list):
-    header = font.render("ID    Nimi", True, (255, 255, 255))
-    screen.blit(header, (380, 30))
+    wipe_pygame_screen(screen)
+    screen_width, screen_height = get_pygame_screen_size(screen)
+    column_spacing = 250
+    y_start = 50
+    y_offset = 40
+    line_color = (100, 100, 100)
 
-    y_offset = 60
+    total_table_width = column_spacing + 150
+    table_x = (screen_width - total_table_width) // 2
+
+    name_x = table_x
+    id_x = name_x + column_spacing
+    line_x_start = name_x - 20
+    line_x_end = id_x + 80
+
+    screen.blit(font.render("Nimi", True, (255, 255, 255)), (name_x, y_start))
+    screen.blit(font.render("ID", True, (255, 255, 255)), (id_x, y_start))
+
+    y = y_start + y_offset
+    pygame.draw.line(screen, line_color, (line_x_start, y + 25), (line_x_end, y + 25), 1)
     for row in data_list:
-        text = font.render(f"{row[0]:<5} {row[1]}", True, (255, 255, 255))
-        screen.blit(text, (380, y_offset))
-        y_offset += 30
+        id_text = str(row[0])[:8]
+        name_text = font.render(row[1], True, (255, 255, 255))
+        id_text_rendered = font.render(id_text, True, (255, 255, 255))
+        screen.blit(name_text, (name_x, y))
+        screen.blit(id_text_rendered, (id_x, y))
+        pygame.draw.line(screen, line_color, (line_x_start, y + 25), (line_x_end, y + 25), 1)
+        y += y_offset
+
+    update_pygame_screen()
+    user_input = input("")
 
 # Piirtää saavuit lentoasemalle tekstin
 def draw_arrived_airport(airport, icao, screen, x, y, font):

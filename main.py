@@ -1,8 +1,11 @@
 import time
+import pygame
+import Utils.utils
 from Loops import flight
 from Routes import server
 from datetime import datetime
 from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao, draw_arrived_airport, initialize_pygame_screen
+from Loops.user import check_if_logged_in_exists
 
 # Lentokoneen tiedot
 remaining_distance = 0
@@ -26,6 +29,13 @@ def start():
     global remaining_distance, current_fuel, current_time, current_speed_kmh,current_location, on_flight, zoom, screen, font
 
     screen, font = initialize_pygame_screen()
+
+    # tarkista onko logged_in sarake olemassa tietokanssa
+    onko = check_if_logged_in_exists()
+    if not onko:
+        print("Ei ole")
+        Utils.utils.draw_text(screen, "Ei ole", 20, 50, font)
+    time.sleep(2)
 
     # Aika, polttoaine, nopeus ja zoom muuttujien alustus
     current_time = datetime.now()
@@ -56,7 +66,7 @@ def main_program():
     # main loop
     while True:
         on_flight = False
-        draw_arrived_airport(current_icao[0], current_icao[1], screen, 20, 150, font)
+        draw_arrived_airport(current_icao[0], current_icao[1], screen, 20, 50, font)
         time.sleep(2)
 
         # tänne huolto koodi

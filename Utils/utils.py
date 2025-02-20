@@ -26,11 +26,11 @@ def get_valid_icao(screen, font, prompt):
         if airport:
             return airport
         draw_text(screen, f"Virhe: ICAO-koodia '{icao}' ei löytynyt.", 20, 150, font)
-        pygame.display.flip()
 
 def draw_text(screen, text, x, y, font):
     rendered_text = font.render(text, True, (255, 255, 255))
     screen.blit(rendered_text, (x, y))
+    pygame.display.flip()
 
 def draw_arrived_airport(airport, icao, screen, x, y, font):
     screen.fill((0, 0, 0))

@@ -1,7 +1,8 @@
 from Utils.utils import draw_user_list, draw_text, get_press_button, get_user_input, get_text_input, wipe_pygame_screen, update_pygame_screen
 import pygame
-from Database.db import show_current_users, get_user_info, check_if_name_in_db
+from Database.db import show_current_users, get_user_info, check_if_name_in_db, add_user_to_db
 import time
+from main import fuel_capacity
 
 # User info
 user_name = ""
@@ -64,6 +65,7 @@ def add_user(screen, font):
     result = check_if_name_in_db(user_name)
     wipe_pygame_screen(screen)
     if not result:
+        add_user_to_db(user_name, fuel_capacity)
         draw_text(screen, f"Käyttäjä {user_name} lisätty tietokantaan", 80, 30, font)
     else:
         draw_text(screen, f"Käyttäjä {user_name} löytyy jo tietokannasta", 80, 30, font)

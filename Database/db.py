@@ -38,6 +38,9 @@ def check_if_logged_in_exists():
             sql = "alter table game add column current_fuel float default 25941"
             cursor.execute(sql)
             conn.commit()
+            sql = "alter table game modify id int auto_increment primary key"
+            cursor.execute(sql)
+            conn.commit()
             conn.close()
         else:
             print("Sarake 'logged_in' on jo olemassa.")
@@ -85,10 +88,20 @@ def check_if_name_in_db(name):
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
-        sql = "select name from game where screen_name = %s"
+        sql = "select screen_name from game where screen_name = %s"
         cursor.execute(sql, (name,))
         result = cursor.fetchone()
+        conn.close()
         if result:
             return True
         else:
             return False
+
+def add_user_to_db(name, fuel):
+    conn = connect_db()
+    if conn:
+        cursor = conn.cursor()
+        sql = "insert into game (screen_name, current_fuel) values (%s, %s)"
+        cursor.execute(sql, (name, fuel))
+        conn.commit()
+        conn.close()

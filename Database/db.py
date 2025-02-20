@@ -35,6 +35,9 @@ def check_if_logged_in_exists():
             sql = "alter table game add column logged_in boolean default false"
             cursor.execute(sql)
             conn.commit()
+            sql = "alter table game add column current_fuel float default 25941"
+            cursor.execute(sql)
+            conn.commit()
             conn.close()
         else:
             print("Sarake 'logged_in' on jo olemassa.")
@@ -68,8 +71,8 @@ def get_user_info(name):
         sql = "select id, screen_name from game where screen_name = %s"
         cursor.execute(sql, (name,))
         result = cursor.fetchone()
-        #return (result[0], result[1]) if result else None
-        if result[0]:
+
+        if result:
             sql = "update game set logged_in = 0"
             cursor.execute(sql)
             conn.commit()

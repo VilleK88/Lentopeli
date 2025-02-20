@@ -35,7 +35,7 @@ def start():
     # tarkistaa onko kukaan pelaaja logged_in tilassa
     result = check_if_logged_in()
     # ja jos ei ole niin mennään user_menuun
-    if not result:
+    if result:
         user.user_menu(screen, font)
 
     # Aika, polttoaine, nopeus ja zoom muuttujien alustus

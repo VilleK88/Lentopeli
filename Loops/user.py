@@ -1,11 +1,15 @@
 from Utils.utils import draw_user_list, draw_text, get_press_button, get_user_input
 import pygame
 from Database.db import show_current_users, get_user_info
+import time
 
 # User info
 user_name = ""
 user_id = ""
 logged_in = ""
+location = ""
+co2_consumed = ""
+co2_budget = ""
 
 def user_menu(screen, font):
     data_list = show_current_users()
@@ -30,6 +34,7 @@ def user_menu(screen, font):
 
     return input_text.strip()
 
+# Käyttäjän valinta
 def select_user(screen, font):
     input_text = ""
     active = True
@@ -41,10 +46,15 @@ def select_user(screen, font):
         pygame.display.flip()
 
         input_text, active = get_user_input(input_text, active, False)
+
     result = get_user_info(input_text)
     if result:
         user_id = result[0]
         user_name = result[1]
-        print(f"Käyttäjä: {user_name}, ID: {user_id}")
+        screen.fill((0, 0, 0))
+        draw_text(screen, f"Käyttäjä {user_name} kirjautunut sisään", 80, 30, font)
+        pygame.display.flip()
+        time.sleep(2)
 
-    return input_text.strip()
+
+   # return input_text.strip()

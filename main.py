@@ -20,7 +20,7 @@ on_flight = False
 keyboard_hook = None
 zoom = 10
 
-# pygame asetukset
+# Pygame asetukset
 screen = None
 font = None
 
@@ -46,14 +46,18 @@ def start():
 
     """ tänne huolto koodi """
 
+    # ICAO-koodien syöttö
     icao1 = get_valid_icao(screen, font, "1. ICAO-koodi: ")
     icao2 = get_valid_icao(screen, font, "2. ICAO-koodi: ")
 
+    # Laskee jäljellä olevan etäisyyden lentokenttien välillä
     remaining_distance = calculate_distance_between_airports(icao1, icao2)
 
+    # Käynnistää serverin ja lähettää lentoasemien koordinaatit
     server.starting_coordinates(icao1[2], icao1[3])
     server.start_server()
 
+    # Lento-loopin aloitus
     on_flight = True
     remaining_distance, current_time, current_fuel, current_location = flight.flight_loop(screen, font,(icao1[2], icao1[3]), (icao2[2], icao2[3]), remaining_distance, current_time, current_fuel, current_speed_kmh, time_multiplier, current_location)
 
@@ -62,6 +66,7 @@ def start():
 def main_program():
     global remaining_distance, current_location, on_flight, current_time, current_fuel, current_speed_kmh, time_multiplier, screen, font
 
+    # Palauttaa start sen hetkisen lentoaseman tiedot ja pygame ikkunan asetukset
     current_icao, screen = start()
 
     # main loop
@@ -72,6 +77,7 @@ def main_program():
 
         """ tänne huolto koodi """
 
+        # ICAO-koodin syöttö seuraavalle lentokentälle
         icao = get_valid_icao(screen, font, "ICAO-koodi: ")
 
         if remaining_distance <= 0:
@@ -83,7 +89,7 @@ def main_program():
 
         on_flight = True
         flight.stop_flight = False
-
+        # Lento-loopin aloitus
         remaining_distance, current_time, current_fuel, current_location = flight.flight_loop(screen, font, current_location, (icao[2], icao[3]), remaining_distance, current_time, current_fuel, current_speed_kmh, time_multiplier, current_location)
 
         current_icao = icao

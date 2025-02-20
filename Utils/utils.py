@@ -25,7 +25,7 @@ def calculate_distance(current_location, icao2):
 # Tarkistaa löytyykö syötetty ICAO-koodi tietokannasta
 def get_valid_icao(screen, font, prompt):
     while True:
-        icao = get_text_input(screen, font, prompt).strip().upper()
+        icao = get_icao_input(screen, font, prompt).strip().upper()
         airport = get_airport_coords(icao)
         if airport:
             return airport
@@ -59,8 +59,8 @@ def draw_arrived_airport(airport, icao, screen, x, y, font):
     screen.blit(rendered_text, (x, y))
     pygame.display.update()
 
-# Ottaa käyttäjän merkkijono syötteen vastaan
-def get_text_input(screen, font, prompt):
+# Ottaa käyttäjän ICAO-koodi syötteen vastaan
+def get_icao_input(screen, font, prompt):
     input_text = ""
     active = True
 
@@ -70,12 +70,12 @@ def get_text_input(screen, font, prompt):
         draw_text(screen, input_text, 20, 100, font)
         pygame.display.flip()
 
-        input_text, active = get_user_input(input_text, active)
+        input_text, active = get_user_input(input_text, active, True)
 
     return input_text.strip()
 
 # Palauttaa käyttäjän syöttään enter painalluksen jälkeen
-def get_user_input(input_text, active):
+def get_user_input(input_text, active, upper):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -86,7 +86,10 @@ def get_user_input(input_text, active):
             elif event.key == pygame.K_BACKSPACE:
                 input_text = input_text[:-1]
             else:
-                input_text += event.unicode.upper()
+                if upper:
+                    input_text += event.unicode.upper()
+                else:
+                    input_text += event.unicode.lower()
     return input_text, active
 
 # Palauttaa käyttäjän syötteen suoraan

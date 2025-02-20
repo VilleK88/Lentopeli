@@ -47,6 +47,7 @@ def check_if_logged_in():
         sql = "select id, screen_name from game where logged_in = 1"
         cursor.execute(sql)
         result = cursor.fetchone()
+        conn.close()
         return result if result else None
 
 # Palauttaa käyttäjä listan
@@ -57,4 +58,23 @@ def show_current_users():
         sql = "select id, screen_name from game"
         cursor.execute(sql)
         result = cursor.fetchall()
+        conn.close()
         return result if result else None
+
+def get_user_info(name):
+    conn = connect_db()
+    if conn:
+        cursor = conn.cursor()
+        sql = "select id, screen_name from game where screen_name = %s"
+        cursor.execute(sql, (name,))
+        result = cursor.fetchone()
+        #return (result[0], result[1]) if result else None
+        if result[0]:
+            sql = "update game set logged_in = 0"
+            cursor.execute(sql)
+            conn.commit()
+            sql = "update game set logged_in = 1 where screen_name = %s"
+            cursor.execute(sql, (name,))
+            conn.commit()
+            conn.close()
+            return result[0], result[1]

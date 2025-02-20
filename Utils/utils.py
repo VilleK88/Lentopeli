@@ -10,6 +10,14 @@ def initialize_pygame_screen():
     font = pygame.font.Font(None, 30)
     return screen, font
 
+# Pyyhkii pygame-ikkunan tyhjäksi
+def wipe_pygame_screen(screen):
+    screen.fill((0, 0, 0))
+
+# Päivittää pygame-ikkunan
+def update_pygame_screen():
+    pygame.display.flip()
+
 # Laskee lentokenttien välisen etäisyyden ICAO-koodien perusteella
 def calculate_distance_between_airports(icao1, icao2):
     koord1 = icao1[2], icao1[3]
@@ -25,7 +33,7 @@ def calculate_distance(current_location, icao2):
 # Tarkistaa löytyykö syötetty ICAO-koodi tietokannasta
 def get_valid_icao(screen, font, prompt):
     while True:
-        icao = get_icao_input(screen, font, prompt).strip().upper()
+        icao = get_text_input(screen, font, prompt, True).strip().upper()
         airport = get_airport_coords(icao)
         if airport:
             return airport
@@ -51,26 +59,26 @@ def draw_user_list(screen, font, data_list):
 
 # Piirtää saavuit lentoasemalle tekstin
 def draw_arrived_airport(airport, icao, screen, x, y, font):
-    screen.fill((0, 0, 0))
-    pygame.display.flip()
+    wipe_pygame_screen(screen)
+    update_pygame_screen()
     airport_str = str(airport)
     icao_str = str(icao)
     rendered_text = font.render(f"Saavuit {airport_str} {icao_str} lentokentälle.", True, (255, 255, 255))
     screen.blit(rendered_text, (x, y))
     pygame.display.update()
 
-# Ottaa käyttäjän ICAO-koodi syötteen vastaan
-def get_icao_input(screen, font, prompt):
+# Ottaa käyttäjän syötteen vastaan
+def get_text_input(screen, font, prompt, upper):
     input_text = ""
     active = True
 
     while active:
-        screen.fill((0, 0, 0))
+        wipe_pygame_screen(screen)
         draw_text(screen, prompt, 20, 50, font)
         draw_text(screen, input_text, 20, 100, font)
-        pygame.display.flip()
+        update_pygame_screen()
 
-        input_text, active = get_user_input(input_text, active, True)
+        input_text, active = get_user_input(input_text, active, upper)
 
     return input_text.strip()
 

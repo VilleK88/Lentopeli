@@ -4,7 +4,7 @@ from Routes import server
 from datetime import datetime
 from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao, draw_arrived_airport, \
     initialize_pygame_screen
-from Database.db import check_if_logged_in_exists, check_if_logged_in, show_current_users
+from Database.db import check_if_logged_in_exists, check_if_logged_in
 
 # Lentokoneen tiedot
 remaining_distance = 0

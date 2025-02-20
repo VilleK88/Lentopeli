@@ -4,6 +4,7 @@ from datetime import timedelta
 from geopy.distance import geodesic
 from Routes import server
 from Utils.weather import generate_random_weather
+from Utils.utils import wipe_pygame_screen, update_pygame_screen
 
 # Lentokoneen tiedot
 remaining_distance = 0
@@ -71,7 +72,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
         else:
             current_speed_kmh = max_speed_kmh
 
-        screen.fill((0, 0, 0))
+        wipe_pygame_screen(screen)
         info_text = [
             f"Aika: {current_time.strftime('%H:%M')}",
             f"Sää: {weather['weather']}, Tuuli: {weather['wind']:.2f} m/s {turbulence_warning}",
@@ -88,7 +89,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
             screen.blit(rendered_text, (20, y_offset))
             y_offset += 30
 
-        pygame.display.flip()
+        update_pygame_screen()
 
         if current_fuel <= 0: # Polttoaineen loppumisen tarkistus
             remaining_distance = 0

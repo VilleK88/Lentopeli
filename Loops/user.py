@@ -1,6 +1,6 @@
-from Utils.utils import draw_user_list, draw_text, get_press_button, get_user_input
+from Utils.utils import draw_user_list, draw_text, get_press_button, get_user_input, get_text_input, wipe_pygame_screen, update_pygame_screen
 import pygame
-from Database.db import show_current_users, get_user_info
+from Database.db import show_current_users, get_user_info, check_if_name_in_db
 import time
 
 # User info
@@ -18,15 +18,17 @@ def user_menu(screen, font):
     active = True
 
     while active:
-        screen.fill((0, 0, 0))
+        wipe_pygame_screen(screen)
         draw_user_list(screen, font, data_list)
         draw_text(screen, "1 - Tee uusi pelaaja", 80, 30, font)
         draw_text(screen, "2 - Valitse pelaaja", 80, 60, font)
         draw_text(screen, "3 - Aloita peli", 80, 90, font)
         draw_text(screen, input_text, 80, 120, font)
-        pygame.display.flip()
+        update_pygame_screen()
 
         char = get_press_button(key_list)
+        if char == pygame.K_1:
+            add_user(screen, font)
         if char == pygame.K_2:
             select_user(screen, font)
         elif char == pygame.K_3:
@@ -40,10 +42,10 @@ def select_user(screen, font):
     active = True
 
     while active:
-        screen.fill((0, 0, 0))
+        wipe_pygame_screen(screen)
         draw_text(screen, "Nimi: ", 80, 30, font)
         draw_text(screen, input_text, 80, 60, font)
-        pygame.display.flip()
+        update_pygame_screen()
 
         input_text, active = get_user_input(input_text, active, False)
 
@@ -51,10 +53,19 @@ def select_user(screen, font):
     if result:
         user_id = result[0]
         user_name = result[1]
-        screen.fill((0, 0, 0))
+        wipe_pygame_screen(screen)
         draw_text(screen, f"Käyttäjä {user_name} kirjautunut sisään", 80, 30, font)
-        pygame.display.flip()
+        update_pygame_screen()
         time.sleep(2)
 
 
-   # return input_text.strip()
+def add_user(screen, font):
+    user_name = get_text_input(screen, font, "Nimi: ", False)
+    result = check_if_name_in_db(user_name)
+    wipe_pygame_screen(screen)
+    if not result:
+        draw_text(screen, f"Käyttäjä {user_name} lisätty tietokantaan", 80, 30, font)
+    else:
+        draw_text(screen, f"Käyttäjä {user_name} löytyy jo tietokannasta", 80, 30, font)
+    update_pygame_screen()
+    time.sleep(2)

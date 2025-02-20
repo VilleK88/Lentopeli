@@ -81,3 +81,14 @@ def get_user_info(name):
             conn.commit()
             conn.close()
             return result[0], result[1]
+def check_if_name_in_db(name):
+    conn = connect_db()
+    if conn:
+        cursor = conn.cursor()
+        sql = "select name from game where screen_name = %s"
+        cursor.execute(sql, (name,))
+        result = cursor.fetchone()
+        if result:
+            return True
+        else:
+            return False

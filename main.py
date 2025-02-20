@@ -1,10 +1,9 @@
 import time
-import Utils.utils
 from Loops import flight
 from Routes import server
 from datetime import datetime
 from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao, draw_arrived_airport, initialize_pygame_screen
-from Loops.user import check_if_logged_in_exists
+from Database.db import check_if_logged_in_exists
 
 # Lentokoneen tiedot
 remaining_distance = 0

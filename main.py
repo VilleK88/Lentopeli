@@ -1,5 +1,4 @@
 import time
-import pygame
 import Utils.utils
 from Loops import flight
 from Routes import server
@@ -30,12 +29,8 @@ def start():
 
     screen, font = initialize_pygame_screen()
 
-    # tarkista onko logged_in sarake olemassa tietokanssa
-    onko = check_if_logged_in_exists()
-    if not onko:
-        print("Ei ole")
-        Utils.utils.draw_text(screen, "Ei ole", 20, 50, font)
-    time.sleep(2)
+    # tarkista onko logged_in sarake jo olemassa tietokannassa ja jos ei ole niin tee se
+    check_if_logged_in_exists()
 
     # Aika, polttoaine, nopeus ja zoom muuttujien alustus
     current_time = datetime.now()

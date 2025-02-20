@@ -11,5 +11,11 @@ def check_if_logged_in_exists():
         sql = "select column_name from information_schema.columns where table_name = 'game' and column_name = 'logged_in'"
         cursor.execute(sql)
         result = cursor.fetchone()
-        conn.close()
-        return result if result else None
+        if not result:
+            print("Saraketta 'logged_in' ei löydy, luodaan se....")
+            sql = "alter table game add column logged_in boolean default false"
+            cursor.execute(sql)
+            conn.commit()
+            conn.close()
+        else:
+            print("Sarake 'logged_in' on jo olemassa.")

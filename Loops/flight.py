@@ -18,10 +18,12 @@ current_time = None
 current_location = None # Latitude & Longitude tallennetaan tähän
 stop_flight = False
 zoom = 10
+new_lat = 0
+new_lon = 0
 
 def flight_loop(screen, font, start_coords, end_coords, remaining_distance, current_time, current_fuel, current_speed_kmh, time_multiplier, current_location):
     """ Lentopelin pääsilmukka 'curses' -kirjastolla """
-    global stop_flight, zoom
+    global stop_flight, zoom, new_lat, new_lon
 
     print("\n📍 Paina '1' muuttaakseksi kurssia tai odota...\n")
 
@@ -61,7 +63,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
         current_location = (new_lat, new_lon)
 
         # Päivitä karttakuva
-        server.update_server(new_lat, new_lon)
+        server.update_server(new_lat, new_lon, True)
 
         # Päivitetään sää ja muutetaan lentonopeutta tarvittaessa
         weather = generate_random_weather()

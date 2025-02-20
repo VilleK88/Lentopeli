@@ -93,8 +93,12 @@ def start_server():
     server_thread = threading.Thread(target=run_http_server, daemon=True)
     server_thread.start()
 
-def update_server(latitude, longitude):
-    new_data = {"lat": latitude, "lon": longitude}
+def update_server(latitude, longitude, on_flight):
+    if not on_flight:
+        print("Lentokone ei liiku. Ei päivitetä sijaintia.")
+        return
+
+    new_data = {"lat": latitude, "lon": longitude, "on_flight": on_flight}
     temp_path = location_file_path + ".tmp"
 
     try:

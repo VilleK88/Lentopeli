@@ -15,7 +15,7 @@ co2_budget = ""
 
 def user_menu(screen, font):
     data_list = show_current_users()
-    input_text = ""
+    #input_text = ""
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4]
     active = True
 
@@ -34,11 +34,6 @@ def user_menu(screen, font):
             text_y = y_start + i * y_offset
             screen.blit(text_surface, (text_x, text_y))
 
-        #draw_text(screen, "1 - Tee uusi pelaaja", 80, 30, font)
-        #draw_text(screen, "2 - Valitse pelaaja", 80, 60, font)
-        #draw_text(screen, "3 - Aloita peli", 80, 90, font)
-        #draw_text(screen, "4 - Käyttäjälista", 80, 120, font)
-        #draw_text(screen, input_text, 80, 120, font)
         update_pygame_screen()
 
         char = get_press_button(key_list)
@@ -52,7 +47,7 @@ def user_menu(screen, font):
             print("4 painettu")
             draw_user_list(screen, font, data_list)
 
-    return input_text.strip()
+    #return input_text.strip()
 
 # Käyttäjän valinta
 def select_user(screen, font):

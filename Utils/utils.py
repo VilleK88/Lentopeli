@@ -54,35 +54,45 @@ def draw_text(screen, text, x, y, font):
 def draw_user_list(screen, font, data_list):
     wipe_pygame_screen(screen)
     screen_width, screen_height = get_pygame_screen_size(screen)
+
     column_spacing = 250
-    y_start = 50
-    y_offset = 40
-    line_color = (100, 100, 100)
+    row_spacing = 40
+    table_width = column_spacing * 2
 
-    total_table_width = column_spacing + 150
-    table_x = (screen_width - total_table_width) // 2
-
+    table_x = (screen_width - table_width) // 2
     name_x = table_x
     id_x = name_x + column_spacing
-    line_x_start = name_x - 20
-    line_x_end = id_x + 80
 
-    screen.blit(font.render("Nimi", True, (255, 255, 255)), (name_x, y_start))
-    screen.blit(font.render("ID", True, (255, 255, 255)), (id_x, y_start))
+    header_y = (screen_height // 2) - (len(data_list) * row_spacing) / 2 - 40
+    start_y = header_y + row_spacing
+    line_color = (200, 200, 200)
 
-    y = y_start + y_offset
-    pygame.draw.line(screen, line_color, (line_x_start, y + 25), (line_x_end, y + 25), 1)
+    screen.blit(font.render("1 - Palaa menuun", True, (255, 255, 255)), (20, 20))
+    screen.blit(font.render("Nimi", True, (255, 255, 255)), (name_x, header_y))
+    screen.blit(font.render("ID", True, (255, 255, 255)), (id_x, header_y))
+
+    pygame.draw.line(screen, line_color, (name_x, header_y + 30), (name_x + table_width, header_y + 30), 2)
+
+    y = start_y
     for row in data_list:
         id_text = str(row[0])[:8]
         name_text = font.render(row[1], True, (255, 255, 255))
         id_text_rendered = font.render(id_text, True, (255, 255, 255))
+
         screen.blit(name_text, (name_x, y))
         screen.blit(id_text_rendered, (id_x, y))
-        pygame.draw.line(screen, line_color, (line_x_start, y + 25), (line_x_end, y + 25), 1)
-        y += y_offset
+
+        pygame.draw.line(screen, line_color, (name_x, y + 30), (name_x + table_width, y + 30), 1)
+        y += row_spacing
 
     update_pygame_screen()
-    user_input = input("")
+    key_list = [pygame.K_1]
+    while True:
+        char = get_press_button(key_list)
+        if char == pygame.K_1:
+            break
+    #update_pygame_screen()
+    #user_input = input("")
 
 # Piirtää saavuit lentoasemalle tekstin
 def draw_arrived_airport(airport, icao, screen, x, y, font):

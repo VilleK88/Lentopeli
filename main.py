@@ -73,8 +73,9 @@ def main_program():
     while True:
         on_flight = False
         server.update_server(flight.new_lat, flight.new_lon, False)
-        draw_arrived_airport(current_icao[0], current_icao[1], screen, 20, 50, font)
-        time.sleep(2)
+        if remaining_distance <= 0:
+            draw_arrived_airport(current_icao[0], current_icao[1], screen, 20, 50, font)
+            time.sleep(2)
 
         """ tänne huolto koodi """
 

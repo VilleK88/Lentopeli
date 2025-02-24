@@ -2,8 +2,10 @@ import pygame
 import time
 from datetime import timedelta
 from geopy.distance import geodesic
+
+import Utils.weather
 from Routes import server
-from Utils.weather import generate_random_weather
+from Utils.weather import get_weather
 from Utils.utils import wipe_pygame_screen, update_pygame_screen
 
 # Lentokoneen tiedot
@@ -35,6 +37,9 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
     if total_distance == 0:
         total_distance = 1
 
+    weather = get_weather(lat1, lon1)
+    last_weather_update = time.time()
+
     while remaining_distance > 0:
         time.sleep(1) # loopin nopeus
 
@@ -65,8 +70,15 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
         # Päivitä karttakuva
         server.update_server(new_lat, new_lon, True)
 
+        if time.time() - last_weather_update >= 3:
+            new_weather = get_weather(new_lat, new_lon)
+            if new_weather:
+                weather = new_weather
+                last_weather_update = time.time()
+
         # Päivitetään sää ja muutetaan lentonopeutta tarvittaessa
-        weather = generate_random_weather()
+        if weather is None:
+            weather = {"weather": "Tuntematon", "temp": 0, "wind": 0}
         turbulence_warning = ""
         if weather["wind"] > 15:
             current_speed_kmh = max_speed_kmh * 0.8

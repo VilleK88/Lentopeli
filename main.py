@@ -27,6 +27,7 @@ font = None
 def start():
     global remaining_distance, current_fuel, current_time, current_speed_kmh,current_location, on_flight, zoom, screen, font
 
+    # Alusta pygame-ikknua
     screen, font = initialize_pygame_screen()
 
     # tarkistaa onko logged_in sarake jo olemassa tietokannassa, ja jos ei ole niin tekee sen

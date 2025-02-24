@@ -45,6 +45,7 @@ def start():
     flight.zoom = zoom
 
     """ tänne huolto koodi """
+    """ tänne Asiakas koodi """
 
     # ICAO-koodien syöttö
     icao1 = get_valid_icao(screen, font, "1. ICAO-koodi: ")
@@ -78,6 +79,7 @@ def main_program():
             time.sleep(2)
 
         """ tänne huolto koodi """
+        """ tänne Asiakas koodi """
 
         # ICAO-koodin syöttö seuraavalle lentokentälle
         icao = get_valid_icao(screen, font, "ICAO-koodi: ")

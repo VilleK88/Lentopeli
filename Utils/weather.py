@@ -28,7 +28,6 @@ def get_weather(lat, lon, force_update=False):
         global current_weather, last_weather_update
         url = f"{BASE_URL}?lat={lat}&lon={lon}&appid={API_KEY}&units=metric&lang=fi"
         response = requests.get(url, timeout=2)
-        #response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
             weather_condition = data["weather"][0]["description"].capitalize()
@@ -40,7 +39,6 @@ def get_weather(lat, lon, force_update=False):
                 "wind": wind_speed
             }
             last_weather_update = time.time()
-            #return current_weather
         else:
             print(f"Virhe API-kutsussa! Statuskoodi: {response.status_code}, Viesti: {response.text}")
             return None

@@ -1,0 +1,32 @@
+{
+    "items": [
+        {
+            "name": "alcohol",
+            "category": "beverage"
+        },
+        {
+            "name": "soup",
+            "category": "food"
+        },
+        {
+            "name": "soft drink",
+            "category": "beverage"
+        },
+        {
+            "name": "water",
+            "category": "beverage"
+        },
+        {
+            "name": "fruits",
+            "category": "food"
+        },
+        {
+            "name": "sweets",
+            "category": "food"
+        },
+        {
+            "name": "fuel",
+            "category": "airplane"
+        }
+    ]
+}

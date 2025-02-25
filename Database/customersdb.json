@@ -1,0 +1,814 @@
+{
+  "people": [
+    {
+      "name": "John Smith",
+      "likes": [
+        "virvoitusjuoma",
+        "vesi",
+        "alkoholi"
+      ],
+      "dislikes": [
+        "virvoitusjuoma",
+        "herkut",
+        "keitto"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Emma Johnson",
+      "likes": [
+        "keitto",
+        "virvoitusjuoma",
+        "alkoholi"
+      ],
+      "dislikes": [
+        "alkoholi",
+        "keitto",
+        "hedelmät"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Liam Brown",
+      "likes": [
+        "herkut",
+        "virvoitusjuoma",
+        "alkoholi"
+      ],
+      "dislikes": [
+        "hedelmät",
+        "keitto",
+        "virvoitusjuoma"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Olivia Jones",
+      "likes": [
+        "alkoholi",
+        "virvoitusjuoma",
+        "vesi"
+      ],
+      "dislikes": [
+        "keitto",
+        "virvoitusjuoma",
+        "vesi"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Noah Garcia",
+      "likes": [
+        "virvoitusjuoma",
+        "herkut",
+        "alkoholi"
+      ],
+      "dislikes": [
+        "herkut",
+        "keitto",
+        "alkoholi"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Ava Martinez",
+      "likes": [
+        "vesi",
+        "hedelmät",
+        "virvoitusjuoma"
+      ],
+      "dislikes": [
+        "virvoitusjuoma",
+        "vesi",
+        "keitto"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "William Rodriguez",
+      "likes": [
+        "virvoitusjuoma",
+        "herkut",
+        "vesi"
+      ],
+      "dislikes": [
+        "keitto",
+        "vesi",
+        "hedelmät"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Sophia Hernandez",
+      "likes": [
+        "herkut",
+        "keitto",
+        "hedelmät"
+      ],
+      "dislikes": [
+        "hedelmät",
+        "alkoholi",
+        "virvoitusjuoma"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "James Lopez",
+      "likes": [
+        "herkut",
+        "hedelmät",
+        "keitto"
+      ],
+      "dislikes": [
+        "vesi",
+        "herkut",
+        "keitto"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Isabella Gonzalez",
+      "likes": [
+        "vesi",
+        "herkut",
+        "virvoitusjuoma"
+      ],
+      "dislikes": [
+        "virvoitusjuoma",
+        "alkoholi",
+        "vesi"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Benjamin Wilson",
+      "likes": [
+        "vesi",
+        "hedelmät",
+        "alkoholi"
+      ],
+      "dislikes": [
+        "hedelmät",
+        "virvoitusjuoma",
+        "keitto"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Mia Anderson",
+      "likes": [
+        "virvoitusjuoma",
+        "keitto",
+        "hedelmät"
+      ],
+      "dislikes": [
+        "alkoholi",
+        "keitto",
+        "virvoitusjuoma"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Lucas Thomas",
+      "likes": [
+        "alkoholi",
+        "virvoitusjuoma",
+        "hedelmät"
+      ],
+      "dislikes": [
+        "alkoholi",
+        "vesi",
+        "keitto"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Charlotte Taylor",
+      "likes": [
+        "vesi",
+        "virvoitusjuoma",
+        "alkoholi"
+      ],
+      "dislikes": [
+        "vesi",
+        "keitto",
+        "alkoholi"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Henry Moore",
+      "likes": [
+        "virvoitusjuoma",
+        "hedelmät",
+        "herkut"
+      ],
+      "dislikes": [
+        "keitto",
+        "hedelmät",
+        "herkut"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Amelia Jackson",
+      "likes": [
+        "virvoitusjuoma",
+        "hedelmät",
+        "alkoholi"
+      ],
+      "dislikes": [
+        "hedelmät",
+        "herkut",
+        "alkoholi"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Alexander Martin",
+      "likes": [
+        "herkut",
+        "hedelmät",
+        "keitto"
+      ],
+      "dislikes": [
+        "vesi",
+        "keitto",
+        "herkut"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Harper Lee",
+      "likes": [
+        "herkut",
+        "virvoitusjuoma",
+        "hedelmät"
+      ],
+      "dislikes": [
+        "hedelmät",
+        "vesi",
+        "virvoitusjuoma"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Michael Perez",
+      "likes": [
+        "virvoitusjuoma",
+        "alkoholi",
+        "keitto"
+      ],
+      "dislikes": [
+        "herkut",
+        "keitto",
+        "hedelmät"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Evelyn Thompson",
+      "likes": [
+        "keitto",
+        "alkoholi",
+        "hedelmät"
+      ],
+      "dislikes": [
+        "herkut",
+        "vesi",
+        "alkoholi"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Daniel White",
+      "likes": [
+        "hedelmät",
+        "alkoholi",
+        "vesi"
+      ],
+      "dislikes": [
+        "herkut",
+        "vesi",
+        "keitto"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Abigail Harris",
+      "likes": [
+        "alkoholi",
+        "herkut",
+        "virvoitusjuoma"
+      ],
+      "dislikes": [
+        "keitto",
+        "alkoholi",
+        "hedelmät"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Matthew Clark",
+      "likes": [
+        "alkoholi",
+        "keitto",
+        "vesi"
+      ],
+      "dislikes": [
+        "alkoholi",
+        "virvoitusjuoma",
+        "herkut"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Emily Lewis",
+      "likes": [
+        "hedelmät",
+        "alkoholi",
+        "virvoitusjuoma"
+      ],
+      "dislikes": [
+        "hedelmät",
+        "alkoholi",
+        "keitto"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Joseph Walker",
+      "likes": [
+        "alkoholi",
+        "hedelmät",
+        "virvoitusjuoma"
+      ],
+      "dislikes": [
+        "vesi",
+        "alkoholi",
+        "hedelmät"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Elizabeth Hall",
+      "likes": [
+        "herkut",
+        "virvoitusjuoma",
+        "alkoholi"
+      ],
+      "dislikes": [
+        "virvoitusjuoma",
+        "vesi",
+        "alkoholi"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "David Allen",
+      "likes": [
+        "virvoitusjuoma",
+        "hedelmät",
+        "alkoholi"
+      ],
+      "dislikes": [
+        "vesi",
+        "alkoholi",
+        "keitto"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Sofia Young",
+      "likes": [
+        "keitto",
+        "herkut",
+        "vesi"
+      ],
+      "dislikes": [
+        "keitto",
+        "herkut",
+        "virvoitusjuoma"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Samuel King",
+      "likes": [
+        "herkut",
+        "vesi",
+        "keitto"
+      ],
+      "dislikes": [
+        "keitto",
+        "vesi",
+        "alkoholi"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Avery Wright",
+      "likes": [
+        "alkoholi",
+        "herkut",
+        "vesi"
+      ],
+      "dislikes": [
+        "keitto",
+        "vesi",
+        "herkut"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Sebastian Scott",
+      "likes": [
+        "virvoitusjuoma",
+        "hedelmät",
+        "vesi"
+      ],
+      "dislikes": [
+        "herkut",
+        "vesi",
+        "virvoitusjuoma"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Ella Green",
+      "likes": [
+        "keitto",
+        "herkut",
+        "hedelmät"
+      ],
+      "dislikes": [
+        "keitto",
+        "herkut",
+        "hedelmät"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Jack Adams",
+      "likes": [
+        "alkoholi",
+        "vesi",
+        "keitto"
+      ],
+      "dislikes": [
+        "keitto",
+        "herkut",
+        "virvoitusjuoma"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Scarlett Baker",
+      "likes": [
+        "herkut",
+        "keitto",
+        "virvoitusjuoma"
+      ],
+      "dislikes": [
+        "hedelmät",
+        "keitto",
+        "alkoholi"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Owen Nelson",
+      "likes": [
+        "alkoholi",
+        "keitto",
+        "vesi"
+      ],
+      "dislikes": [
+        "virvoitusjuoma",
+        "alkoholi",
+        "herkut"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Grace Hill",
+      "likes": [
+        "vesi",
+        "virvoitusjuoma",
+        "herkut"
+      ],
+      "dislikes": [
+        "virvoitusjuoma",
+        "vesi",
+        "keitto"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Gabriel Ramirez",
+      "likes": [
+        "herkut",
+        "vesi",
+        "alkoholi"
+      ],
+      "dislikes": [
+        "keitto",
+        "alkoholi",
+        "virvoitusjuoma"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Chloe Campbell",
+      "likes": [
+        "keitto",
+        "vesi",
+        "herkut"
+      ],
+      "dislikes": [
+        "alkoholi",
+        "vesi",
+        "keitto"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Carter Mitchell",
+      "likes": [
+        "vesi",
+        "hedelmät",
+        "keitto"
+      ],
+      "dislikes": [
+        "herkut",
+        "alkoholi",
+        "keitto"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Victoria Roberts",
+      "likes": [
+        "virvoitusjuoma",
+        "hedelmät",
+        "herkut"
+      ],
+      "dislikes": [
+        "hedelmät",
+        "keitto",
+        "herkut"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Matti Korhonen",
+      "likes": [
+        "hedelmät",
+        "vesi",
+        "keitto"
+      ],
+      "dislikes": [
+        "alkoholi",
+        "virvoitusjuoma",
+        "herkut"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Anna Virtanen",
+      "likes": [
+        "herkut",
+        "alkoholi",
+        "virvoitusjuoma"
+      ],
+      "dislikes": [
+        "hedelmät",
+        "vesi",
+        "keitto"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Pekka Laine",
+      "likes": [
+        "keitto",
+        "virvoitusjuoma",
+        "hedelmät"
+      ],
+      "dislikes": [
+        "alkoholi",
+        "vesi",
+        "herkut"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Laura Mäkinen",
+      "likes": [
+        "vesi",
+        "hedelmät",
+        "herkut"
+      ],
+      "dislikes": [
+        "keitto",
+        "alkoholi",
+        "virvoitusjuoma"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    },
+    {
+      "name": "Jari Nieminen",
+      "likes": [
+        "alkoholi",
+        "keitto",
+        "virvoitusjuoma"
+      ],
+      "dislikes": [
+        "vesi",
+        "hedelmät",
+        "herkut"
+      ],
+      "mood": {
+        "positiivinen": 3,
+        "neutraali": 2,
+        "negatiivinen": 1
+      }
+    }
+  ]
+}

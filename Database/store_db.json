@@ -1,28 +1,28 @@
 {
     "items": [
         {
-            "name": "alcohol",
-            "category": "beverage"
+            "name": "alkoholi",
+            "category": "juoma"
         },
         {
-            "name": "soup",
-            "category": "food"
+            "name": "keitto",
+            "category": "ruoka"
         },
         {
-            "name": "soft drink",
-            "category": "beverage"
+            "name": "virvoitusjuoma",
+            "category": "juoma"
         },
         {
-            "name": "water",
-            "category": "beverage"
+            "name": "vesi",
+            "category": "juoma"
         },
         {
-            "name": "fruits",
-            "category": "food"
+            "name": "hedelmät",
+            "category": "ruoka"
         },
         {
-            "name": "sweets",
-            "category": "food"
+            "name": "herkut",
+            "category": "ruoka"
         },
         {
             "name": "fuel",

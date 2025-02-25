@@ -17,7 +17,7 @@ def user_menu(screen, font):
     global user_id, user_name
 
     data_list = show_current_users()
-    key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4]
+    key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]
     active = True
 
     while active:
@@ -27,7 +27,7 @@ def user_menu(screen, font):
         logged_in_user_text(screen, font)
 
         menu = ["1 - Tee uusi pelaaja", "2 - Valitse pelaaja",
-                "3 - Aloita peli", "4 - Käyttäjälista"]
+                "3 - Aloita peli", "4 - Käyttäjälista" , "5 - Lopeta"]
         y_start = 100
         y_offset = 50
         max_width = max(font.size(item)[0] for item in menu)
@@ -49,6 +49,8 @@ def user_menu(screen, font):
         elif char == pygame.K_4:
             print("4 painettu")
             draw_user_list(screen, font, data_list)
+        elif char == pygame.K_5:
+            pygame.quit()
 
 # Käyttäjän valinta
 def select_user(screen, font):

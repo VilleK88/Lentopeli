@@ -1,7 +1,7 @@
 from Utils.utils import draw_user_list, draw_text, get_press_button, get_user_input, get_text_input, wipe_pygame_screen, \
     update_pygame_screen, get_pygame_screen_size
 import pygame
-from Database.db import show_current_users, get_user_info, check_if_name_in_db, add_user_to_db
+from Database.db import show_current_users, get_user_info, check_if_name_in_db, add_user_to_db, check_if_logged_in
 import time
 from main import fuel_capacity
 
@@ -14,20 +14,28 @@ co2_consumed = ""
 co2_budget = ""
 
 def user_menu(screen, font):
+    global user_id, user_name
+
     data_list = show_current_users()
-    #input_text = ""
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4]
     active = True
+
+    """result = check_if_logged_in()
+    if result:
+        user_id = result[0]
+        user_name = result[1]"""
 
     while active:
         wipe_pygame_screen(screen)
         screen_width, screen_height = get_pygame_screen_size(screen)
+
+        logged_in_user_text(screen, font)
+
         menu = ["1 - Tee uusi pelaaja", "2 - Valitse pelaaja",
                 "3 - Aloita peli", "4 - Käyttäjälista"]
         y_start = 100
         y_offset = 50
         max_width = max(font.size(item)[0] for item in menu)
-
         for i, item in enumerate(menu):
             text_surface = font.render(item, True, (255, 255, 255))
             text_x = (screen_width - max_width) // 2
@@ -83,3 +91,12 @@ def add_user(screen, font):
         draw_text(screen, f"Käyttäjä {user_name} löytyy jo tietokannasta", 80, 30, font)
     update_pygame_screen()
     time.sleep(2)
+
+def logged_in_user_text(screen, font):
+    global user_id, user_name
+    result = check_if_logged_in()
+    if result:
+        user_id = result[0]
+        user_name = result[1]
+    if user_id != "" and user_name != "":
+        draw_text(screen, f"{user_name}", 10, 10, font)

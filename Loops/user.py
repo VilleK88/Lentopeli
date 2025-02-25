@@ -20,11 +20,6 @@ def user_menu(screen, font):
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4]
     active = True
 
-    """result = check_if_logged_in()
-    if result:
-        user_id = result[0]
-        user_name = result[1]"""
-
     while active:
         wipe_pygame_screen(screen)
         screen_width, screen_height = get_pygame_screen_size(screen)
@@ -54,8 +49,6 @@ def user_menu(screen, font):
         elif char == pygame.K_4:
             print("4 painettu")
             draw_user_list(screen, font, data_list)
-
-    #return input_text.strip()
 
 # Käyttäjän valinta
 def select_user(screen, font):

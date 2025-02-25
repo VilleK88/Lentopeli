@@ -54,6 +54,7 @@ def user_menu(screen, font):
 
 # Käyttäjän valinta
 def select_user(screen, font):
+    global user_id, user_name
     input_text = ""
     active = True
 

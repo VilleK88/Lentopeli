@@ -48,7 +48,7 @@ def check_if_logged_in():
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
-        sql = "select id, screen_name from game where logged_in = 1"
+        sql = "select id, screen_name, current_fuel from game where logged_in = 1"
         cursor.execute(sql)
         result = cursor.fetchone()
         conn.close()
@@ -102,5 +102,14 @@ def add_user_to_db(name, fuel):
         cursor = conn.cursor()
         sql = "insert into game (id, screen_name, current_fuel) values (%s, %s, %s)"
         cursor.execute(sql, (random_id, name, fuel))
+        conn.commit()
+        conn.close()
+
+def save_game_progress(user_id, current_fuel):
+    conn = connect_db()
+    if conn:
+        cursor = conn.cursor()
+        sql = "update game set current_fuel = %s where id = %s"
+        cursor.execute(sql, (current_fuel, user_id))
         conn.commit()
         conn.close()

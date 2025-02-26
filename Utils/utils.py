@@ -127,15 +127,12 @@ def get_text_input(screen, font, prompt, upper, if_esc):
     return input_text.strip(), active
 
 def get_icao_input(screen, font, prompt, upper):
-    width, height = get_pygame_screen_size(screen)
     input_text = ""
     active = True
 
     while active:
         wipe_pygame_screen(screen)
         draw_text(screen, "ESC", 5, 5, font)
-        #draw_text(screen, prompt, 20, 50, font)
-        #draw_text(screen, input_text, 20, 100, font)
         draw_text_to_center_x(screen, prompt, 150, font)
         draw_text_to_center_x(screen, input_text, 180, font)
         update_pygame_screen()

@@ -3,7 +3,6 @@ from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_i
 import pygame
 from Database.db import show_current_users, get_user_info, check_if_name_in_db, add_user_to_db, check_if_logged_in
 import time
-from main import fuel_capacity
 
 # User info
 user_name = ""

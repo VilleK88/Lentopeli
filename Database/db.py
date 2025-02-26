@@ -39,6 +39,9 @@ def check_if_logged_in_exists():
             sql = "alter table game add column current_fuel float default 25941"
             cursor.execute(sql)
             conn.commit()
+            sql = "alter table game add column current_icao text default 'EFHK'"
+            cursor.execute(sql)
+            conn.commit()
             conn.close()
         else:
             print("Sarake 'logged_in' on jo olemassa.")
@@ -48,11 +51,11 @@ def check_if_logged_in():
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
-        sql = "select id, screen_name, current_fuel from game where logged_in = 1"
+        sql = "select id, screen_name, current_fuel, current_icao from game where logged_in = 1"
         cursor.execute(sql)
         result = cursor.fetchone()
         conn.close()
-        return (result[0], result[1], result[2]) if result else None
+        return (result[0], result[1], result[2], result[3]) if result else None
 
 # Palauttaa käyttäjä listan
 def show_current_users():
@@ -105,11 +108,11 @@ def add_user_to_db(name, fuel):
         conn.commit()
         conn.close()
 
-def save_game_progress(user_id, fuel):
+def save_game_progress(user_id, fuel, icao):
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
-        sql = "update game set current_fuel = %s where id = %s"
-        cursor.execute(sql, (fuel, user_id))
+        sql = "update game set current_fuel = %s, current_icao = %s where id = %s"
+        cursor.execute(sql, (fuel, icao, user_id))
         conn.commit()
         conn.close()

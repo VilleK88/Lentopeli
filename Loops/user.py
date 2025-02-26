@@ -10,7 +10,7 @@ import time
 user_name = ""
 user_id = ""
 logged_in = ""
-location = ""
+current_icao = ""
 co2_consumed = ""
 co2_budget = ""
 
@@ -100,13 +100,15 @@ def logged_in_user_text(screen, font):
         user_id = result[0]
         user_name = result[1]
         current_fuel = result[2]
+        current_icao = result[3]
     if user_id != "" and user_name != "":
         draw_text(screen, f"{user_name}", 10, 10, font)
         draw_text(screen, f"{current_fuel}", 10, 40, font)
+        draw_text(screen, f"{current_icao}", 10, 70, font)
 
 """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
 # ingame menu
-def ingame_menu(screen, font, current_fuel):
+def ingame_menu(screen, font, current_fuel, current_icao):
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]
     flight_menu = ["1 - Syötä ICAO-koodi", "2 - Palaa kauppaan", "3 - Palaa matkustajiin",
             "4 - Tallenna ja lopeta", "5 - Tallenna, lopeta ja kirjaudu ulos"]
@@ -120,7 +122,7 @@ def ingame_menu(screen, font, current_fuel):
         if char == pygame.K_1:
             active = False
         elif char == pygame.K_4:
-            save_game_progress(user_id, current_fuel)
+            save_game_progress(user_id, current_fuel, current_icao)
             pygame.quit()
 
     return active

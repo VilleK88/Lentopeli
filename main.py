@@ -36,8 +36,10 @@ def start():
     # menu
     user.main_menu(screen, font)
     result = check_if_logged_in()
+    starting_airport = None
     if result:
         current_fuel = result[2]
+        starting_airport = result[3]
 
     # Aika, polttoaine, nopeus ja zoom muuttujien alustus
     current_time = datetime.now()
@@ -46,7 +48,7 @@ def start():
     flight.zoom = zoom
 
     # Lento-loopin aloitus
-    airport = get_airport_coords("EFHK")
+    airport = get_airport_coords(starting_airport)
     return airport, screen
 
 def main_program():
@@ -76,7 +78,7 @@ def main_program():
         """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
         # Käynnistetään ingame menu
         while menu_on:
-            menu_on = user.ingame_menu(screen, font, current_fuel)
+            menu_on = user.ingame_menu(screen, font, current_fuel, current_icao[1])
 
         # ICAO-koodin syöttö seuraavalle lentokentälle
         icao = get_valid_icao(screen, font, "ICAO-koodi: ")

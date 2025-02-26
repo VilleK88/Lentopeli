@@ -1,5 +1,5 @@
-from Utils.utils import draw_user_list, draw_text, get_press_button, get_user_input, get_text_input, wipe_pygame_screen, \
-    update_pygame_screen, get_pygame_screen_size
+from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_input, get_text_input, wipe_pygame_screen, \
+    update_pygame_screen, get_pygame_screen_size, press_button
 import pygame
 from Database.db import show_current_users, get_user_info, check_if_name_in_db, add_user_to_db, check_if_logged_in
 import time
@@ -16,14 +16,13 @@ co2_budget = ""
 def user_menu(screen, font):
     global user_id, user_name
 
-    data_list = show_current_users()
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]
     active = True
 
     while active:
         wipe_pygame_screen(screen)
         screen_width, screen_height = get_pygame_screen_size(screen)
-
+        data_list = show_current_users()
         logged_in_user_text(screen, font)
 
         menu = ["1 - Tee uusi pelaaja", "2 - Valitse pelaaja",
@@ -39,9 +38,9 @@ def user_menu(screen, font):
 
         update_pygame_screen()
 
-        char = get_press_button(key_list)
+        char = press_button_list(key_list)
         if char == pygame.K_1:
-            add_user(screen, font)
+            add_new_user(screen, font)
         elif char == pygame.K_2:
             select_user(screen, font)
         elif char == pygame.K_3:
@@ -60,11 +59,12 @@ def select_user(screen, font):
 
     while active:
         wipe_pygame_screen(screen)
+        draw_text(screen, "ESC", 5, 5, font)
         draw_text(screen, "Nimi: ", 80, 30, font)
         draw_text(screen, input_text, 80, 60, font)
         update_pygame_screen()
 
-        input_text, active = get_user_input(input_text, active, False)
+        input_text, active = get_user_input(input_text, active, False, True)
 
     result = get_user_info(input_text)
     if result:
@@ -76,17 +76,29 @@ def select_user(screen, font):
         time.sleep(2)
 
 
-def add_user(screen, font):
-    user_name = get_text_input(screen, font, "Nimi: ", False)
-    result = check_if_name_in_db(user_name)
+def add_new_user(screen, font):
+    active = True
+    while active:
+        wipe_pygame_screen(screen)
+        draw_text(screen, "ESC", 5, 5, font)
+        new_user_name, active = get_text_input(screen, font, "Nimi: ", False, True)
+        update_pygame_screen()
+
+        result = check_if_name_in_db(new_user_name)
+        if result:
+            wipe_pygame_screen(screen)
+            draw_text(screen, f"Käyttäjä {new_user_name} löytyy jo tietokannasta", 80, 30, font)
+            update_pygame_screen()
+            time.sleep(2)
+        else:
+            if new_user_name:
+                print(f"Active status: ", active)
+                wipe_pygame_screen(screen)
+                #add_user_to_db(new_user_name, fuel_capacity)
+                draw_text(screen, f"Käyttäjä {new_user_name} lisätty tietokantaan", 80, 30, font)
+                update_pygame_screen()
+                time.sleep(2)
     wipe_pygame_screen(screen)
-    if not result:
-        add_user_to_db(user_name, fuel_capacity)
-        draw_text(screen, f"Käyttäjä {user_name} lisätty tietokantaan", 80, 30, font)
-    else:
-        draw_text(screen, f"Käyttäjä {user_name} löytyy jo tietokannasta", 80, 30, font)
-    update_pygame_screen()
-    time.sleep(2)
 
 def logged_in_user_text(screen, font):
     global user_id, user_name

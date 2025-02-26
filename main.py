@@ -33,11 +33,8 @@ def start():
     # tarkistaa onko logged_in sarake jo olemassa tietokannassa, ja jos ei ole niin tekee sen
     check_if_logged_in_exists()
 
-    # tarkistaa onko kukaan pelaaja logged_in tilassa
-    result = check_if_logged_in()
-    # ja jos ei ole niin mennään user_menuun
-    if result:
-        user.user_menu(screen, font)
+    # menu
+    user.user_menu(screen, font)
 
     # Aika, polttoaine, nopeus ja zoom muuttujien alustus
     current_time = datetime.now()

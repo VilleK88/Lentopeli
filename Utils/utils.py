@@ -37,8 +37,9 @@ def calculate_distance(current_location, icao2):
 
 # Tarkistaa löytyykö syötetty ICAO-koodi tietokannasta
 def get_valid_icao(screen, font, prompt):
-    while True:
-        icao = get_text_input(screen, font, prompt, True).strip().upper()
+    active = True
+    while active:
+        icao, active = get_text_input(screen, font, prompt, True, False)
         airport = get_airport_coords(icao)
         if airport:
             return airport
@@ -51,7 +52,7 @@ def draw_text(screen, text, x, y, font):
     rendered_text = font.render(text, True, (255, 255, 255))
     screen.blit(rendered_text, (x, y))
 
-# Piirtää käyttäjä-listan user-menuun
+# Piirtää käyttäjälistan
 def draw_user_list(screen, font, data_list):
     wipe_pygame_screen(screen)
     screen_width, screen_height = get_pygame_screen_size(screen)
@@ -68,7 +69,7 @@ def draw_user_list(screen, font, data_list):
     start_y = header_y + row_spacing
     line_color = (200, 200, 200)
 
-    screen.blit(font.render("1 - Palaa menuun", True, (255, 255, 255)), (20, 20))
+    screen.blit(font.render("ESC", True, (255, 255, 255)), (5, 5))
     screen.blit(font.render("Nimi", True, (255, 255, 255)), (name_x, header_y))
     screen.blit(font.render("ID", True, (255, 255, 255)), (id_x, header_y))
 
@@ -87,13 +88,10 @@ def draw_user_list(screen, font, data_list):
         y += row_spacing
 
     update_pygame_screen()
-    key_list = [pygame.K_1]
     while True:
-        char = get_press_button(key_list)
-        if char == pygame.K_1:
+        char = press_button(pygame.K_ESCAPE)
+        if char == pygame.K_ESCAPE:
             break
-    #update_pygame_screen()
-    #user_input = input("")
 
 # Piirtää saavuit lentoasemalle tekstin
 def draw_arrived_airport(airport, icao, screen, x, y, font):
@@ -106,7 +104,7 @@ def draw_arrived_airport(airport, icao, screen, x, y, font):
     pygame.display.update()
 
 # Ottaa käyttäjän syötteen vastaan
-def get_text_input(screen, font, prompt, upper):
+def get_text_input(screen, font, prompt, upper, if_esc):
     input_text = ""
     active = True
 
@@ -116,18 +114,20 @@ def get_text_input(screen, font, prompt, upper):
         draw_text(screen, input_text, 20, 100, font)
         update_pygame_screen()
 
-        input_text, active = get_user_input(input_text, active, upper)
+        input_text, active = get_user_input(input_text, active, upper, if_esc)
 
-    return input_text.strip()
+    return input_text.strip(), active
 
 # Palauttaa käyttäjän syöttään 'enter' painalluksen jälkeen
-def get_user_input(input_text, active, upper):
+def get_user_input(input_text, active, upper, if_esc):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
+                active = False
+            elif event.key == pygame.K_ESCAPE and if_esc:
                 active = False
             elif event.key == pygame.K_BACKSPACE:
                 input_text = input_text[:-1]
@@ -136,16 +136,25 @@ def get_user_input(input_text, active, upper):
                     input_text += event.unicode.upper()
                 else:
                     input_text += event.unicode.lower()
+
     return input_text, active
 
 # Palauttaa käyttäjän syötteen suoraan
-def get_press_button(key_list):
+def press_button_list(key_list):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
         if event.type == pygame.KEYDOWN:
             if event.key in key_list:
+                return event.key
+
+    return None
+
+def press_button(button):
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == button:
                 return event.key
 
     return None

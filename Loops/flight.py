@@ -4,7 +4,7 @@ from datetime import timedelta
 from geopy.distance import geodesic
 from Routes import server
 from Utils.weather import get_weather
-from Utils.utils import wipe_pygame_screen, update_pygame_screen
+from Utils.utils import wipe_pygame_screen, update_pygame_screen, draw_centered_list, press_button_list
 
 # Lentokoneen tiedot
 max_speed_kmh = 780

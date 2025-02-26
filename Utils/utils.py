@@ -181,3 +181,14 @@ def press_button(button):
                 return event.key
 
     return None
+
+def draw_centered_list(screen, font, list):
+    screen_width, screen_height = get_pygame_screen_size(screen)
+    y_start = 100
+    y_offset = 50
+    max_width = max(font.size(item)[0] for item in list)
+    for i, item in enumerate(list):
+        text_surface = font.render(item, True, (255, 255, 255))
+        text_x = (screen_width - max_width) // 2
+        text_y = y_start + i * y_offset
+        screen.blit(text_surface, (text_x, text_y))

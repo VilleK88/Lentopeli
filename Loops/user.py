@@ -1,5 +1,5 @@
 from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_input, get_text_input, wipe_pygame_screen, \
-    update_pygame_screen, get_pygame_screen_size, press_button
+    update_pygame_screen, get_pygame_screen_size, draw_centered_list
 import pygame
 from Database.db import show_current_users, get_user_info, check_if_name_in_db, add_user_to_db, check_if_logged_in
 import time
@@ -12,29 +12,21 @@ location = ""
 co2_consumed = ""
 co2_budget = ""
 
-def user_menu(screen, font):
+def main_menu(screen, font):
     global user_id, user_name
 
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]
     active = True
 
     while active:
-        wipe_pygame_screen(screen)
-        screen_width, screen_height = get_pygame_screen_size(screen)
         data_list = show_current_users()
+        wipe_pygame_screen(screen)
         logged_in_user_text(screen, font)
 
         menu = ["1 - Tee uusi pelaaja", "2 - Valitse pelaaja",
                 "3 - Aloita peli", "4 - Käyttäjälista" , "5 - Lopeta"]
-        y_start = 100
-        y_offset = 50
-        max_width = max(font.size(item)[0] for item in menu)
-        for i, item in enumerate(menu):
-            text_surface = font.render(item, True, (255, 255, 255))
-            text_x = (screen_width - max_width) // 2
-            text_y = y_start + i * y_offset
-            screen.blit(text_surface, (text_x, text_y))
 
+        draw_centered_list(screen, font, menu)
         update_pygame_screen()
 
         char = press_button_list(key_list)
@@ -107,3 +99,21 @@ def logged_in_user_text(screen, font):
         user_name = result[1]
     if user_id != "" and user_name != "":
         draw_text(screen, f"{user_name}", 10, 10, font)
+
+""" Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
+# ingame menu
+def ingame_menu(screen, font):
+    key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]
+    flight_menu = ["1 - Syötä ICAO-koodi", "2 - Palaa kauppaan", "3 - Palaa matkustajiin",
+            "4 - Tallenna ja lopeta", "5 - Tallenna, lopeta ja kirjaudu ulos"]
+    active = True
+
+    while active:
+        wipe_pygame_screen(screen)
+        draw_centered_list(screen, font, flight_menu)
+        update_pygame_screen()
+        char = press_button_list(key_list)
+        if char == pygame.K_1:
+            active = False
+
+    return active

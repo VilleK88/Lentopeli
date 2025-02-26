@@ -34,7 +34,7 @@ def start():
     check_if_logged_in_exists()
 
     # menu
-    user.user_menu(screen, font)
+    user.main_menu(screen, font)
 
     # Aika, polttoaine, nopeus ja zoom muuttujien alustus
     current_time = datetime.now()
@@ -57,6 +57,8 @@ def main_program():
     server.starting_coordinates(current_icao[2], current_icao[3])
     server.start_server()
 
+    menu_on = True
+
     # main loop
     while True:
         on_flight = False
@@ -68,8 +70,10 @@ def main_program():
         else:
             remaining_distance = 0
 
-        """ tänne huolto/kauppa koodi """
-        """ tänne Asiakas koodi """
+        """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
+        # Käynnistetään ingame menu
+        while menu_on:
+            menu_on = user.ingame_menu(screen, font)
 
         # ICAO-koodin syöttö seuraavalle lentokentälle
         icao = get_valid_icao(screen, font, "ICAO-koodi: ")
@@ -87,6 +91,7 @@ def main_program():
         remaining_distance, current_time, current_fuel, current_location = flight.flight_loop(screen, font, current_location, (icao[2], icao[3]), remaining_distance, current_time, current_fuel, current_speed_kmh, time_multiplier, current_location)
 
         current_icao = icao
+        menu_on = True
 
 if __name__ == '__main__':
     main_program()

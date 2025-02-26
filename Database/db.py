@@ -21,7 +21,7 @@ def get_airport_coords(icao):
         result = cursor.fetchone()
         conn.close()
         return (result[0], result[1], result[2], result[3]) if result else None
-    return False
+    return None
 
 # Tarkistaa onko logged_in sarake olemassa game -taulukossa ja jos ei ole niin tekee sen
 def check_if_logged_in_exists():

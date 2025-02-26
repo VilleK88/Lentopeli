@@ -39,7 +39,8 @@ def calculate_distance(current_location, icao2):
 def get_valid_icao(screen, font, prompt):
     active = True
     while active:
-        icao, active = get_text_input(screen, font, prompt, True, False)
+        #icao, active = get_text_input(screen, font, prompt, True, True)
+        icao = get_icao_input(screen, font, prompt, True)
         airport = get_airport_coords(icao)
         if airport:
             return airport
@@ -117,6 +118,20 @@ def get_text_input(screen, font, prompt, upper, if_esc):
         input_text, active = get_user_input(input_text, active, upper, if_esc)
 
     return input_text.strip(), active
+
+def get_icao_input(screen, font, prompt, upper):
+    input_text = ""
+    active = True
+
+    while active:
+        wipe_pygame_screen(screen)
+        draw_text(screen, prompt, 20, 50, font)
+        draw_text(screen, input_text, 20, 100, font)
+        update_pygame_screen()
+
+        input_text, active = get_user_input(input_text, active, upper, False)
+
+    return input_text.strip()
 
 # Palauttaa käyttäjän syöttään 'enter' painalluksen jälkeen
 def get_user_input(input_text, active, upper, if_esc):

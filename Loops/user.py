@@ -1,5 +1,5 @@
 from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_input, get_text_input, wipe_pygame_screen, \
-    update_pygame_screen, get_pygame_screen_size, draw_centered_list
+    update_pygame_screen, draw_centered_list
 import pygame
 from Database.db import show_current_users, get_user_info, check_if_name_in_db, add_user_to_db, check_if_logged_in
 import time

@@ -52,7 +52,7 @@ def check_if_logged_in():
         cursor.execute(sql)
         result = cursor.fetchone()
         conn.close()
-        return result if result else None
+        return (result[0], result[1], result[2]) if result else None
 
 # Palauttaa käyttäjä listan
 def show_current_users():
@@ -69,7 +69,7 @@ def get_user_info(name):
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
-        sql = "select id, screen_name from game where screen_name = %s"
+        sql = "select id, screen_name, current_fuel from game where screen_name = %s"
         cursor.execute(sql, (name,))
         result = cursor.fetchone()
 
@@ -105,11 +105,11 @@ def add_user_to_db(name, fuel):
         conn.commit()
         conn.close()
 
-def save_game_progress(user_id, current_fuel):
+def save_game_progress(user_id, fuel):
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
         sql = "update game set current_fuel = %s where id = %s"
-        cursor.execute(sql, (current_fuel, user_id))
+        cursor.execute(sql, (fuel, user_id))
         conn.commit()
         conn.close()

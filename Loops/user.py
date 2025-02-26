@@ -1,7 +1,9 @@
+import main
 from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_input, get_text_input, wipe_pygame_screen, \
     update_pygame_screen, draw_centered_list
 import pygame
-from Database.db import show_current_users, get_user_info, check_if_name_in_db, add_user_to_db, check_if_logged_in
+from Database.db import show_current_users, get_user_info, check_if_name_in_db, add_user_to_db, check_if_logged_in, \
+    save_game_progress
 import time
 
 # User info
@@ -97,12 +99,14 @@ def logged_in_user_text(screen, font):
     if result:
         user_id = result[0]
         user_name = result[1]
+        current_fuel = result[2]
     if user_id != "" and user_name != "":
         draw_text(screen, f"{user_name}", 10, 10, font)
+        draw_text(screen, f"{current_fuel}", 10, 40, font)
 
 """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
 # ingame menu
-def ingame_menu(screen, font):
+def ingame_menu(screen, font, current_fuel):
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]
     flight_menu = ["1 - Syötä ICAO-koodi", "2 - Palaa kauppaan", "3 - Palaa matkustajiin",
             "4 - Tallenna ja lopeta", "5 - Tallenna, lopeta ja kirjaudu ulos"]
@@ -115,5 +119,8 @@ def ingame_menu(screen, font):
         char = press_button_list(key_list)
         if char == pygame.K_1:
             active = False
+        elif char == pygame.K_4:
+            save_game_progress(user_id, current_fuel)
+            pygame.quit()
 
     return active

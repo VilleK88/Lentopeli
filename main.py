@@ -4,7 +4,7 @@ from Routes import server
 from datetime import datetime
 from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao, draw_arrived_airport, \
     initialize_pygame_screen
-from Database.db import check_if_logged_in_exists, get_airport_coords
+from Database.db import check_if_logged_in_exists, get_airport_coords, check_if_logged_in
 
 # Lentokoneen tiedot
 remaining_distance = None
@@ -35,10 +35,13 @@ def start():
 
     # menu
     user.main_menu(screen, font)
+    result = check_if_logged_in()
+    if result:
+        current_fuel = result[2]
 
     # Aika, polttoaine, nopeus ja zoom muuttujien alustus
     current_time = datetime.now()
-    current_fuel = fuel_capacity
+    #current_fuel = fuel_capacity
     current_speed_kmh = max_speed_kmh
     flight.zoom = zoom
 
@@ -73,7 +76,7 @@ def main_program():
         """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
         # Käynnistetään ingame menu
         while menu_on:
-            menu_on = user.ingame_menu(screen, font)
+            menu_on = user.ingame_menu(screen, font, current_fuel)
 
         # ICAO-koodin syöttö seuraavalle lentokentälle
         icao = get_valid_icao(screen, font, "ICAO-koodi: ")

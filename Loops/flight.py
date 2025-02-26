@@ -24,6 +24,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
     print("\n📍 Paina '1' muuttaakseksi kurssia tai odota...\n")
 
     # Alustetaan lähtö ja meno koordinaatit
+    print("Aloitus koordinaatit:", start_coords)
     lat1, lon1 = start_coords
     lat2, lon2 = end_coords
     new_lat, new_lon = lat1, lon1

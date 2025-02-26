@@ -4,10 +4,10 @@ from Routes import server
 from datetime import datetime
 from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao, draw_arrived_airport, \
     initialize_pygame_screen
-from Database.db import check_if_logged_in_exists, check_if_logged_in
+from Database.db import check_if_logged_in_exists, check_if_logged_in, get_airport_coords
 
 # Lentokoneen tiedot
-remaining_distance = 0
+remaining_distance = None
 max_speed_kmh = 780
 current_speed_kmh = 0
 fuel_capacity = 25941
@@ -45,41 +45,33 @@ def start():
     current_speed_kmh = max_speed_kmh
     flight.zoom = zoom
 
-    """ tänne huolto koodi """
-    """ tänne Asiakas koodi """
-
-    # ICAO-koodien syöttö
-    icao1 = get_valid_icao(screen, font, "1. ICAO-koodi: ")
-    icao2 = get_valid_icao(screen, font, "2. ICAO-koodi: ")
-
-    # Laskee jäljellä olevan etäisyyden lentokenttien välillä
-    remaining_distance = calculate_distance_between_airports(icao1, icao2)
-
-    # Käynnistää serverin ja lähettää lentoasemien koordinaatit
-    server.starting_coordinates(icao1[2], icao1[3])
-    server.start_server()
-
     # Lento-loopin aloitus
-    on_flight = True
-    remaining_distance, current_time, current_fuel, current_location = flight.flight_loop(screen, font,(icao1[2], icao1[3]), (icao2[2], icao2[3]), remaining_distance, current_time, current_fuel, current_speed_kmh, time_multiplier, current_location)
-
-    return icao2, screen
+    airport = get_airport_coords("EFHK")
+    return airport, screen
 
 def main_program():
     global remaining_distance, current_location, on_flight, current_time, current_fuel, current_speed_kmh, time_multiplier, screen, font
 
     # Palauttaa start sen hetkisen lentoaseman tiedot ja pygame ikkunan asetukset
     current_icao, screen = start()
+    current_location = current_icao[2], current_icao[3]
+
+    # Käynnistää serverin ja lähettää lentoaseman koordinaatit
+    server.starting_coordinates(current_icao[2], current_icao[3])
+    server.start_server()
 
     # main loop
     while True:
         on_flight = False
         server.update_server(flight.new_lat, flight.new_lon, False)
-        if remaining_distance <= 0:
-            draw_arrived_airport(current_icao[0], current_icao[1], screen, 20, 50, font)
-            time.sleep(2)
+        if remaining_distance != None:
+            if remaining_distance <= 0:
+                draw_arrived_airport(current_icao[0], current_icao[1], screen, 20, 50, font)
+                time.sleep(2)
+        else:
+            remaining_distance = 0
 
-        """ tänne huolto koodi """
+        """ tänne huolto/kauppa koodi """
         """ tänne Asiakas koodi """
 
         # ICAO-koodin syöttö seuraavalle lentokentälle

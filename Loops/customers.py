@@ -1,7 +1,7 @@
 import mysql.connector
 import json
 import random
-from config import db_config
+from Routes.config import db_config
 
 # Yhdistetään MariaDB-tietokantaan
 conn = mysql.connector.connect(**db_config)

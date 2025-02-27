@@ -63,6 +63,7 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b'{"error": "Invalid JSON"}')
 
+    # Hakee pelaajan sijainnin
     def do_GET(self):
         if self.path == "/location":
             try:
@@ -83,16 +84,19 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b'{"error": "Forbidden"}')
 
+# Käynnistää http serverin
 def run_http_server():
     with http.server.HTTPServer(("127.0.0.1", PORT), CustomHandler) as httpd:
         print(f"Palvelin käynnissä osoitteessa http://127.0.0.1:{PORT}")
         webbrowser.open(url)
         httpd.serve_forever()
 
+# Käynnistää serveri säikeen
 def start_server():
     server_thread = threading.Thread(target=run_http_server, daemon=True)
     server_thread.start()
 
+# Päivittää serveristä pelaajan sijainnin ja onko lennossa boolean tilan
 def update_server(latitude, longitude, on_flight):
     if not on_flight:
         print("Lentokone ei liiku. Ei päivitetä sijaintia.")

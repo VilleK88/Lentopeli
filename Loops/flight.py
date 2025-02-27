@@ -87,6 +87,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
 
     return remaining_distance, current_time, current_fuel, current_location
 
+# Päivittää sään
 def update_weather(weather):
     global current_speed_kmh, turbulence_warning
 
@@ -103,6 +104,7 @@ def update_weather(weather):
 
     return weather, turbulence_warning
 
+# Päivittää info tekstin
 def update_info_text(current_time, weather, turbulence_warning, remaining_distance, current_speed_kmh, current_fuel, new_lat, new_lon, screen, font):
     wipe_pygame_screen(screen)
 

@@ -39,7 +39,6 @@ def calculate_distance(current_location, icao2):
 def get_valid_icao(screen, font, prompt):
     active = True
     while active:
-        #icao, active = get_text_input(screen, font, prompt, True, True)
         icao = get_icao_input(screen, font, prompt, True)
         airport = get_airport_coords(icao)
         if airport:
@@ -126,13 +125,13 @@ def get_text_input(screen, font, prompt, upper, if_esc):
 
     return input_text.strip(), active
 
+# Ottaa käyttäjän ICAO-koodin vastaan
 def get_icao_input(screen, font, prompt, upper):
     input_text = ""
     active = True
 
     while active:
         wipe_pygame_screen(screen)
-        draw_text(screen, "ESC", 5, 5, font)
         draw_text_to_center_x(screen, prompt, 150, font)
         draw_text_to_center_x(screen, input_text, 180, font)
         update_pygame_screen()
@@ -174,6 +173,7 @@ def press_button_list(key_list):
 
     return None
 
+# Ottaa käyttäjän näppäimen syötteen vastaan
 def press_button(button):
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -182,6 +182,7 @@ def press_button(button):
 
     return None
 
+# Piirtää listan keskelle pygame-ruutua
 def draw_centered_list(screen, font, list):
     screen_width, screen_height = get_pygame_screen_size(screen)
     y_start = 100

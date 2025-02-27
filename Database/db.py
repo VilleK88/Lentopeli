@@ -26,7 +26,7 @@ def get_airport_coords(icao):
     return None
 
 # Tarkistaa onko logged_in sarake olemassa game -taulukossa ja jos ei ole niin tekee sen
-def check_if_logged_in_exists():
+def check_if_columns_exists():
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
@@ -70,6 +70,7 @@ def show_current_users():
         conn.close()
         return result if result else None
 
+# Hakee käyttäjän tiedot tietokannasta
 def get_user_info(name):
     conn = connect_db()
     if conn:
@@ -87,6 +88,8 @@ def get_user_info(name):
             conn.commit()
             conn.close()
             return result[0], result[1]
+
+# Tarkistaa onko nimi jo tietokannassa
 def check_if_name_in_db(name):
     conn = connect_db()
     if conn:
@@ -100,6 +103,7 @@ def check_if_name_in_db(name):
         else:
             return False
 
+# Lisää käyttäjän tietokantaan
 def add_user_to_db(name, fuel):
     conn = connect_db()
     if conn:
@@ -110,6 +114,7 @@ def add_user_to_db(name, fuel):
         conn.commit()
         conn.close()
 
+# Tallentaa pelin edistymisen
 def save_game_progress(user_id, fuel, icao):
     conn = connect_db()
     if conn:

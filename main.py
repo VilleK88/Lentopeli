@@ -4,7 +4,7 @@ from Routes import server
 from datetime import datetime
 from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao, draw_arrived_airport, \
     initialize_pygame_screen
-from Database.db import check_if_logged_in_exists, get_airport_coords, check_if_logged_in
+from Database.db import check_if_columns_exists, get_airport_coords, check_if_logged_in
 
 # Lentokoneen tiedot
 remaining_distance = None
@@ -31,7 +31,7 @@ def start():
     screen, font = initialize_pygame_screen()
 
     # tarkistaa onko logged_in sarake jo olemassa tietokannassa, ja jos ei ole niin tekee sen
-    check_if_logged_in_exists()
+    check_if_columns_exists()
 
     # menu
     user.main_menu(screen, font)

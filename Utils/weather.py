@@ -11,6 +11,7 @@ url = None
 current_weather = None
 last_weather_update = 0
 
+# Käynnistää sään säikeen ja ottaa vastaan pelaajan sijainnin
 def get_weather(lat, lon, force_update=False):
     global current_weather, last_weather_update
 
@@ -24,6 +25,7 @@ def get_weather(lat, lon, force_update=False):
     if not force_update and time.time() - last_weather_update < 3:
         return current_weather
 
+    # Hakee sään
     def fetch_weather():
         global current_weather, last_weather_update
         url = f"{BASE_URL}?lat={lat}&lon={lon}&appid={API_KEY}&units=metric&lang=fi"

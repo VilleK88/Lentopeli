@@ -27,26 +27,46 @@ def get_airport_coords(icao):
 
 # Tarkistaa onko logged_in sarake olemassa game -taulukossa ja jos ei ole niin tekee sen
 def check_if_columns_exists():
+
+    result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'logged_in'")
+    if not result:
+        print("Saraketta 'logged_in' ei löydy, luodaan se....")
+        commit_column_to_db("alter table game add column logged_in boolean default false")
+    else:
+        print("Sarake 'logged_in' on jo olemassa.")
+
+    result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'current_fuel'")
+    if not result:
+        print("Saraketta 'current_fuel' ei löydy, luodaan se....")
+        commit_column_to_db("alter table game add column current_fuel float default 25941")
+    else:
+        print("Sarake 'current_fuel' on jo olemassa.")
+
+    result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'current_icao'")
+    if not result:
+        print("Saraketta 'current_icao' ei löydy, luodaan se....")
+        commit_column_to_db("alter table game add column current_icao text default 'EFHK'")
+    else:
+        print("Sarake 'current_icao' on jo olemassa.")
+
+# Tarkistaa onko sarake tai taulu jo olemassa
+def get_info_from_db(sql):
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
-        sql = "select column_name from information_schema.columns where table_name = 'game' and column_name = 'logged_in'"
         cursor.execute(sql)
         result = cursor.fetchone()
-        if not result:
-            print("Saraketta 'logged_in' ei löydy, luodaan se....")
-            sql = "alter table game add column logged_in boolean default false"
-            cursor.execute(sql)
-            conn.commit()
-            sql = "alter table game add column current_fuel float default 25941"
-            cursor.execute(sql)
-            conn.commit()
-            sql = "alter table game add column current_icao text default 'EFHK'"
-            cursor.execute(sql)
-            conn.commit()
-            conn.close()
-        else:
-            print("Sarake 'logged_in' on jo olemassa.")
+        conn.close()
+        return result if result else None
+
+# Committaa uuden sarakkeen
+def commit_column_to_db(sql):
+    conn = connect_db()
+    if conn:
+        cursor = conn.cursor()
+        cursor.execute(sql)
+        conn.commit()
+        conn.close()
 
 # Tarkistaa onko kukaan käyttäjä kirjautuneena sisään
 def check_if_logged_in():

@@ -8,8 +8,7 @@ conn = mysql.connector.connect(**db_config)
 cursor = conn.cursor()
 
 # Haetaan vain suuret ja avoimet lentokentät
-cursor.execute("
-    SELECT ident FROM airport WHERE type = 'large_airport' AND closed IS NULL OR closed = 0"")
+cursor.execute("select name, ident, type from airport where type = 'large_airport'")
 icao_list = [row[0] for row in cursor.fetchall()]
 
 # Suljetaan tietokantayhteys

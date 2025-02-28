@@ -1,5 +1,5 @@
 import main
-from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_input, get_new_user_name, wipe_pygame_screen, \
+from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_input, wipe_pygame_screen, \
     update_pygame_screen, draw_centered_list, draw_text_to_center_x
 import pygame
 from Database.db import show_current_users, get_users_and_set_as_logged_in, check_if_name_in_db, add_user_to_db, get_logged_in_user_data, \
@@ -78,8 +78,8 @@ def add_new_user(screen, font):
         wipe_pygame_screen(screen)
         draw_text(screen, "ESC", 5, 5, font)
         #new_user_name, active = get_new_user_name(screen, font, "Nimi: ", False, True)
-        draw_text(screen, "Nimi: ", 80, 30, font)
-        draw_text(screen, new_user_name, 80, 60, font)
+        draw_text_to_center_x(screen, "Nimi:", 150, font)
+        draw_text_to_center_x(screen, new_user_name, 180, font)
         update_pygame_screen()
 
         new_user_name, active = get_user_input(new_user_name, active, False, True)
@@ -87,16 +87,15 @@ def add_new_user(screen, font):
     result = check_if_name_in_db(new_user_name)
     if result:
         wipe_pygame_screen(screen)
-        draw_text(screen, f"Käyttäjä {new_user_name} löytyy jo tietokannasta", 80, 30, font)
+        draw_text_to_center_x(screen, f"Käyttäjä {new_user_name} löytyy jo tietokannasta", 165, font)
         update_pygame_screen()
         time.sleep(2)
     else:
         if new_user_name:
             print(f"Active status: ", active)
             wipe_pygame_screen(screen)
-            #fuel_capacity = main.fuel_capacity
-            #add_user_to_db(new_user_name)
-            draw_text(screen, f"Käyttäjä {new_user_name} lisätty tietokantaan", 80, 30, font)
+            add_user_to_db(new_user_name)
+            draw_text_to_center_x(screen, f"Käyttäjä {new_user_name} lisätty tietokantaan", 165, font)
             update_pygame_screen()
             time.sleep(2)
     wipe_pygame_screen(screen)

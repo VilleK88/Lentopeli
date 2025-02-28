@@ -110,8 +110,8 @@ def draw_arrived_airport(airport, icao, screen, x, y, font):
     screen.blit(rendered_text, (x, y))
     pygame.display.update()
 
-# Ottaa käyttäjän syötteen vastaan
-def get_text_input(screen, font, prompt, upper, if_esc):
+
+def get_new_user_name(screen, font, prompt, upper, if_esc):
     input_text = ""
     active = True
 

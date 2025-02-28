@@ -110,21 +110,6 @@ def draw_arrived_airport(airport, icao, screen, x, y, font):
     screen.blit(rendered_text, (x, y))
     pygame.display.update()
 
-
-def get_new_user_name(screen, font, prompt, upper, if_esc):
-    input_text = ""
-    active = True
-
-    while active:
-        wipe_pygame_screen(screen)
-        draw_text(screen, prompt, 20, 50, font)
-        draw_text(screen, input_text, 20, 100, font)
-        update_pygame_screen()
-
-        input_text, active = get_user_input(input_text, active, upper, if_esc)
-
-    return input_text.strip(), active
-
 # Ottaa käyttäjän ICAO-koodin vastaan
 def get_icao_input(screen, font, prompt, upper):
     input_text = ""

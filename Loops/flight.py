@@ -118,11 +118,13 @@ def update_info_text(current_time, weather, turbulence_warning, remaining_distan
         f"Paina '1' muuttaaksesi kurssia."
     ]
 
-    y_offset = 50
+    draw_centered_list(screen, font, 30, info_text)
+
+    """y_offset = 50
     for text in info_text:
         rendered_text = font.render(text, True, (255, 255, 255))
         screen.blit(rendered_text, (20, y_offset))
-        y_offset += 30
+        y_offset += 30"""
 
     update_pygame_screen()
 

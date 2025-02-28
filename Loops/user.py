@@ -29,7 +29,7 @@ def main_menu(screen, font):
         menu = ["1 - Tee uusi pelaaja", "2 - Valitse pelaaja",
                 "3 - Aloita peli", "4 - Käyttäjälista" , "5 - Lopeta"]
 
-        draw_centered_list(screen, font, menu)
+        draw_centered_list(screen, font, 100, menu)
         update_pygame_screen()
 
         char = press_button_list(key_list)
@@ -124,7 +124,7 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
 
     while active:
         wipe_pygame_screen(screen)
-        draw_centered_list(screen, font, flight_menu)
+        draw_centered_list(screen, font, 100, flight_menu)
         update_pygame_screen()
         char = press_button_list(key_list)
         if char == pygame.K_1:

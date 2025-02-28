@@ -183,9 +183,8 @@ def press_button(button):
     return None
 
 # Piirtää listan keskelle pygame-ruutua
-def draw_centered_list(screen, font, list):
+def draw_centered_list(screen, font, y_start, list):
     screen_width, screen_height = get_pygame_screen_size(screen)
-    y_start = 100
     y_offset = 50
     max_width = max(font.size(item)[0] for item in list)
     for i, item in enumerate(list):

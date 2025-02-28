@@ -37,7 +37,13 @@ def main_menu(screen, font):
         elif char == pygame.K_2:
             select_user(screen, font)
         elif char == pygame.K_3:
-            active = False
+            if user_name != "":
+                active = False
+            else:
+                wipe_pygame_screen(screen)
+                draw_text_to_center_x(screen, "Kirjaudu sisään ensiksi", 165, font)
+                update_pygame_screen()
+                time.sleep(2)
         elif char == pygame.K_4:
             print("4 painettu")
             draw_user_list(screen, font, data_list)
@@ -137,7 +143,11 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
         if char == pygame.K_1:
             active = False
         elif char == pygame.K_4 and remaining_distance <= 0:
-            save_game_progress(user_id, current_fuel, current_icao)
+            save_game_progress(user_id, current_fuel, current_icao, False)
+            pygame.quit()
+            sys.exit()
+        elif char == pygame.K_5 and remaining_distance <= 0:
+            save_game_progress(user_id, current_fuel, current_icao, True)
             pygame.quit()
             sys.exit()
 

@@ -2,7 +2,7 @@ import main
 from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_input, get_text_input, wipe_pygame_screen, \
     update_pygame_screen, draw_centered_list
 import pygame
-from Database.db import show_current_users, get_user_info, check_if_name_in_db, add_user_to_db, check_if_logged_in, \
+from Database.db import show_current_users, get_users_and_set_as_logged_in, check_if_name_in_db, add_user_to_db, get_logged_in_user_data, \
     save_game_progress
 import time
 
@@ -59,7 +59,7 @@ def select_user(screen, font):
 
         input_text, active = get_user_input(input_text, active, False, True)
 
-    result = get_user_info(input_text)
+    result = get_users_and_set_as_logged_in(input_text)
     if result:
         user_id = result[0]
         user_name = result[1]
@@ -87,7 +87,9 @@ def add_new_user(screen, font):
             if new_user_name:
                 print(f"Active status: ", active)
                 wipe_pygame_screen(screen)
-                #add_user_to_db(new_user_name, fuel_capacity)
+                fuel_capacity = main.fuel_capacity
+                #print(f"Polttoaine määrä: ", fuel_capacity)
+                add_user_to_db(new_user_name, fuel_capacity)
                 draw_text(screen, f"Käyttäjä {new_user_name} lisätty tietokantaan", 80, 30, font)
                 update_pygame_screen()
                 time.sleep(2)
@@ -95,7 +97,7 @@ def add_new_user(screen, font):
 
 def logged_in_user_text(screen, font):
     global user_id, user_name
-    result = check_if_logged_in()
+    result = get_logged_in_user_data()
     if result:
         user_id = result[0]
         user_name = result[1]

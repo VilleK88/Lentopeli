@@ -107,7 +107,6 @@ def update_weather(weather):
 # Päivittää info tekstin
 def update_info_text(current_time, weather, turbulence_warning, remaining_distance, current_speed_kmh, current_fuel, new_lat, new_lon, screen, font):
     wipe_pygame_screen(screen)
-
     info_text = [
         f"Aika: {current_time.strftime('%H:%M')}",
         f"Sää: {weather['weather']}, Tuuli: {weather['wind']:.2f} m/s {turbulence_warning}",
@@ -117,17 +116,10 @@ def update_info_text(current_time, weather, turbulence_warning, remaining_distan
         f"Sijainti: ({new_lat:.5f}, {new_lon:.5f})",
         f"Paina '1' muuttaaksesi kurssia."
     ]
-
     draw_centered_list(screen, font, 30, info_text)
-
-    """y_offset = 50
-    for text in info_text:
-        rendered_text = font.render(text, True, (255, 255, 255))
-        screen.blit(rendered_text, (20, y_offset))
-        y_offset += 30"""
-
     update_pygame_screen()
 
+# Pysäyttää lennon painamalla '1'
 def interrupt_flight():
     global stop_flight
     for event in pygame.event.get():

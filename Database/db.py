@@ -19,10 +19,8 @@ def get_airport_coords(icao):
         sql = "select name, ident, latitude_deg, longitude_deg from airport where ident = %s"
         cursor.execute(sql, (icao,))
         result = cursor.fetchone()
-        # result = cursor.fetchall()
         conn.close()
         return (result[0], result[1], result[2], result[3]) if result else None
-        # return result if result else None
     return None
 
 # Tarkistaa löytyykö lisättyjä sarakkeita ja taulukkoa tietokannasta ja jos ei löydy niin lisää ne

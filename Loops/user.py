@@ -1,4 +1,3 @@
-import main
 from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_input, wipe_pygame_screen, \
     update_pygame_screen, draw_centered_list, draw_text_to_center_x
 import pygame
@@ -77,7 +76,6 @@ def add_new_user(screen, font):
     while active:
         wipe_pygame_screen(screen)
         draw_text(screen, "ESC", 5, 5, font)
-        #new_user_name, active = get_new_user_name(screen, font, "Nimi: ", False, True)
         draw_text_to_center_x(screen, "Nimi:", 150, font)
         draw_text_to_center_x(screen, new_user_name, 180, font)
         update_pygame_screen()

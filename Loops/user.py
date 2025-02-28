@@ -5,6 +5,7 @@ import pygame
 from Database.db import show_current_users, get_users_and_set_as_logged_in, check_if_name_in_db, add_user_to_db, get_logged_in_user_data, \
     save_game_progress
 import time
+import sys
 
 # User info
 user_name = ""
@@ -43,6 +44,7 @@ def main_menu(screen, font):
             draw_user_list(screen, font, data_list)
         elif char == pygame.K_5:
             pygame.quit()
+            sys.exit()
 
 # Käyttäjän valinta
 def select_user(screen, font):
@@ -88,7 +90,6 @@ def add_new_user(screen, font):
                 print(f"Active status: ", active)
                 wipe_pygame_screen(screen)
                 fuel_capacity = main.fuel_capacity
-                #print(f"Polttoaine määrä: ", fuel_capacity)
                 add_user_to_db(new_user_name, fuel_capacity)
                 draw_text(screen, f"Käyttäjä {new_user_name} lisätty tietokantaan", 80, 30, font)
                 update_pygame_screen()
@@ -129,5 +130,6 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
         elif char == pygame.K_4 and remaining_distance <= 0:
             save_game_progress(user_id, current_fuel, current_icao)
             pygame.quit()
+            sys.exit()
 
     return active

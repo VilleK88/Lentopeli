@@ -101,7 +101,7 @@ def get_inventory(user_id):
         sql = "select current_fuel from inventory where inventory_id = %s"
         cursor.execute(sql, (user_id,))
         result = cursor.fetchone()
-        return result[0] if result else None
+        return result if result else None
 
 # Palauttaa käyttäjä listan
 def show_current_users():
@@ -167,7 +167,7 @@ def save_game_progress(user_id, fuel, icao):
         sql_game = "update game set current_fuel = %s, current_icao = %s where id = %s"
         cursor.execute(sql_game, (fuel, icao, user_id))
         conn.commit()
-        sql_inventory= "update inventory set current_fuel %s where inventory_id = %s"
+        sql_inventory= "update inventory set current_fuel = %s where inventory_id = %s"
         cursor.execute(sql_inventory, (fuel, user_id))
         conn.commit()
         conn.close()

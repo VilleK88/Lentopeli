@@ -4,7 +4,7 @@ from Routes import server
 from datetime import datetime
 from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao, draw_arrived_airport, \
     initialize_pygame_screen
-from Database.db import get_columns_and_tables, get_airport_coords, get_logged_in_user_data
+from Database.db import get_columns_and_tables, get_airport_coords, get_logged_in_user_data, get_inventory
 
 # Lentokoneen tiedot
 remaining_distance = None
@@ -35,11 +35,15 @@ def start():
 
     # menu
     user.main_menu(screen, font)
-    result = get_logged_in_user_data()
+    result_game = get_logged_in_user_data()
     starting_airport = None
-    if result:
-        current_fuel = result[2]
-        starting_airport = result[3]
+    if result_game:
+        #current_fuel = result_game[2]
+        starting_airport = result_game[3]
+    result_inventory = get_inventory(user.user_id)
+    if result_inventory:
+        current_fuel = result_inventory[0]
+
 
     # Aika, polttoaine, nopeus ja zoom muuttujien alustus
     current_time = datetime.now()

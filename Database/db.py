@@ -169,7 +169,14 @@ def save_game_progress(user_id, fuel, icao, log_out):
         cursor.execute(sql_inventory, (fuel, user_id))
         conn.commit()
         if log_out:
-            sql = "update game set logged_in = 0"
-            cursor.execute(sql)
-            conn.commit()
+            log_out()
+        conn.close()
+
+def log_out():
+    conn = connect_db()
+    if conn:
+        cursor = conn.cursor()
+        sql = "update game set logged_in = 0"
+        cursor.execute(sql)
+        conn.commit()
         conn.close()

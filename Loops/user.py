@@ -2,7 +2,7 @@ from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_i
     update_pygame_screen, draw_centered_list, draw_text_to_center_x
 import pygame
 from Database.db import show_current_users, get_users_and_set_as_logged_in, check_if_name_in_db, add_user_to_db, get_logged_in_user_data, \
-    save_game_progress, get_inventory
+    save_game_progress, get_inventory, log_out
 import time
 import sys
 
@@ -17,7 +17,7 @@ co2_budget = ""
 def main_menu(screen, font):
     global user_id, user_name
 
-    key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]
+    key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]
     active = True
 
     while active:
@@ -26,9 +26,9 @@ def main_menu(screen, font):
         logged_in_user_text(screen, font)
 
         menu = ["1 - Tee uusi pelaaja", "2 - Valitse pelaaja",
-                "3 - Aloita peli", "4 - Käyttäjälista" , "5 - Lopeta"]
+                "3 - Aloita peli", "4 - Käyttäjälista" , "5 - Lopeta", "6 - Lopeta ja kirjaudu ulos"]
 
-        draw_centered_list(screen, font, 100, menu)
+        draw_centered_list(screen, font, 70, menu)
         update_pygame_screen()
 
         char = press_button_list(key_list)
@@ -48,6 +48,11 @@ def main_menu(screen, font):
             print("4 painettu")
             draw_user_list(screen, font, data_list)
         elif char == pygame.K_5:
+            pygame.quit()
+            sys.exit()
+        elif char == pygame.K_6:
+            if user_name != "":
+                log_out()
             pygame.quit()
             sys.exit()
 

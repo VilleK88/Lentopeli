@@ -7,9 +7,17 @@ from Routes.config import db_config
 conn = mysql.connector.connect(**db_config)
 cursor = conn.cursor()
 
-# Haetaan vain suuret ja avoimet lentokentät
-cursor.execute("select name, ident, type from airport where type = 'large_airport'")
-icao_list = [row[0] for row in cursor.fetchall()]
+# Palauttaa lentokenttien koordinaatit
+def get_airport_coords(icao):
+    conn = connect_db()
+    if conn:
+        cursor = conn.cursor()
+        sql = "SELECT name, ident, type FROM airport WHERE type = 'large_airport' AND ident = %s"
+        cursor.execute(sql, (icao,))
+        result = cursor.fetchall()
+        conn.close()
+        return result if result else None
+    return None
 
 # Suljetaan tietokantayhteys
 cursor.close()

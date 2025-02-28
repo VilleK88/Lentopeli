@@ -110,10 +110,13 @@ def logged_in_user_text(screen, font):
 
 """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
 # ingame menu
-def ingame_menu(screen, font, current_fuel, current_icao):
+def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]
-    flight_menu = ["1 - Syötä ICAO-koodi", "2 - Palaa kauppaan", "3 - Palaa matkustajiin",
+    if remaining_distance <= 0:
+        flight_menu = ["1 - Syötä ICAO-koodi", "2 - Palaa kauppaan", "3 - Palaa matkustajiin",
             "4 - Tallenna ja lopeta", "5 - Tallenna, lopeta ja kirjaudu ulos"]
+    else:
+        flight_menu = ["1 - Syötä ICAO-koodi"]
     active = True
 
     while active:
@@ -123,7 +126,7 @@ def ingame_menu(screen, font, current_fuel, current_icao):
         char = press_button_list(key_list)
         if char == pygame.K_1:
             active = False
-        elif char == pygame.K_4:
+        elif char == pygame.K_4 and remaining_distance <= 0:
             save_game_progress(user_id, current_fuel, current_icao)
             pygame.quit()
 

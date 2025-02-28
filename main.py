@@ -38,8 +38,7 @@ def start():
     result_game = get_logged_in_user_data()
     starting_airport = None
     if result_game:
-        #current_fuel = result_game[2]
-        starting_airport = result_game[3]
+        starting_airport = result_game[2]
     result_inventory = get_inventory(user.user_id)
     if result_inventory:
         current_fuel = result_inventory[0]
@@ -47,7 +46,6 @@ def start():
 
     # Aika, polttoaine, nopeus ja zoom muuttujien alustus
     current_time = datetime.now()
-    #current_fuel = fuel_capacity
     current_speed_kmh = max_speed_kmh
     flight.zoom = zoom
 

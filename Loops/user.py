@@ -3,7 +3,7 @@ from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_i
     update_pygame_screen, draw_centered_list
 import pygame
 from Database.db import show_current_users, get_users_and_set_as_logged_in, check_if_name_in_db, add_user_to_db, get_logged_in_user_data, \
-    save_game_progress
+    save_game_progress, get_inventory
 import time
 import sys
 
@@ -98,12 +98,14 @@ def add_new_user(screen, font):
 
 def logged_in_user_text(screen, font):
     global user_id, user_name
-    result = get_logged_in_user_data()
-    if result:
-        user_id = result[0]
-        user_name = result[1]
-        current_fuel = result[2]
-        current_icao = result[3]
+    result_game = get_logged_in_user_data()
+    if result_game:
+        user_id = result_game[0]
+        user_name = result_game[1]
+        current_icao = result_game[2]
+    result_inventory = get_inventory(user_id)
+    if result_inventory:
+        current_fuel = result_inventory[0]
     if user_id != "" and user_name != "":
         draw_text(screen, f"{user_name}", 10, 10, font)
         draw_text(screen, f"{current_fuel}", 10, 40, font)

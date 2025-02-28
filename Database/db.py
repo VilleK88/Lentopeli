@@ -82,18 +82,18 @@ def commit_to_db(sql):
         conn.commit()
         conn.close()
 
-# Tarkistaa onko kukaan käyttäjä kirjautuneena sisään ja hakee tiedot
-# tietokannasta game-taulukosta
+# Hakee sisään kirjautuneen käyttäjän tiedot tietokannan game-taulusta
 def get_logged_in_user_data():
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
-        sql = "select id, screen_name, current_fuel, current_icao from game where logged_in = 1"
+        sql = "select id, screen_name, current_icao from game where logged_in = 1"
         cursor.execute(sql)
         result = cursor.fetchone()
         conn.close()
-        return (result[0], result[1], result[2], result[3]) if result else None
+        return (result[0], result[1], result[2]) if result else None
 
+# Hakee käyttäjän tiedot tietokannan inventory-taulusta
 def get_inventory(user_id):
     conn = connect_db()
     if conn:
@@ -120,7 +120,7 @@ def get_users_and_set_as_logged_in(name):
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
-        sql = "select id, screen_name, current_fuel from game where screen_name = %s"
+        sql = "select id, screen_name from game where screen_name = %s"
         cursor.execute(sql, (name,))
         result = cursor.fetchone()
 
@@ -149,13 +149,13 @@ def check_if_name_in_db(name):
             return False
 
 # Lisää käyttäjän tietokantaan
-def add_user_to_db(name, fuel):
+def add_user_to_db(name):
     conn = connect_db()
     if conn:
         random_id = str(uuid.uuid4())
         cursor = conn.cursor()
-        sql = "insert into game (id, screen_name, current_fuel) values (%s, %s, %s)"
-        cursor.execute(sql, (random_id, name, fuel))
+        sql = "insert into game (id, screen_name) values (%s, %s)"
+        cursor.execute(sql, (random_id, name))
         conn.commit()
         conn.close()
 
@@ -164,8 +164,8 @@ def save_game_progress(user_id, fuel, icao):
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
-        sql_game = "update game set current_fuel = %s, current_icao = %s where id = %s"
-        cursor.execute(sql_game, (fuel, icao, user_id))
+        sql_game = "update game set current_icao = %s where id = %s"
+        cursor.execute(sql_game, (icao, user_id))
         conn.commit()
         sql_inventory= "update inventory set current_fuel = %s where inventory_id = %s"
         cursor.execute(sql_inventory, (fuel, user_id))

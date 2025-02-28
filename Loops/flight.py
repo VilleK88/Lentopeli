@@ -46,7 +46,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
         interrupt_flight()
 
         if stop_flight:
-             # Tallennetaan nykyinen sijainti ja keskeytetään lento
+            # Tallennetaan nykyinen sijainti ja keskeytetään lento
             current_location = (new_lat, new_lon)
             stop_flight = False
             break

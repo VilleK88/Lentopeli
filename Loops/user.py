@@ -100,14 +100,19 @@ def add_new_user(screen, font):
 
 def logged_in_user_text(screen, font):
     global user_id, user_name
+
     result_game = get_logged_in_user_data()
+
     if result_game:
         user_id = result_game[0]
         user_name = result_game[1]
         current_icao = result_game[2]
+
     result_inventory = get_inventory(user_id)
+
     if result_inventory:
         current_fuel = result_inventory[0]
+
     if user_id != "" and user_name != "":
         draw_text(screen, f"{user_name}", 10, 10, font)
         draw_text(screen, f"{current_fuel}", 10, 40, font)

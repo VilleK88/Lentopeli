@@ -19,7 +19,6 @@ def get_airport_coords(icao):
         return result if result else None
     return None
 
-
 # Suljetaan tietokantayhteys
 cursor.close()
 conn.close()

@@ -2,13 +2,19 @@ import mysql.connector
 import json
 import random
 from Routes.config import db_config
+from Database.db import connect_db
+
+current_customer = ""
+customer_mood = 5
+cash = ""
+reputation = 50
 
 # Yhdistetään MariaDB-tietokantaan
 conn = mysql.connector.connect(**db_config)
 cursor = conn.cursor()
 
 # Palauttaa lentokenttien koordinaatit
-def get_airport_coords(icao):
+def get_airport_info(icao):
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
@@ -48,3 +54,20 @@ if icao_list:
     print(f"Asiakas {customer_name} nousi koneeseen ja haluaa lentää kentälle {destination_icao}.")
 else:
     print("Ei saatavilla olevia lentokohteita.")
+
+# Asiakkaat ennen lennon aloittamista
+def customers_start():
+    global current_customer
+    # muista palauttaa myös ICAO-koodi, jotta tiedetään mille lentokentälle pitää lentää
+    return current_customer # ja ICAO
+
+# Asiakkaat lennon aikana. Ottaa vastaan tuulen nopeuden. 16 m/s ja yli tarkoittaa turbulenssia
+def customers_flight(wind_speed):
+    global current_customer, customer_mood
+
+# Lennon loppu ottaa vastaan lentokentän ICAO-koodin, jolla sillä hetkellä ollaan
+def customer_flight_end(icao):
+    global current_customer, customer_mood, cash, reputation
+    # tarkistetaan onko lennetty oikealle lentokentälle ICAO-koodin perusteella ja jos on
+    # niin palauttaa rahaa ja mainetta. Tyhjennetään current_customer = "" muuttuja.
+    return cash and reputation

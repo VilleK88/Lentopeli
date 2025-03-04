@@ -4,17 +4,14 @@ import random
 from Routes.config import db_config
 from Database.db import connect_db
 
-current_customer = ""
+current_customer = None
 customer_mood = 5
-cash = ""
+cash = 0
 reputation = 50
 
-# Yhdistetään MariaDB-tietokantaan
-conn = mysql.connector.connect(**db_config)
-cursor = conn.cursor()
 
-# Palauttaa lentokenttien koordinaatit
 def get_airport_info(icao):
+    #Hakee lentokentän tiedot ICAO-koodin perusteella.
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
@@ -25,49 +22,46 @@ def get_airport_info(icao):
         return result if result else None
     return None
 
-# Suljetaan tietokantayhteys
-cursor.close()
-conn.close()
 
-# Tarkistetaan, että listassa on lentoasemia
-if not icao_list:
-    print("Ei löydetty sopivia lentokenttiä.")
-    exit()
-
-# Ladataan asiakkaat JSON-tiedostosta
-with open("customersdb.json", "r", encoding="utf-8") as file:
-    customers = json.load(file)
-
-# Valitaan satunnainen asiakas
-selected_customer = random.choice(customers)
-customer_name = selected_customer["name"]
-
-# Pyydetään pelaajalta nykyinen ICAO-koodi
-current_icao = input("Syötä nykyinen lentokentän ICAO-koodi: ").strip().upper()
-
-# Poistetaan nykyinen ICAO mahdollisista kohteista
-icao_list = [icao for icao in icao_list if icao != current_icao]
-
-# Valitaan satunnainen määränpää
-if icao_list:
-    destination_icao = random.choice(icao_list)
-    print(f"Asiakas {customer_name} nousi koneeseen ja haluaa lentää kentälle {destination_icao}.")
-else:
-    print("Ei saatavilla olevia lentokohteita.")
-
-# Asiakkaat ennen lennon aloittamista
-def customers_start():
+def load_and_select_customer(icao_list, current_icao):
+    #Lataa asiakastiedot, valitsee satunnaisen asiakkaan ja asettaa määränpään.
     global current_customer
-    # muista palauttaa myös ICAO-koodi, jotta tiedetään mille lentokentälle pitää lentää
-    return current_customer # ja ICAO
+    with open("customersdb.json", "r", encoding="utf-8") as file:
+        customers = json.load(file)
+    current_customer = random.choice(customers)
 
-# Asiakkaat lennon aikana. Ottaa vastaan tuulen nopeuden. 16 m/s ja yli tarkoittaa turbulenssia
-def customers_flight(wind_speed):
-    global current_customer, customer_mood
+    # Valitsee satunnaisen määränpään nykyisen ICAO-koodin ulkopuolelta
+    destination_icao = random.choice([icao for icao in icao_list if icao != current_icao])
+    return current_customer, destination_icao
 
-# Lennon loppu ottaa vastaan lentokentän ICAO-koodin, jolla sillä hetkellä ollaan
-def customer_flight_end(icao):
-    global current_customer, customer_mood, cash, reputation
-    # tarkistetaan onko lennetty oikealle lentokentälle ICAO-koodin perusteella ja jos on
-    # niin palauttaa rahaa ja mainetta. Tyhjennetään current_customer = "" muuttuja.
-    return cash and reputation
+
+def process_flight(customer, wind_speed, water, alcohol, snacks, soda, meals, fruits, icao):
+    #Käsittelee asiakkaan mielialan, rahojen ja maineen lentomatkan lopussa.
+    global customer_mood, cash, reputation
+
+    if customer is None:
+        return
+
+    # Käsittelee mielialan tuulen nopeuden mukaan (esim. turbulenssi)
+    if wind_speed >= 16:
+        customer_mood -= 2
+
+    likes = customer.get("likes", [])
+    dislikes = customer.get("dislikes", [])
+
+    # Päivittää mielialaa asiakkaan mieltymyksien mukaan
+    for item in ["water", "alcohol", "meals", "snacks", "soda", "fruits"]:
+        if item in likes and locals()[item] > 0:
+            customer_mood += 1
+        if item in dislikes and locals()[item] > 0:
+            customer_mood -= 1
+
+    # Varmistaa, että mieliala pysyy alueella 1-10
+    customer_mood = max(1, min(customer_mood, 10))
+
+    # Lentomatkan loppuprosessi
+    if icao == customer.get("destination", ""):
+        cash += 100 * customer_mood  # Lisää rahaa asiakkaan mielialan mukaan
+        reputation += 5 if customer_mood >= 7 else -5  # Lisää mainetta mielialan mukaan
+
+    current_customer = None  # Asiakas , ei ole enää valittavana

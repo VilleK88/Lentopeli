@@ -2,12 +2,12 @@
     {
         "name": "John Smith",
         "likes": [
-            "vesi",
-            "alkoholi"
+            "water",
+            "alcohol "
         ],
         "dislikes": [
-            "keitto",
-            "herkut"
+            "meals",
+            "snacks"
         ],
         "mood": {
             "positiivinen": 3,
@@ -18,10 +18,10 @@
     {
         "name": "Emma Johnson",
         "likes": [
-            "virvoitusjuoma"
+            "soda"
         ],
         "dislikes": [
-            "hedelmät"
+            "fruits"
         ],
         "mood": {
             "positiivinen": 3,
@@ -32,12 +32,12 @@
     {
         "name": "Liam Brown",
         "likes": [
-            "herkut",
-            "alkoholi"
+            "snacks",
+            "alcohol "
         ],
         "dislikes": [
-            "hedelmät",
-            "keitto"
+            "fruits",
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -48,10 +48,10 @@
     {
         "name": "Olivia Jones",
         "likes": [
-            "alkoholi"
+            "alcohol "
         ],
         "dislikes": [
-            "keitto"
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -62,10 +62,10 @@
     {
         "name": "Noah Garcia",
         "likes": [
-            "virvoitusjuoma"
+            "soda"
         ],
         "dislikes": [
-            "keitto"
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -76,10 +76,10 @@
     {
         "name": "Ava Martinez",
         "likes": [
-            "hedelmät"
+            "fruits"
         ],
         "dislikes": [
-            "keitto"
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -90,12 +90,12 @@
     {
         "name": "William Rodriguez",
         "likes": [
-            "virvoitusjuoma",
-            "herkut"
+            "soda",
+            "snacks"
         ],
         "dislikes": [
-            "hedelmät",
-            "keitto"
+            "fruits",
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -106,12 +106,12 @@
     {
         "name": "Sophia Hernandez",
         "likes": [
-            "keitto",
-            "herkut"
+            "meals",
+            "snacks"
         ],
         "dislikes": [
-            "virvoitusjuoma",
-            "alkoholi"
+            "soda",
+            "alcohol "
         ],
         "mood": {
             "positiivinen": 3,
@@ -122,10 +122,10 @@
     {
         "name": "James Lopez",
         "likes": [
-            "hedelmät"
+            "fruits"
         ],
         "dislikes": [
-            "vesi"
+            "water"
         ],
         "mood": {
             "positiivinen": 3,
@@ -136,10 +136,10 @@
     {
         "name": "Isabella Gonzalez",
         "likes": [
-            "herkut"
+            "snacks"
         ],
         "dislikes": [
-            "alkoholi"
+            "alcohol "
         ],
         "mood": {
             "positiivinen": 3,
@@ -150,12 +150,12 @@
     {
         "name": "Benjamin Wilson",
         "likes": [
-            "vesi",
-            "alkoholi"
+            "water",
+            "alcohol "
         ],
         "dislikes": [
-            "keitto",
-            "virvoitusjuoma"
+            "meals",
+            "soda"
         ],
         "mood": {
             "positiivinen": 3,
@@ -166,10 +166,10 @@
     {
         "name": "Mia Anderson",
         "likes": [
-            "hedelmät"
+            "fruits"
         ],
         "dislikes": [
-            "alkoholi"
+            "alcohol "
         ],
         "mood": {
             "positiivinen": 3,
@@ -180,12 +180,12 @@
     {
         "name": "Lucas Thomas",
         "likes": [
-            "hedelmät",
-            "virvoitusjuoma"
+            "fruits",
+            "soda"
         ],
         "dislikes": [
-            "vesi",
-            "keitto"
+            "water",
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -196,10 +196,10 @@
     {
         "name": "Charlotte Taylor",
         "likes": [
-            "virvoitusjuoma"
+            "soda"
         ],
         "dislikes": [
-            "keitto"
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -210,10 +210,10 @@
     {
         "name": "Henry Moore",
         "likes": [
-            "virvoitusjuoma"
+            "soda"
         ],
         "dislikes": [
-            "keitto"
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -224,10 +224,10 @@
     {
         "name": "Amelia Jackson",
         "likes": [
-            "virvoitusjuoma"
+            "soda"
         ],
         "dislikes": [
-            "herkut"
+            "snacks"
         ],
         "mood": {
             "positiivinen": 3,
@@ -238,10 +238,10 @@
     {
         "name": "Alexander Martin",
         "likes": [
-            "hedelmät"
+            "fruits"
         ],
         "dislikes": [
-            "vesi"
+            "water"
         ],
         "mood": {
             "positiivinen": 3,
@@ -252,10 +252,10 @@
     {
         "name": "Harper Lee",
         "likes": [
-            "herkut"
+            "snacks"
         ],
         "dislikes": [
-            "vesi"
+            "water"
         ],
         "mood": {
             "positiivinen": 3,
@@ -266,12 +266,12 @@
     {
         "name": "Michael Perez",
         "likes": [
-            "virvoitusjuoma",
-            "alkoholi"
+            "soda",
+            "alcohol "
         ],
         "dislikes": [
-            "hedelmät",
-            "herkut"
+            "fruits",
+            "snacks"
         ],
         "mood": {
             "positiivinen": 3,
@@ -282,12 +282,12 @@
     {
         "name": "Evelyn Thompson",
         "likes": [
-            "hedelmät",
-            "keitto"
+            "fruits",
+            "meals"
         ],
         "dislikes": [
-            "vesi",
-            "herkut"
+            "water",
+            "snacks"
         ],
         "mood": {
             "positiivinen": 3,
@@ -298,12 +298,12 @@
     {
         "name": "Daniel White",
         "likes": [
-            "hedelmät",
-            "alkoholi"
+            "fruits",
+            "alcohol "
         ],
         "dislikes": [
-            "keitto",
-            "herkut"
+            "meals",
+            "snacks"
         ],
         "mood": {
             "positiivinen": 3,
@@ -314,12 +314,12 @@
     {
         "name": "Abigail Harris",
         "likes": [
-            "herkut",
-            "virvoitusjuoma"
+            "snacks",
+            "soda"
         ],
         "dislikes": [
-            "hedelmät",
-            "keitto"
+            "fruits",
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -330,12 +330,12 @@
     {
         "name": "Matthew Clark",
         "likes": [
-            "vesi",
-            "keitto"
+            "water",
+            "meals"
         ],
         "dislikes": [
-            "virvoitusjuoma",
-            "herkut"
+            "soda",
+            "snacks"
         ],
         "mood": {
             "positiivinen": 3,
@@ -346,10 +346,10 @@
     {
         "name": "Emily Lewis",
         "likes": [
-            "virvoitusjuoma"
+            "soda"
         ],
         "dislikes": [
-            "keitto"
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -360,10 +360,10 @@
     {
         "name": "Joseph Walker",
         "likes": [
-            "virvoitusjuoma"
+            "soda"
         ],
         "dislikes": [
-            "vesi"
+            "water"
         ],
         "mood": {
             "positiivinen": 3,
@@ -374,10 +374,10 @@
     {
         "name": "Elizabeth Hall",
         "likes": [
-            "herkut"
+            "snacks"
         ],
         "dislikes": [
-            "vesi"
+            "water"
         ],
         "mood": {
             "positiivinen": 3,
@@ -388,12 +388,12 @@
     {
         "name": "David Allen",
         "likes": [
-            "hedelmät",
-            "virvoitusjuoma"
+            "fruits",
+            "soda"
         ],
         "dislikes": [
-            "vesi",
-            "keitto"
+            "water",
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -404,10 +404,10 @@
     {
         "name": "Sofia Young",
         "likes": [
-            "vesi"
+            "water"
         ],
         "dislikes": [
-            "virvoitusjuoma"
+            "soda"
         ],
         "mood": {
             "positiivinen": 3,
@@ -418,10 +418,10 @@
     {
         "name": "Samuel King",
         "likes": [
-            "herkut"
+            "snacks"
         ],
         "dislikes": [
-            "alkoholi"
+            "alcohol "
         ],
         "mood": {
             "positiivinen": 3,
@@ -432,10 +432,10 @@
     {
         "name": "Avery Wright",
         "likes": [
-            "alkoholi"
+            "alcohol "
         ],
         "dislikes": [
-            "keitto"
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -446,10 +446,10 @@
     {
         "name": "Sebastian Scott",
         "likes": [
-            "hedelmät"
+            "fruits"
         ],
         "dislikes": [
-            "herkut"
+            "snacks"
         ],
         "mood": {
             "positiivinen": 3,
@@ -470,12 +470,12 @@
     {
         "name": "Jack Adams",
         "likes": [
-            "vesi",
-            "alkoholi"
+            "water",
+            "alcohol "
         ],
         "dislikes": [
-            "herkut",
-            "virvoitusjuoma"
+            "snacks",
+            "soda"
         ],
         "mood": {
             "positiivinen": 3,
@@ -486,12 +486,12 @@
     {
         "name": "Scarlett Baker",
         "likes": [
-            "herkut",
-            "virvoitusjuoma"
+            "snacks",
+            "soda"
         ],
         "dislikes": [
-            "hedelmät",
-            "alkoholi"
+            "fruits",
+            "alcohol "
         ],
         "mood": {
             "positiivinen": 3,
@@ -502,12 +502,12 @@
     {
         "name": "Owen Nelson",
         "likes": [
-            "vesi",
-            "keitto"
+            "water",
+            "meals"
         ],
         "dislikes": [
-            "virvoitusjuoma",
-            "herkut"
+            "soda",
+            "snacks"
         ],
         "mood": {
             "positiivinen": 3,
@@ -518,10 +518,10 @@
     {
         "name": "Grace Hill",
         "likes": [
-            "herkut"
+            "snacks"
         ],
         "dislikes": [
-            "keitto"
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -532,12 +532,12 @@
     {
         "name": "Gabriel Ramirez",
         "likes": [
-            "vesi",
-            "herkut"
+            "water",
+            "snacks"
         ],
         "dislikes": [
-            "keitto",
-            "virvoitusjuoma"
+            "meals",
+            "soda"
         ],
         "mood": {
             "positiivinen": 3,
@@ -548,10 +548,10 @@
     {
         "name": "Chloe Campbell",
         "likes": [
-            "herkut"
+            "snacks"
         ],
         "dislikes": [
-            "alkoholi"
+            "alcohol "
         ],
         "mood": {
             "positiivinen": 3,
@@ -562,12 +562,12 @@
     {
         "name": "Carter Mitchell",
         "likes": [
-            "vesi",
-            "hedelmät"
+            "water",
+            "fruits"
         ],
         "dislikes": [
-            "herkut",
-            "alkoholi"
+            "snacks",
+            "alcohol "
         ],
         "mood": {
             "positiivinen": 3,
@@ -578,10 +578,10 @@
     {
         "name": "Victoria Roberts",
         "likes": [
-            "virvoitusjuoma"
+            "soda"
         ],
         "dislikes": [
-            "keitto"
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -592,14 +592,14 @@
     {
         "name": "Matti Korhonen",
         "likes": [
-            "vesi",
-            "hedelmät",
-            "keitto"
+            "water",
+            "fruits",
+            "meals"
         ],
         "dislikes": [
-            "virvoitusjuoma",
-            "herkut",
-            "alkoholi"
+            "soda",
+            "snacks",
+            "alcohol "
         ],
         "mood": {
             "positiivinen": 3,
@@ -610,14 +610,14 @@
     {
         "name": "Anna Virtanen",
         "likes": [
-            "herkut",
-            "virvoitusjuoma",
-            "alkoholi"
+            "snacks",
+            "soda",
+            "alcohol "
         ],
         "dislikes": [
-            "vesi",
-            "hedelmät",
-            "keitto"
+            "water",
+            "fruits",
+            "meals"
         ],
         "mood": {
             "positiivinen": 3,
@@ -628,14 +628,14 @@
     {
         "name": "Pekka Laine",
         "likes": [
-            "hedelmät",
-            "keitto",
-            "virvoitusjuoma"
+            "fruits",
+            "meals",
+            "soda"
         ],
         "dislikes": [
-            "vesi",
-            "herkut",
-            "alkoholi"
+            "water",
+            "snacks",
+            "alcohol "
         ],
         "mood": {
             "positiivinen": 3,
@@ -646,14 +646,14 @@
     {
         "name": "Laura Mäkinen",
         "likes": [
-            "vesi",
-            "hedelmät",
-            "herkut"
+            "water",
+            "fruits",
+            "snacks"
         ],
         "dislikes": [
-            "keitto",
-            "virvoitusjuoma",
-            "alkoholi"
+            "meals",
+            "soda",
+            "alcohol "
         ],
         "mood": {
             "positiivinen": 3,
@@ -664,14 +664,14 @@
     {
         "name": "Jari Nieminen",
         "likes": [
-            "keitto",
-            "virvoitusjuoma",
-            "alkoholi"
+            "meals",
+            "soda",
+            "alcohol "
         ],
         "dislikes": [
-            "vesi",
-            "hedelmät",
-            "herkut"
+            "water",
+            "fruits",
+            "snacks"
         ],
         "mood": {
             "positiivinen": 3,

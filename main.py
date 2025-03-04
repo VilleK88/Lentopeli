@@ -2,8 +2,7 @@ import time
 from Loops import flight, user
 from Routes import server
 from datetime import datetime
-from Utils.utils import calculate_distance_between_airports, calculate_distance, get_valid_icao, draw_arrived_airport, \
-    initialize_pygame_screen
+from Utils.utils import get_valid_icao, draw_arrived_airport, initialize_pygame_screen
 from Database.db import get_columns_and_tables, get_airport_coords, get_logged_in_user_data, get_inventory
 
 # Lentokoneen tiedot

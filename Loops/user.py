@@ -5,6 +5,7 @@ from Database.db import show_current_users, get_users_and_set_as_logged_in, chec
     save_game_progress, get_inventory, log_out
 import time
 import sys
+from Loops import flight
 
 # User info
 user_name = ""
@@ -157,3 +158,13 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
             sys.exit()
 
     return active
+
+def initialize_player_data():
+    result_game = get_logged_in_user_data()
+    starting_airport = None
+    if result_game:
+        starting_airport = result_game[2]
+    result_inventory = get_inventory(user_id)
+    if result_inventory:
+        flight.current_fuel = result_inventory[0]
+    return starting_airport

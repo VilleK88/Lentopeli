@@ -3,7 +3,7 @@ from Loops import flight, user
 from Routes import server
 from datetime import datetime
 from Utils.utils import get_valid_icao, draw_arrived_airport, initialize_pygame_screen
-from Database.db import get_columns_and_tables, get_airport_coords, get_logged_in_user_data, get_inventory
+from Database.db import get_columns_and_tables, get_airport_coords
 
 remaining_distance = None
 time_multiplier = 125 # tämä muuttuja määrittää pelin nopeuden
@@ -25,14 +25,9 @@ def start():
 
     # main menu avautuu tässä
     user.main_menu(screen, font)
+
     # hakee sisään kirjautuneen käyttäjän lähtölentoaseman ja inventaarion
-    result_game = get_logged_in_user_data()
-    starting_airport = None
-    if result_game:
-        starting_airport = result_game[2]
-    result_inventory = get_inventory(user.user_id)
-    if result_inventory:
-        flight.current_fuel = result_inventory[0]
+    starting_airport = user.initialize_player_data()
 
     # Ajan alustus
     current_time = datetime.now()

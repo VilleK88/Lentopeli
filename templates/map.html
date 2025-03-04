@@ -44,10 +44,6 @@
                 if(data.lat && data.lon) {
                     initializeMap(data.lat, data.lon)
                 }
-
-                /*if (data.on_flight) {
-                    setTimeout(fetchLocation, 1000);
-                }*/
                 setTimeout(fetchLocation, 1000);
             } catch(error) {
                 console.error("Virhe haettaessa sijaintia:", error);
@@ -72,9 +68,7 @@
             }
         }
 
-        //fetchInitialLocation();
         window.onload = fetchInitialLocation;
-        //setInterval(fetchLocation, 1000);
     </script>
 </body>
 </html>

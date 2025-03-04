@@ -10,6 +10,7 @@ from Utils.utils import wipe_pygame_screen, update_pygame_screen, draw_centered_
 max_speed_kmh = 780
 current_speed_kmh = 0
 fuel_capacity = 25941
+current_fuel = 0
 fuel_per_km = 2.6
 stop_flight = False
 zoom = 10
@@ -17,9 +18,9 @@ new_lat = 0
 new_lon = 0
 turbulence_warning = ""
 
-def flight_loop(screen, font, start_coords, end_coords, remaining_distance, current_time, current_fuel, time_multiplier, current_location):
+def flight_loop(screen, font, start_coords, end_coords, remaining_distance, current_time, time_multiplier, current_location):
     """ Lentopelin pääsilmukka 'curses' -kirjastolla """
-    global stop_flight, zoom, new_lat, new_lon, turbulence_warning, current_speed_kmh
+    global stop_flight, zoom, new_lat, new_lon, turbulence_warning, current_speed_kmh, current_fuel
 
     print("\n📍 Paina '1' muuttaakseksi kurssia tai odota...\n")
 
@@ -88,7 +89,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
             remaining_distance = 0
             break
 
-    return remaining_distance, current_time, current_fuel, current_location
+    return remaining_distance, current_time, current_location
 
 # Päivittää sään
 def update_weather(weather):

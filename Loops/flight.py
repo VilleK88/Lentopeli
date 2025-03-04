@@ -17,9 +17,9 @@ new_lat = 0
 new_lon = 0
 turbulence_warning = ""
 
-def flight_loop(screen, font, start_coords, end_coords, remaining_distance, current_time, current_fuel, current_speed_kmh, time_multiplier, current_location):
+def flight_loop(screen, font, start_coords, end_coords, remaining_distance, current_time, current_fuel, time_multiplier, current_location):
     """ Lentopelin pääsilmukka 'curses' -kirjastolla """
-    global stop_flight, zoom, new_lat, new_lon, turbulence_warning
+    global stop_flight, zoom, new_lat, new_lon, turbulence_warning, current_speed_kmh
 
     print("\n📍 Paina '1' muuttaakseksi kurssia tai odota...\n")
 
@@ -38,6 +38,9 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
     weather = get_weather(lat1, lon1)
     weather, turbulence_warning = update_weather(weather)
     last_weather_update = time.time()
+
+    # Alustetaan nopeus
+    current_speed_kmh = max_speed_kmh
 
     while remaining_distance > 0:
         time.sleep(1) # Loopin nopeus

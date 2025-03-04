@@ -122,7 +122,6 @@ def logged_in_user_text(screen, font):
     result_inventory = get_inventory(user_id)
 
     if result_inventory:
-        #print(f"result_inventory: {result_inventory[0]}")
         current_fuel = result_inventory[0]
 
     if user_id != "" and user_name != "":

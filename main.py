@@ -13,12 +13,9 @@ current_speed_kmh = 0
 fuel_capacity = 48900
 current_fuel = 0
 fuel_per_km = 2.6
-time_multiplier = 100 # tämä muuttuja määrittää pelin nopeuden
+time_multiplier = 125 # tämä muuttuja määrittää pelin nopeuden
 current_time = None
 current_location = None # Latitude & Longitude tallennetaan tähän
-on_flight = False
-keyboard_hook = None
-zoom = 10
 
 # Pygame asetukset
 screen = None
@@ -47,7 +44,7 @@ def start():
     # Aika, polttoaine, nopeus ja zoom muuttujien alustus
     current_time = datetime.now()
     current_speed_kmh = max_speed_kmh
-    flight.zoom = zoom
+    #flight.zoom = zoom
 
     # Lento-loopin aloitus
     airport = get_airport_coords(starting_airport)
@@ -85,12 +82,8 @@ def main_program():
         # ICAO-koodin syöttö seuraavalle lentokentälle
         icao = get_valid_icao(screen, font, "ICAO-koodi: ")
 
-        if remaining_distance <= 0:
-            remaining_distance = calculate_distance_between_airports(current_icao, icao)
-            print(f"Lentoaseman {current_icao[0]} {current_icao[1]} etäisyys {icao[0]} {icao[1]} on {remaining_distance:.2f} kilometriä")
-        else:
-            remaining_distance = calculate_distance(current_location, icao)
-            print(f"Nykyisen sijaintisi {current_location[0]} {current_location[1]} etäisyys {icao[0]} {icao[1]} on {remaining_distance:.2f} kilometriä")
+        # Tarkistaa loppuiko lento kesken
+        remaining_distance = flight.was_flight_interrupted(remaining_distance, current_icao, icao, current_location)
 
         on_flight = True
         flight.stop_flight = False

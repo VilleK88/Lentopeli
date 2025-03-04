@@ -164,7 +164,7 @@ def add_user_to_db(name):
         conn.close()
 
 # Tallentaa pelin edistymisen
-def save_game_progress(user_id, fuel, icao, log_out):
+def save_game_progress(user_id, fuel, icao, logging_out):
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
@@ -174,7 +174,7 @@ def save_game_progress(user_id, fuel, icao, log_out):
         sql_inventory= "update inventory set current_fuel = %s where inventory_id = %s"
         cursor.execute(sql_inventory, (fuel, user_id))
         conn.commit()
-        if log_out:
+        if logging_out:
             log_out()
         conn.close()
 

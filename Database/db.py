@@ -51,19 +51,13 @@ def get_columns_and_tables():
     if not result:
         print("Taulukkoa 'inventory' ei löydy, luodaan se....")
         commit_to_db("""create table if not exists inventory (
-            inventory_id varchar(40) character set latin1 collate latin1_swedish_ci not null primary key,
-            current_fuel float default 48900,
-            fruits int default 0,
-            alcohol  int default 0,
-            snacks int default 0,
-            soda int default 0,
-            meals int default 0,
-            water int default 0,
-            constraint fk_inventory foreign key(inventory_id) references game(id) on delete cascade
-        ) ENGINE=InnoDB default charset=latin1 collate=latin1_swedish_ci""")
+inventory_id varchar(40) character set latin1 collate latin1_swedish_ci not null primary key,
+current_fuel float default 48900, alcohol int default 0,
+constraint fk_inventory foreign key(inventory_id) references game(id) on delete cascade)
+ENGINE=InnoDB default charset=latin1 collate=latin1_swedish_ci""")
         commit_to_db("""CREATE TRIGGER after_game_insert AFTER INSERT ON game FOR EACH ROW
-        INSERT INTO inventory (inventory_id, current_fuel, fruits, alcohol , snacks, soda, meals, water)
-        VALUES (NEW.id, 48900, 0, 0, 0, 0, 0, 0);""")
+INSERT INTO inventory (inventory_id, current_fuel, alcohol)
+VALUES (NEW.id, 48900, 0);""")
     else:
         print("Taulukko 'inventory' on jo olemassa.")
 

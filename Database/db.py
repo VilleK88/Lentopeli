@@ -97,7 +97,7 @@ def get_logged_in_user_data():
         conn.close()
         return (result[0], result[1], result[2]) if result else None
 
-# Hakee käyttäjän tiedot tietokannan inventory-taulusta
+# Hakee käyttäjän polttoaineen tietokannan inventory-taulusta
 def get_inventory(user_id):
     conn = connect_db()
     if conn:
@@ -178,6 +178,7 @@ def save_game_progress(user_id, fuel, icao, logging_out):
             log_out()
         conn.close()
 
+# Kirjaa käyttäjän ulos
 def log_out():
     conn = connect_db()
     if conn:

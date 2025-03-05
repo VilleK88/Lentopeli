@@ -146,7 +146,7 @@ def get_user_input(input_text, active, upper, if_esc):
 
     return input_text, active
 
-# Palauttaa käyttäjän syötteen suoraan
+# Palauttaa käyttäjän syötteen suoraan ilman 'enter' painallusta
 def press_button_list(key_list):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

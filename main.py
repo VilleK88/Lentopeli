@@ -26,14 +26,15 @@ def start():
     # main menu avautuu tässä
     user.main_menu(screen, font)
 
-    # hakee sisään kirjautuneen käyttäjän lähtölentoaseman ja inventaarion
-    starting_airport = user.initialize_player_data()
-
     # Ajan alustus
     current_time = datetime.now()
 
-    # Lento-loopin aloitus
+    # hakee sisään kirjautuneen käyttäjän lähtölentoaseman ja inventaarion
+    starting_airport = user.initialize_player_data()
+
+    # Hakee aloituslentokentän koordinaatit
     airport = get_airport_coords(starting_airport)
+
     return airport, screen
 
 def main_program():
@@ -51,8 +52,10 @@ def main_program():
 
     # main loop
     while True:
+
         # Lopettaa sijainnin päivittämisen map.html fetchInitialLocation-funktiossa
         server.update_server(flight.new_lat, flight.new_lon, False)
+
         if remaining_distance != None:
             if remaining_distance <= 0:
                 draw_arrived_airport(current_icao[0], current_icao[1], screen, 20, 50, font)

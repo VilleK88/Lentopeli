@@ -159,6 +159,7 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
 
     return active
 
+# Alustetaan aloituslentokenttä ja polttoaine
 def initialize_player_data():
     result_game = get_logged_in_user_data()
     starting_airport = None

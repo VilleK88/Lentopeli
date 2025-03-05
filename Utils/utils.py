@@ -18,7 +18,7 @@ def wipe_pygame_screen(screen):
 def update_pygame_screen():
     pygame.display.flip()
 
-# Määrittää pyhame-ikkunan koon
+# Määrittää pygame-ikkunan koon
 def get_pygame_screen_size(screen):
     screen_width, screen_height = screen.get_size()
     return screen_width, screen_height
@@ -52,6 +52,7 @@ def draw_text(screen, text, x, y, font):
     rendered_text = font.render(text, True, (255, 255, 255))
     screen.blit(rendered_text, (x, y))
 
+# Piirtää kirjaimia keskelle näyttöä x-akselilla
 def draw_text_to_center_x(screen, text, y, font):
     width, _ = get_pygame_screen_size(screen)
     rendered_text = font.render(text, True, (255, 255, 255))
@@ -146,7 +147,7 @@ def get_user_input(input_text, active, upper, if_esc):
 
     return input_text, active
 
-# Palauttaa käyttäjän syötteen suoraan ilman 'enter' painallusta
+# Palauttaa käyttäjän syötteen suoraan ilman 'enter' painallusta, jos se löytyy vastaanotetulta listalta
 def press_button_list(key_list):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -158,7 +159,7 @@ def press_button_list(key_list):
 
     return None
 
-# Ottaa käyttäjän näppäimen syötteen vastaan
+# Ottaa yksittäisen käyttäjän näppäimen syötteen vastaan
 def press_button(button):
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:

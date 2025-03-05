@@ -7,7 +7,7 @@ import os
 
 PORT = 8000
 MAX_CONTENT_LENGTH = 1024
-ALLOWED_FILES = {"/templates/map.html", "/templates/location.json"}
+ALLOWED_FILES = {"/templates/map.html", "/templates/location.json", "/templates/airplane.svg"}
 MAP_FILE_PATH = "templates/map.html"
 LOCATION_FILE_PATH = "templates/location.json"
 URL = f"http://127.0.0.1:{PORT}/templates/map.html"

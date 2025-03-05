@@ -17,6 +17,13 @@
         var lastLat = null;
         var lastLon = null;
 
+        var airplaneIcon = L.icon({
+            iconUrl: 'airplane.svg',
+            iconSize: [50, 50],
+            iconAnchor: [25, 25],
+            popupAnchor: [0, -25]
+        });
+
         function initializeMap(lat, lon) {
             if(!map) {
                 // Alustetaan kartta
@@ -24,7 +31,8 @@
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19
                 }).addTo(map)
-                marker = L.marker([lat,  lon]).addTo(map);
+                //marker = L.marker([lat,  lon]).addTo(map);
+                marker = L.marker([lat, lon], {icon: airplaneIcon}).addTo(map);
             } else {
                 // Päivitetään sijainti
                 if(lastLat !== lat || lastLon !== lon) {

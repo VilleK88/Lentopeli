@@ -3,7 +3,7 @@ from Routes.config import db_config
 
 
 def shop(player_id, cash):
-    """Pelaaja voi ostaa tuotteita kaupasta, ja inventory päivitetään tietokantaan."""
+    #Pelaaja voi ostaa tuotteita kaupasta, ja inventory päivitetään tietokantaan.
     products = {
         "fruits": 10,
         "alcohol ": 15,
@@ -39,7 +39,7 @@ def shop(player_id, cash):
 
 
 def update_inventory(player_id, item):
-    """Päivittää pelaajan inventory-tietokantaa."""
+    #Päivittää pelaajan inventory-tietokantaa.
     if item not in ["fruits", "alcohol", "snacks", "soda", "meals", "water", "fuel"]:
         print("Virheellinen tuotteen nimi!")
         return

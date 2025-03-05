@@ -8,13 +8,13 @@ import os
 PORT = 8000
 MAX_CONTENT_LENGTH = 1024
 ALLOWED_FILES = {"/templates/map.html", "/templates/location.json"}
-map_file_path = "templates/map.html"
-location_file_path = "templates/location.json"
-url = f"http://127.0.0.1:{PORT}/templates/map.html"
+MAP_FILE_PATH = "templates/map.html"
+LOCATION_FILE_PATH = "templates/location.json"
+URL = f"http://127.0.0.1:{PORT}/templates/map.html"
 
 def starting_coordinates(lat, lon):
     location_data = {"lat": lat, "lon": lon}
-    with open(location_file_path, "w") as file:
+    with open(LOCATION_FILE_PATH, "w") as file:
         json.dump(location_data, file)
 
 class CustomHandler(http.server.SimpleHTTPRequestHandler):
@@ -47,11 +47,11 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         post_data = self.rfile.read(content_length)
         try:
             data = json.loads(post_data)
-            temp_path = location_file_path + ".tmp"
+            temp_path = LOCATION_FILE_PATH + ".tmp"
 
             with open(temp_path, "w") as temp_file:
                 json.dump(data, temp_file)
-            os.replace(temp_path, location_file_path)
+            os.replace(temp_path, LOCATION_FILE_PATH)
 
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
@@ -67,7 +67,7 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/location":
             try:
-                with open(location_file_path, "r") as file:
+                with open(LOCATION_FILE_PATH, "r") as file:
                     data = json.load(file)
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
@@ -88,7 +88,7 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
 def run_http_server():
     with http.server.HTTPServer(("127.0.0.1", PORT), CustomHandler) as httpd:
         print(f"Palvelin käynnissä osoitteessa http://127.0.0.1:{PORT}")
-        webbrowser.open(url)
+        webbrowser.open(URL)
         httpd.serve_forever()
 
 # Käynnistää serveri säikeen
@@ -103,12 +103,12 @@ def update_server(latitude, longitude, on_flight):
         return
 
     new_data = {"lat": latitude, "lon": longitude, "on_flight": on_flight}
-    temp_path = location_file_path + ".tmp"
+    temp_path = LOCATION_FILE_PATH + ".tmp"
 
     try:
         with open(temp_path, "w") as temp_file:
             json.dump(new_data, temp_file)
-        os.replace(temp_path, location_file_path)
+        os.replace(temp_path, LOCATION_FILE_PATH)
 
         # Lähetetään pyyntö päivittämään kartta JavaScriptin kautta
         requests.post(f"http://127.0.0.1:{PORT}/update_location", json=new_data)

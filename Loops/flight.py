@@ -17,7 +17,7 @@ zoom = 10
 new_lat = 0
 new_lon = 0
 turbulence_warning = ""
-on_flight = False;
+on_flight = False
 
 def flight_loop(screen, font, start_coords, end_coords, remaining_distance, current_time, time_multiplier, current_location):
     """ Lentopelin pääsilmukka 'curses' -kirjastolla """

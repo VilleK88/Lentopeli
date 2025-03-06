@@ -1,6 +1,7 @@
 from geopy.distance import geodesic
 from Database.db import get_airport_coords
 import pygame
+import time
 
 # Alustaa pygame ikkunan pelin alussa
 def initialize_pygame_screen():
@@ -102,14 +103,20 @@ def draw_user_list(screen, font, data_list):
             break
 
 # Piirtää saavuit lentoasemalle tekstin
-def draw_arrived_airport(airport, icao, screen, x, y, font):
+def draw_arrived_airport(airport, icao, screen, y, font):
+    time.sleep(1)
     wipe_pygame_screen(screen)
     update_pygame_screen()
+
+    width, _ = get_pygame_screen_size(screen)
     airport_str = str(airport)
     icao_str = str(icao)
     rendered_text = font.render(f"Saavuit {airport_str} {icao_str} lentokentälle.", True, (255, 255, 255))
-    screen.blit(rendered_text, (x, y))
+    text_rect = rendered_text.get_rect(center=(width // 2, y))
+
+    screen.blit(rendered_text, text_rect)
     pygame.display.update()
+    time.sleep(4)
 
 # Ottaa käyttäjän ICAO-koodin vastaan
 def get_icao_input(screen, font, prompt, upper):

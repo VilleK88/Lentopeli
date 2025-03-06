@@ -2,8 +2,9 @@ import time
 from Loops import flight, user
 from Routes import server
 from datetime import datetime
-from Utils.utils import get_valid_icao, draw_arrived_airport, initialize_pygame_screen
+from Utils.utils import get_valid_icao, draw_arrived_airport, initialize_pygame_screen, draw_text_to_center_x
 from Database.db import get_columns_and_tables, get_airport_coords
+import pygame
 
 time_multiplier = 125 # tämä muuttuja määrittää pelin nopeuden
 remaining_distance = None
@@ -58,8 +59,7 @@ def main_program():
 
         if remaining_distance != None:
             if remaining_distance <= 0:
-                draw_arrived_airport(current_icao[0], current_icao[1], screen, 20, 50, font)
-                time.sleep(2)
+                draw_arrived_airport(current_icao[0], current_icao[1], screen,165, font)
         else:
             remaining_distance = 0
 

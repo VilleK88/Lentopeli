@@ -1,10 +1,8 @@
-import time
 from Loops import flight, user
 from Routes import server
 from datetime import datetime
 from Utils.utils import get_valid_icao, draw_arrived_airport, initialize_pygame_screen, draw_text_to_center_x
 from Database.db import get_columns_and_tables, get_airport_coords
-import pygame
 
 time_multiplier = 125 # tämä muuttuja määrittää pelin nopeuden
 remaining_distance = None

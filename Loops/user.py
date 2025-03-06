@@ -1,8 +1,9 @@
 from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_input, wipe_pygame_screen, \
     update_pygame_screen, draw_centered_list, draw_text_to_center_x
+from Utils.weather import get_weather
 import pygame
 from Database.db import show_current_users, get_users_and_set_as_logged_in, check_if_name_in_db, add_user_to_db, get_logged_in_user_data, \
-    save_game_progress, get_inventory, log_out
+    save_game_progress, get_inventory, log_out, get_airport_coords
 import time
 import sys
 from Loops import flight
@@ -20,6 +21,13 @@ def main_menu(screen, font):
 
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]
     active = True
+
+    # Alustetaan sää
+
+    """airport = get_airport_coords("EFHK")
+    weather = get_weather(airport[2], airport[3])
+    weather, turbulence_warning = update_weather_on_ground(weather)
+    last_weather_update = time.time()"""
 
     while active:
         data_list = show_current_users()
@@ -175,3 +183,16 @@ def initialize_player_data():
     if result_inventory:
         flight.current_fuel = result_inventory[0]
     return starting_airport
+
+def update_weather_on_ground(weather):
+
+    if weather is None:
+        weather = {"weather": "Tuntematon", "temp": 0, "wind": 0}
+        turbulence_warning = ""
+
+    if weather["wind"] > 15:
+        turbulence_warning = ", Kova tuuli!"
+    else:
+        turbulence_warning = ""
+
+    return weather, turbulence_warning

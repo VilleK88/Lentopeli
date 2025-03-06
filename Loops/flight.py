@@ -72,11 +72,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
         server.update_server(new_lat, new_lon, True)
 
         # Päivitetään sää
-        if time.time() - last_weather_update >= 2.5:
-            new_weather = get_weather(new_lat, new_lon)
-            if new_weather:
-                weather = new_weather
-                last_weather_update = time.time()
+        weather, last_weather_update = update_weather_timer(weather, last_weather_update)
         weather, turbulence_warning = update_weather_on_flight(weather)
 
         # Päivitetään info teksti
@@ -91,6 +87,15 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
             break
 
     return remaining_distance, current_time, current_location
+
+# Päivittää sään ajastuksen
+def update_weather_timer(weather, last_weather_update):
+    if time.time() - last_weather_update >= 2.5:
+        new_weather = get_weather(new_lat, new_lon)
+        if new_weather:
+            weather = new_weather
+            last_weather_update = time.time()
+    return weather, last_weather_update
 
 # Päivittää sään
 def update_weather_on_flight(weather):

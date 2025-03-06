@@ -22,7 +22,8 @@ def get_airport_info(icao):
         return result if result else None
     return None
 
-
+#icao_list kannattaa hakea funktioon funktion sisältä, jottei sitä joudu kierrättämään
+# user.py-tiedoston in_game_menu-funktion kautta.
 def load_and_select_customer(icao_list, current_icao):
     #Lataa asiakastiedot, valitsee satunnaisen asiakkaan ja asettaa määränpään.
     global current_customer
@@ -65,3 +66,9 @@ def process_flight(customer, wind_speed, water, alcohol, snacks, soda, meals, fr
         reputation += 5 if customer_mood >= 7 else -5  # Lisää mainetta mielialan mukaan
 
     current_customer = None  # Asiakas , ei ole enää valittavana
+
+# tämä funktio ottaa lennon loputtua vastaan nykyisen lentoaseman ICAO-koodin ja jos se on
+# asiakkaan päätepysäkki niin asiakas poistuu kyydistä ja palauttaa cash ja reputation muuttujaan
+# arvot
+def customer_end_flight(current_icao):
+    return

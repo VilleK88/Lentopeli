@@ -156,6 +156,12 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
             save_game_progress(user_id, current_fuel, current_icao, True)
             pygame.quit()
             sys.exit()
+        elif char == pygame.K_2 and remaining_distance <= 0:
+            # Avaa kauppa-funktio
+            return
+        elif char == pygame.K_3 and remaining_distance <= 0:
+            # Avaa load_and_select_customer-funktio customers.py-tiedostosta
+            return
 
     return active
 

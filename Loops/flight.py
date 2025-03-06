@@ -84,6 +84,8 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
         update_info_text(current_time, weather, turbulence_warning, remaining_distance, current_speed_kmh, current_fuel,
                          new_lat, new_lon, screen, font)
 
+        """Tähän lisätään process_fligh-funktio"""
+
         # Polttoaineen loppumisen tarkistus
         if current_fuel <= 0:
             remaining_distance = 0

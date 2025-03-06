@@ -77,8 +77,6 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
             if new_weather:
                 weather = new_weather
                 last_weather_update = time.time()
-
-        # Päivitetään sää ja muutetaan lentonopeutta tarvittaessa
         weather, turbulence_warning = update_weather_on_flight(weather)
 
         # Päivitetään info teksti

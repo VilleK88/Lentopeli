@@ -38,7 +38,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
 
     # Alustetaan sää
     weather = get_weather(lat1, lon1)
-    weather, turbulence_warning = update_weather(weather)
+    weather, turbulence_warning = update_weather_on_flight(weather)
     last_weather_update = time.time()
 
     # Alustetaan nopeus
@@ -74,6 +74,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
         # Päivitä karttakuva
         server.update_server(new_lat, new_lon, True)
 
+        # Päivitetään sää
         if time.time() - last_weather_update >= 2.5:
             new_weather = get_weather(new_lat, new_lon)
             if new_weather:
@@ -81,7 +82,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
                 last_weather_update = time.time()
 
         # Päivitetään sää ja muutetaan lentonopeutta tarvittaessa
-        weather, turbulence_warning = update_weather(weather)
+        weather, turbulence_warning = update_weather_on_flight(weather)
 
         # Päivitetään info teksti
         update_info_text(current_time, weather, turbulence_warning, remaining_distance, current_speed_kmh, current_fuel,
@@ -97,7 +98,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
     return remaining_distance, current_time, current_location
 
 # Päivittää sään
-def update_weather(weather):
+def update_weather_on_flight(weather):
     global current_speed_kmh, turbulence_warning
 
     if weather is None:

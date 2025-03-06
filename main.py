@@ -64,6 +64,7 @@ def main_program():
         """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
         # Käynnistetään ingame menu
         while menu_on:
+            flight.on_flight = False
             menu_on = user.ingame_menu(screen, font, flight.current_fuel, current_icao[1], remaining_distance)
 
         # ICAO-koodin syöttö seuraavalle lentokentälle

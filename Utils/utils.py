@@ -116,7 +116,7 @@ def draw_arrived_airport(airport, icao, screen, y, font):
 
     screen.blit(rendered_text, text_rect)
     pygame.display.update()
-    time.sleep(4)
+    time.sleep(3)
 
 # Ottaa käyttäjän ICAO-koodin vastaan
 def get_icao_input(screen, font, prompt, upper):

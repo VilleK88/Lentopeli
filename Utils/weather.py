@@ -3,6 +3,7 @@ import os
 import requests
 import time
 import threading
+from Loops import flight
 
 API_KEY = None
 CITY = "Helsinki"
@@ -29,7 +30,11 @@ def get_weather(lat, lon, force_update=False):
     def fetch_weather():
         global current_weather, last_weather_update
         url = f"{BASE_URL}?lat={lat}&lon={lon}&appid={API_KEY}&units=metric&lang=fi"
-        response = requests.get(url, timeout=2)
+        if flight.on_flight:
+            timer = 2
+        else:
+            timer = 5
+        response = requests.get(url, timeout=timer)
         if response.status_code == 200:
             data = response.json()
             weather_condition = data["weather"][0]["description"].capitalize()

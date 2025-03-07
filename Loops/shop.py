@@ -1,5 +1,8 @@
 import mysql.connector
 from Routes.config import db_config
+from Utils.utils import wipe_pygame_screen, update_pygame_screen, draw_centered_shop_list, draw_text_to_center_x
+import main
+
 
 
 def shop(player_id, cash):
@@ -13,6 +16,17 @@ def shop(player_id, cash):
         "water": 3,
         "fuel": 100
     }
+    input_text = ""
+    active = True
+
+    while active:
+        wipe_pygame_screen(main.screen)
+        draw_text(main.screen, "ESC", 5, 5, main.font)
+        draw_centered_shop_list(main.screen, font, 70, products)
+        draw_text_to_center_x(main.screen, input_text, 180, main.font)
+        update_pygame_screen()
+
+        input_text, active = get_user_input(input_text, active, False, True)
 
     print("\nKauppa - Valitse ostettava tuote:")
     for item, price in products.items():

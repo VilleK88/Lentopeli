@@ -31,14 +31,29 @@ def shop(player_id, cash, screen, font):
         update_pygame_screen()
 
         input_text, active = get_user_input(input_text, active, False, True)
+        selection = input_text.strip().lower()
+        #if selection == "poistu":
+            #return cash
 
-    print("\nKauppa - Valitse ostettava tuote:")
+        """if selection not in products:
+            print("Tuotetta ei löydy kaupasta.")
+            return cash"""
+
+        """price = products[selection]
+        if cash >= price:
+            cash -= price
+            update_inventory(player_id, selection)
+            print(f"Ostit {selection}. Käteistä jäljellä: {cash}€")
+        else:
+            print("Ei tarpeeksi rahaa!")"""
+
+    """print("\nKauppa - Valitse ostettava tuote:")
     for item, price in products.items():
-        print(f"{item}: {price}€")
+        print(f"{item}: {price}€")"""
 
-    selection = input("Mitä haluat ostaa? (kirjoita tuotteen nimi tai 'poistu' lopettaaksesi): ").strip().lower()
-
-    if selection == "poistu":
+    #selection = input("Mitä haluat ostaa? (kirjoita tuotteen nimi tai 'poistu' lopettaaksesi): ").strip().lower()
+    #selection = input_text.strip().lower()
+    """if selection == "poistu":
         return cash
 
     if selection not in products:
@@ -53,7 +68,7 @@ def shop(player_id, cash, screen, font):
     else:
         print("Ei tarpeeksi rahaa!")
 
-    return cash
+    return cash"""
 
 
 def update_inventory(player_id, item):

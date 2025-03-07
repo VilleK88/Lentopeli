@@ -158,9 +158,10 @@ def logged_in_user_text(screen, font):
 """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
 # ingame menu
 def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
+    global cash
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]
     if remaining_distance <= 0:
-        flight_menu = ["1 - Syötä ICAO-koodi", "2 - Palaa kauppaan", "3 - Palaa matkustajiin",
+        flight_menu = ["1 - Syötä ICAO-koodi", "2 - Kauppa", "3 - Matkustajat",
             "4 - Tallenna ja lopeta", "5 - Tallenna, lopeta ja kirjaudu ulos"]
     else:
         flight_menu = ["1 - Syötä ICAO-koodi"]
@@ -184,11 +185,10 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
         elif char == pygame.K_2 and remaining_distance <= 0:
             # Avaa kauppa-funktio
             shop.shop(user_id, cash, screen, font)
-            return
         elif char == pygame.K_3 and remaining_distance <= 0:
             # Avaa load_and_select_customer-funktio customers.py-tiedostosta
             customers.load_and_select_customer(current_icao, screen, font)
-            return
+            active = False
 
     return active
 

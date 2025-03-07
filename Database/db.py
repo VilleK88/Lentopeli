@@ -40,6 +40,13 @@ def get_columns_and_tables():
     else:
         print("Sarake 'current_fuel' on jo olemassa.")
 
+    result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'reputation'")
+    if not result:
+        print("Saraketta 'reputation' ei löydy, luodaan se....")
+        commit_to_db("alter table game add column reputation int default 10")
+    else:
+        print("Sarake 'reputation' on jo olemassa.")
+
     result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'current_icao'")
     if not result:
         print("Saraketta 'current_icao' ei löydy, luodaan se....")
@@ -92,11 +99,11 @@ def get_logged_in_user_data():
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
-        sql = "select id, screen_name, current_icao from game where logged_in = 1"
+        sql = "select id, screen_name, current_icao, reputation from game where logged_in = 1"
         cursor.execute(sql)
         result = cursor.fetchone()
         conn.close()
-        return (result[0], result[1], result[2]) if result else None
+        return (result[0], result[1], result[2], result[3]) if result else None
 
 # Hakee käyttäjän polttoaineen tietokannan inventory-taulusta
 def get_inventory(user_id):

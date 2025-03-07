@@ -19,6 +19,7 @@ co2_consumed = ""
 co2_budget = ""
 weather = None
 cash = 0
+reputation = 0
 
 def main_menu(screen, font):
     global user_id, user_name, weather
@@ -133,7 +134,7 @@ def add_new_user(screen, font):
     wipe_pygame_screen(screen)
 
 def logged_in_user_text(screen, font):
-    global user_id, user_name
+    global user_id, user_name, cash
 
     result_game = get_logged_in_user_data()
 
@@ -141,11 +142,13 @@ def logged_in_user_text(screen, font):
         user_id = result_game[0]
         user_name = result_game[1]
         current_icao = result_game[2]
+        reputation = result_game[3]
 
     result_inventory = get_inventory(user_id)
 
     if result_inventory:
-        current_fuel = result_inventory[0]
+        cash = result_inventory[0]
+        current_fuel = result_inventory[1]
 
     if user_id != "" and user_name != "":
         draw_text(screen, f"{user_name}", 10, 10, font)
@@ -197,8 +200,8 @@ def initialize_player_data():
         starting_airport = result_game[2]
     result_inventory = get_inventory(user_id)
     if result_inventory:
-        flight.current_fuel = result_inventory[0]
-        cash = result_inventory[1]
+        cash = result_inventory[0]
+        flight.current_fuel = result_inventory[1]
     return starting_airport
 
 def update_weather_on_ground(weather):

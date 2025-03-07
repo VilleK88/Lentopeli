@@ -7,7 +7,7 @@ from Database.db import show_current_users, get_users_and_set_as_logged_in, chec
     save_game_progress, get_inventory, log_out, get_airport_coords
 import time
 import sys
-from Loops import flight, shop
+from Loops import flight, shop, customers
 
 
 # User info
@@ -187,6 +187,7 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
             return
         elif char == pygame.K_3 and remaining_distance <= 0:
             # Avaa load_and_select_customer-funktio customers.py-tiedostosta
+            customers.load_and_select_customer(current_icao, screen, font)
             return
 
     return active

@@ -26,7 +26,7 @@ def shop(player_id, cash, screen, font):
     while active:
         wipe_pygame_screen(screen)
         draw_text(screen, "ESC", 5, 5, font)
-        draw_centered_shop_list(screen, font, 70, products_list)
+        draw_centered_shop_list(screen, font, 50, products_list)
         draw_text_to_center_x(screen, input_text, 180, font)
         update_pygame_screen()
 

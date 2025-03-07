@@ -1,11 +1,10 @@
 import mysql.connector
 from Routes.config import db_config
-from Utils.utils import wipe_pygame_screen, update_pygame_screen, draw_centered_shop_list, draw_text_to_center_x
-import main
+from Utils.utils import wipe_pygame_screen, update_pygame_screen, draw_centered_shop_list, draw_text_to_center_x, draw_text, get_user_input
 
 
 
-def shop(player_id, cash):
+def shop(player_id, cash, screen, font):
     #Pelaaja voi ostaa tuotteita kaupasta, ja inventory päivitetään tietokantaan.
     products = {
         "fruits": 10,
@@ -20,10 +19,10 @@ def shop(player_id, cash):
     active = True
 
     while active:
-        wipe_pygame_screen(main.screen)
-        draw_text(main.screen, "ESC", 5, 5, main.font)
-        draw_centered_shop_list(main.screen, font, 70, products)
-        draw_text_to_center_x(main.screen, input_text, 180, main.font)
+        wipe_pygame_screen(screen)
+        draw_text(screen, "ESC", 5, 5, font)
+        draw_centered_shop_list(screen, font, 70, products)
+        draw_text_to_center_x(screen, input_text, 180, font)
         update_pygame_screen()
 
         input_text, active = get_user_input(input_text, active, False, True)

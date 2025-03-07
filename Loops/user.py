@@ -180,7 +180,7 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
             sys.exit()
         elif char == pygame.K_2 and remaining_distance <= 0:
             # Avaa kauppa-funktio
-            shop.shop(user_id, cash)
+            shop.shop(user_id, cash, screen, font)
             return
         elif char == pygame.K_3 and remaining_distance <= 0:
             # Avaa load_and_select_customer-funktio customers.py-tiedostosta

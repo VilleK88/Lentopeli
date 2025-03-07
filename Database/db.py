@@ -52,6 +52,7 @@ def get_columns_and_tables():
         print("Taulukkoa 'inventory' ei löydy, luodaan se....")
         commit_to_db("""create table if not exists inventory (
             inventory_id varchar(40) character set latin1 collate latin1_swedish_ci not null primary key,
+            cash float default 100,
             current_fuel float default 48900,
             fruits int default 0,
             alcohol  int default 0,
@@ -62,8 +63,8 @@ def get_columns_and_tables():
             constraint fk_inventory foreign key(inventory_id) references game(id) on delete cascade
         ) ENGINE=InnoDB default charset=latin1 collate=latin1_swedish_ci""")
         commit_to_db("""CREATE TRIGGER after_game_insert AFTER INSERT ON game FOR EACH ROW
-        INSERT INTO inventory (inventory_id, current_fuel, fruits, alcohol , snacks, soda, meals, water)
-        VALUES (NEW.id, 48900, 0, 0, 0, 0, 0, 0);""")
+        INSERT INTO inventory (inventory_id, cash, current_fuel, fruits, alcohol , snacks, soda, meals, water)
+        VALUES (NEW.id, 100, 48900, 0, 0, 0, 0, 0, 0);""")
     else:
         print("Taulukko 'inventory' on jo olemassa.")
 
@@ -102,10 +103,10 @@ def get_inventory(user_id):
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
-        sql = "select current_fuel from inventory where inventory_id = %s"
+        sql = "select current_fuel, cash from inventory where inventory_id = %s"
         cursor.execute(sql, (user_id,))
         result = cursor.fetchone()
-        return result if result else None
+        return (result[0],result[1]) if result else None
 
 # Palauttaa käyttäjä listan
 def show_current_users():

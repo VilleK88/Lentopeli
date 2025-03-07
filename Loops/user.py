@@ -7,7 +7,8 @@ from Database.db import show_current_users, get_users_and_set_as_logged_in, chec
     save_game_progress, get_inventory, log_out, get_airport_coords
 import time
 import sys
-from Loops import flight
+from Loops import flight, shop
+
 
 # User info
 user_name = ""
@@ -17,6 +18,7 @@ current_icao = ""
 co2_consumed = ""
 co2_budget = ""
 weather = None
+cash = 0
 
 def main_menu(screen, font):
     global user_id, user_name, weather
@@ -178,6 +180,7 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
             sys.exit()
         elif char == pygame.K_2 and remaining_distance <= 0:
             # Avaa kauppa-funktio
+            shop.shop(user_id, cash)
             return
         elif char == pygame.K_3 and remaining_distance <= 0:
             # Avaa load_and_select_customer-funktio customers.py-tiedostosta
@@ -187,6 +190,7 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
 
 # Alustetaan aloituslentokenttä ja polttoaine
 def initialize_player_data():
+    global cash
     result_game = get_logged_in_user_data()
     starting_airport = None
     if result_game:
@@ -194,6 +198,7 @@ def initialize_player_data():
     result_inventory = get_inventory(user_id)
     if result_inventory:
         flight.current_fuel = result_inventory[0]
+        cash = result_inventory[1]
     return starting_airport
 
 def update_weather_on_ground(weather):

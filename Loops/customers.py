@@ -22,7 +22,7 @@ def get_airport_info(icao):
         return result if result else None
     return None
 
-def load_and_select_customer(current_icao):
+def load_and_select_customer(current_icao, screen, font):
     #lataa asiakastiedot, valitsee satunnaisen asiakkaan ja asettaa määränpään.
     global current_customer
 

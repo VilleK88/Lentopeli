@@ -7,7 +7,7 @@ from Database.db import get_columns_and_tables, get_airport_coords
 time_multiplier = 125 # tämä muuttuja määrittää pelin nopeuden
 remaining_distance = None
 current_time = None
-current_location = None # Latitude & Longitude tallennetaan tähän
+current_location = 60.3172, 24.9633 # Latitude & Longitude tallennetaan tähän
 
 # Pygame asetukset
 screen = None

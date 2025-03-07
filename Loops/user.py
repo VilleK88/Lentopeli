@@ -1,3 +1,4 @@
+import main
 from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_input, wipe_pygame_screen, \
     update_pygame_screen, draw_centered_list, draw_text_to_center_x
 from Utils.weather import get_weather
@@ -15,24 +16,35 @@ logged_in = ""
 current_icao = ""
 co2_consumed = ""
 co2_budget = ""
+weather = None
 
 def main_menu(screen, font):
-    global user_id, user_name
+    global user_id, user_name, weather
 
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]
     active = True
 
-    # Alustetaan sää
+    # Alustetaan sisäänkirjautunut käyttäjä jos sellainen on sekä haetaan sää
+    starting_airport = initialize_player_data()
+    if starting_airport:
+        airport = get_airport_coords(starting_airport)
+        weather = get_weather(airport[2], airport[3])
+    else:
+        weather = get_weather(main.current_location[0], main.current_location[1])
 
-    """airport = get_airport_coords("EFHK")
-    weather = get_weather(airport[2], airport[3])
     weather, turbulence_warning = update_weather_on_ground(weather)
-    last_weather_update = time.time()"""
+    last_weather_update = time.time()
 
     while active:
         data_list = show_current_users()
         wipe_pygame_screen(screen)
         logged_in_user_text(screen, font)
+
+        if user_name != "":
+            # Päivitetään sää
+            weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
+            weather, turbulence_warning = update_weather_on_ground(weather)
+            draw_text(screen, f"Sää: {weather['weather']}, Tuuli: {weather['wind']:.2f} m/s {turbulence_warning}", 10, 365, font)
 
         menu = ["1 - Tee uusi pelaaja", "2 - Valitse pelaaja",
                 "3 - Aloita peli", "4 - Käyttäjälista" , "5 - Lopeta", "6 - Lopeta ja kirjaudu ulos"]
@@ -196,3 +208,11 @@ def update_weather_on_ground(weather):
         turbulence_warning = ""
 
     return weather, turbulence_warning
+
+def weather_timer_ground(weather, last_weather_update):
+    if time.time() - last_weather_update >= 5:
+        new_weather = get_weather(main.current_location[0], main.current_location[1])
+        if new_weather:
+            weather = new_weather
+            last_weather_update = time.time()
+    return weather, last_weather_update

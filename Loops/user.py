@@ -46,13 +46,9 @@ def main_menu(screen, font):
     while active:
         data_list = show_current_users()
         wipe_pygame_screen(screen)
-        user_info_on_screen(screen, font)
 
-        if user_name != "":
-            # Päivitetään sää
-            weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
-            weather, turbulence_warning = update_weather_on_ground(weather)
-            draw_text(screen, f"Sää: {weather['weather']}, Tuuli: {weather['wind']:.2f} m/s {turbulence_warning}", 10, 365, font)
+        user_info_on_screen(screen, font)
+        weather_info_on_screen(screen, font)
 
         menu = ["1 - Tee uusi pelaaja", "2 - Valitse pelaaja",
                 "3 - Aloita peli", "4 - Käyttäjälista" , "5 - Lopeta", "6 - Lopeta ja kirjaudu ulos"]
@@ -139,6 +135,7 @@ def add_new_user(screen, font):
             time.sleep(2)
     wipe_pygame_screen(screen)
 
+# Hakee sisäänkirjautuneen käyttäjän tiedot
 def get_user_data():
     global user_id, user_name, current_icao, cash, current_fuel, reputation
 
@@ -156,6 +153,7 @@ def get_user_data():
         cash = result_inventory[0]
         current_fuel = result_inventory[1]
 
+# Piirtää sisäänkirjautuneen käyttäjän tiedot pygame-ikkunaan
 def user_info_on_screen(screen, font):
     global user_id, user_name, current_icao, cash, current_fuel
 
@@ -214,8 +212,8 @@ def initialize_player_data():
         flight.current_fuel = result_inventory[1]
     return starting_airport
 
+# Päivittää sään
 def update_weather_on_ground(weather):
-
     if weather is None:
         weather = {"weather": "Tuntematon", "temp": 0, "wind": 0}
         turbulence_warning = ""
@@ -227,6 +225,7 @@ def update_weather_on_ground(weather):
 
     return weather, turbulence_warning
 
+# Sään päivityksen ajastus 5 s
 def weather_timer_ground(weather, last_weather_update):
     if time.time() - last_weather_update >= 5:
         new_weather = get_weather(main.current_location[0], main.current_location[1])
@@ -234,3 +233,14 @@ def weather_timer_ground(weather, last_weather_update):
             weather = new_weather
             last_weather_update = time.time()
     return weather, last_weather_update
+
+# Päivittää sään pygame-ikkunassa
+def weather_info_on_screen(screen, font):
+    global weather, last_weather_update
+
+    if user_name != "":
+        # Päivitetään sää
+        weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
+        weather, turbulence_warning = update_weather_on_ground(weather)
+        draw_text(screen, f"Sää: {weather['weather']}, Tuuli: {weather['wind']:.2f} m/s {turbulence_warning}", 10, 365,
+                  font)

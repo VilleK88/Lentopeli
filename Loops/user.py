@@ -18,12 +18,11 @@ current_fuel = 0
 co2_consumed = ""
 co2_budget = ""
 weather = None
-last_weather_update = None
 cash = 0
 reputation = 0
 
 def main_menu(screen, font):
-    global user_id, user_name, weather, last_weather_update
+    global user_id, user_name, weather
 
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]
     active = True
@@ -31,9 +30,11 @@ def main_menu(screen, font):
     # Alustetaan sisäänkirjautunut käyttäjä jos sellainen on sekä haetaan sää
     starting_airport = initialize_player_data()
     if starting_airport:
+        print("Sää ladattu")
         airport = get_airport_coords(starting_airport)
         weather = get_weather(airport[2], airport[3])
     else:
+        print("Säätä ei ladattu")
         weather = get_weather(main.current_location[0], main.current_location[1])
 
     weather, turbulence_warning = update_weather_on_ground(weather)
@@ -47,7 +48,11 @@ def main_menu(screen, font):
         wipe_pygame_screen(screen)
 
         user_info_on_screen(screen, font)
-        weather_info_on_screen(screen, font)
+
+        # Päivitetään sää
+        weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
+        weather, turbulence_warning = update_weather_on_ground(weather)
+        weather_info_on_screen(weather, last_weather_update, screen, font)
 
         menu = ["1 - Tee uusi pelaaja", "2 - Valitse pelaaja",
                 "3 - Aloita peli", "4 - Käyttäjälista" , "5 - Lopeta", "6 - Lopeta ja kirjaudu ulos"]
@@ -82,7 +87,7 @@ def main_menu(screen, font):
 
 # Käyttäjän valinta
 def select_user(screen, font):
-    global user_id, user_name
+    global user_id, user_name, weather, current_icao
     input_text = ""
     active = True
 
@@ -100,6 +105,8 @@ def select_user(screen, font):
         user_id = result[0]
         user_name = result[1]
         get_user_data()
+        airport = get_airport_coords(current_icao)
+        weather = get_weather(airport[2], airport[3])
         wipe_pygame_screen(screen)
         draw_text_to_center_x(screen, f"Käyttäjä {user_name} kirjautunut sisään", 165, font)
         update_pygame_screen()
@@ -234,9 +241,7 @@ def weather_timer_ground(weather, last_weather_update):
     return weather, last_weather_update
 
 # Päivittää sään pygame-ikkunassa
-def weather_info_on_screen(screen, font):
-    global weather, last_weather_update
-
+def weather_info_on_screen(weather, last_weather_update, screen, font):
     if user_name != "":
         # Päivitetään sää
         weather, last_weather_update = weather_timer_ground(weather, last_weather_update)

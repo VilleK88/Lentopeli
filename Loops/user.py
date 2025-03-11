@@ -27,16 +27,15 @@ def main_menu(screen, font):
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]
     active = True
 
-    # Alustetaan sisäänkirjautunut käyttäjä jos sellainen on sekä haetaan sää
+    # Alustetaan sisäänkirjautunut käyttäjä, jos sellainen on
     starting_airport = initialize_player_data()
+
+    # Alustetaan sää
     if starting_airport:
-        print("Sää ladattu")
         airport = get_airport_coords(starting_airport)
         weather = get_weather(airport[2], airport[3])
     else:
-        print("Säätä ei ladattu")
         weather = get_weather(main.current_location[0], main.current_location[1])
-
     weather, turbulence_warning = update_weather_on_ground(weather)
     last_weather_update = time.time()
 

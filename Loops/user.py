@@ -214,7 +214,6 @@ def initialize_player_data():
         starting_airport = result_game[2]
     result_inventory = get_inventory(user_id)
     if result_inventory:
-        cash = result_inventory[0]
         flight.current_fuel = result_inventory[1]
     return starting_airport
 

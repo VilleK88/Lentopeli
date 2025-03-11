@@ -29,22 +29,20 @@ def main_menu(screen, font):
     active = True
 
     # Alustetaan sisäänkirjautunut käyttäjä, jos sellainen on
-    starting_airport = initialize_player_data()
+    get_user_data()
 
-    # Alustetaan sää
-    weather = None
+    # Alustetaan aloitus lentoasema
+    starting_airport = initialize_starting_airport()
+
+    # Haetaan ja alustetaan lentoaseman koordinaatit
     if starting_airport:
         airport = get_airport_coords(starting_airport)
         main.current_location = airport[2], airport[3]
-        weather = get_weather(main.current_location[0], main.current_location[1])
-    else:
-        weather = get_weather(main.current_location[0], main.current_location[1])
-    # Alustetaan sää muuttujat
+
+    # Alustetaan sää
+    weather = get_weather(main.current_location[0], main.current_location[1])
     weather, turbulence_warning = update_weather_on_ground(weather)
     last_weather_update = time.time()
-
-    # Hakee sisäänkirjautuneen käyttäjän tiedot
-    get_user_data()
 
     while active:
         #data_list = show_current_users()
@@ -162,6 +160,7 @@ def get_user_data():
     if result_inventory:
         cash = result_inventory[0]
         current_fuel = result_inventory[1]
+        flight.current_fuel = result_inventory[1]
 
 # Piirtää sisäänkirjautuneen käyttäjän tiedot pygame-ikkunaan
 def user_info_on_screen(screen, font):
@@ -226,16 +225,10 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
 
     return active
 
-# Alustetaan aloituslentokenttä ja polttoaine
-def initialize_player_data():
-    global cash
-    result_game = get_logged_in_user_data()
-    starting_airport = None
-    if result_game:
-        starting_airport = result_game[2]
-    result_inventory = get_inventory(user_id)
-    if result_inventory:
-        flight.current_fuel = result_inventory[1]
+# Alustetaan aloituslentokenttä
+def initialize_starting_airport():
+    global current_icao
+    starting_airport = current_icao
     return starting_airport
 
 # Päivittää sään

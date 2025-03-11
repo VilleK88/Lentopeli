@@ -29,7 +29,7 @@ def start():
     current_time = datetime.now()
 
     # hakee sisään kirjautuneen käyttäjän lähtölentoaseman ja inventaarion
-    starting_airport = user.initialize_player_data()
+    starting_airport = user.initialize_starting_airport()
 
     # Hakee aloituslentokentän koordinaatit
     airport = get_airport_coords(starting_airport)

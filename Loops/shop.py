@@ -74,6 +74,8 @@ def update_inventory(player_id, item):
     if item not in ["fruits", "alcohol", "snacks", "soda", "meals", "water", "fuel"]:
         print("Virheellinen tuotteen nimi!")
         return
+    if item == "fuel":
+        item = "current_fuel"
 
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor()

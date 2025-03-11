@@ -188,7 +188,7 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
         elif char == pygame.K_3 and remaining_distance <= 0:
             # Avaa load_and_select_customer-funktio customers.py-tiedostosta
             customers.load_and_select_customer(current_icao, screen, font)
-            active = False
+            #active = False
 
     return active
 

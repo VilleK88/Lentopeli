@@ -3,7 +3,6 @@ import os
 import requests
 import time
 import threading
-from Loops import flight
 
 API_KEY = None
 CITY = "Helsinki"

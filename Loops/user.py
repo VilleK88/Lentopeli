@@ -1,14 +1,13 @@
 import main
 from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_input, wipe_pygame_screen, \
     update_pygame_screen, draw_centered_list, draw_text_to_center_x
-from Utils.weather import get_weather, last_weather_update
+from Utils.weather import get_weather
 import pygame
 from Database.db import show_current_users, get_users_and_set_as_logged_in, check_if_name_in_db, add_user_to_db, get_logged_in_user_data, \
     save_game_progress, get_inventory, log_out, get_airport_coords
 import time
 import sys
 from Loops import flight, shop, customers
-
 
 # User info
 user_name = ""

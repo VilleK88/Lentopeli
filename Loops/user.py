@@ -1,7 +1,7 @@
 import main
 from Utils.utils import draw_user_list, draw_text, press_button_list, get_user_input, wipe_pygame_screen, \
     update_pygame_screen, draw_centered_list, draw_text_to_center_x
-from Utils.weather import get_weather
+from Utils.weather import get_weather, last_weather_update
 import pygame
 from Database.db import show_current_users, get_users_and_set_as_logged_in, check_if_name_in_db, add_user_to_db, get_logged_in_user_data, \
     save_game_progress, get_inventory, log_out, get_airport_coords
@@ -15,14 +15,16 @@ user_name = ""
 user_id = ""
 logged_in = ""
 current_icao = ""
+current_fuel = 0
 co2_consumed = ""
 co2_budget = ""
 weather = None
+last_weather_update = None
 cash = 0
 reputation = 0
 
 def main_menu(screen, font):
-    global user_id, user_name, weather
+    global user_id, user_name, weather, last_weather_update
 
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]
     active = True
@@ -38,10 +40,13 @@ def main_menu(screen, font):
     weather, turbulence_warning = update_weather_on_ground(weather)
     last_weather_update = time.time()
 
+    # Hakee sisäänkirjautuneen käyttäjän tiedot
+    get_user_data()
+
     while active:
         data_list = show_current_users()
         wipe_pygame_screen(screen)
-        logged_in_user_text(screen, font)
+        user_info_on_screen(screen, font)
 
         if user_name != "":
             # Päivitetään sää
@@ -99,6 +104,7 @@ def select_user(screen, font):
     if result:
         user_id = result[0]
         user_name = result[1]
+        get_user_data()
         wipe_pygame_screen(screen)
         draw_text_to_center_x(screen, f"Käyttäjä {user_name} kirjautunut sisään", 165, font)
         update_pygame_screen()
@@ -133,8 +139,8 @@ def add_new_user(screen, font):
             time.sleep(2)
     wipe_pygame_screen(screen)
 
-def logged_in_user_text(screen, font):
-    global user_id, user_name, cash
+def get_user_data():
+    global user_id, user_name, current_icao, cash, current_fuel, reputation
 
     result_game = get_logged_in_user_data()
 
@@ -150,10 +156,13 @@ def logged_in_user_text(screen, font):
         cash = result_inventory[0]
         current_fuel = result_inventory[1]
 
+def user_info_on_screen(screen, font):
+    global user_id, user_name, current_icao, cash, current_fuel
+
     if user_id != "" and user_name != "":
         draw_text(screen, f"{user_name}", 10, 10, font)
-        draw_text(screen, f"{current_fuel}", 10, 40, font)
-        draw_text(screen, f"{current_icao}", 10, 70, font)
+        draw_text(screen, f"{current_icao}", 10, 40, font)
+        draw_text(screen, f"{current_fuel}", 10, 70, font)
 
 """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
 # ingame menu

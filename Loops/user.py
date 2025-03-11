@@ -17,12 +17,12 @@ current_icao = ""
 current_fuel = 0
 co2_consumed = ""
 co2_budget = ""
-weather = None
+#weather = None
 cash = 0
 reputation = 0
 
 def main_menu(screen, font):
-    global user_id, user_name, weather
+    global user_id, user_name
 
     # Lista painikkeista, jotka ovat käytössä
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]
@@ -33,11 +33,14 @@ def main_menu(screen, font):
     starting_airport = initialize_player_data()
 
     # Alustetaan sää
+    weather = None
     if starting_airport:
         airport = get_airport_coords(starting_airport)
-        weather = get_weather(airport[2], airport[3])
+        main.current_location = airport[2], airport[3]
+        weather = get_weather(main.current_location[0], main.current_location[1])
     else:
         weather = get_weather(main.current_location[0], main.current_location[1])
+    # Alustetaan sää muuttujat
     weather, turbulence_warning = update_weather_on_ground(weather)
     last_weather_update = time.time()
 
@@ -48,6 +51,7 @@ def main_menu(screen, font):
         #data_list = show_current_users()
         wipe_pygame_screen(screen)
 
+        # Kirjoittaa käyttäjän tiedot pygame-ikkunaan
         user_info_on_screen(screen, font)
 
         # Päivitetään sää
@@ -107,7 +111,7 @@ def select_user(screen, font):
         user_name = result[1]
         get_user_data()
         airport = get_airport_coords(current_icao)
-        weather = get_weather(airport[2], airport[3])
+        main.current_location = airport[2], airport[3]
         wipe_pygame_screen(screen)
         draw_text_to_center_x(screen, f"Käyttäjä {user_name} kirjautunut sisään", 165, font)
         update_pygame_screen()
@@ -173,6 +177,8 @@ def user_info_on_screen(screen, font):
 # ingame menu
 def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
     global cash
+
+    # Lista käytössä olevista näppäimistä
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]
     if remaining_distance <= 0:
         flight_menu = ["1 - Syötä ICAO-koodi", "2 - Kauppa", "3 - Matkustajat",
@@ -181,10 +187,26 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
         flight_menu = ["1 - Syötä ICAO-koodi"]
     active = True
 
+    # Alustetaan sää muuttujat
+    weather = get_weather(main.current_location[0], main.current_location[1])
+    weather, turbulence_warning = update_weather_on_ground(weather)
+    last_weather_update = time.time()
+
     while active:
         wipe_pygame_screen(screen)
+
         draw_centered_list(screen, font, 100, flight_menu)
+
+        # Kirjoittaa käyttäjän tiedot pygame-ikkunaan
+        user_info_on_screen(screen, font)
+
+        # Päivitetään sää
+        weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
+        weather, turbulence_warning = update_weather_on_ground(weather)
+        weather_info_on_screen(weather, last_weather_update, screen, font)
+
         update_pygame_screen()
+
         char = press_button_list(key_list)
         if char == pygame.K_1:
             active = False
@@ -202,7 +224,6 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
         elif char == pygame.K_3 and remaining_distance <= 0:
             # Avaa load_and_select_customer-funktio customers.py-tiedostosta
             customers.load_and_select_customer(current_icao, screen, font)
-            #active = False
 
     return active
 

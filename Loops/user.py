@@ -17,7 +17,6 @@ current_icao = ""
 current_fuel = 0
 co2_consumed = ""
 co2_budget = ""
-#weather = None
 cash = 0
 reputation = 0
 

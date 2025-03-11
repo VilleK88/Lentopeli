@@ -24,7 +24,9 @@ reputation = 0
 def main_menu(screen, font):
     global user_id, user_name, weather
 
+    # Lista painikkeista, jotka ovat käytössä
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]
+    # Alustaa loopin aktiiviseksi
     active = True
 
     # Alustetaan sisäänkirjautunut käyttäjä, jos sellainen on
@@ -43,7 +45,7 @@ def main_menu(screen, font):
     get_user_data()
 
     while active:
-        data_list = show_current_users()
+        #data_list = show_current_users()
         wipe_pygame_screen(screen)
 
         user_info_on_screen(screen, font)
@@ -73,7 +75,7 @@ def main_menu(screen, font):
                 update_pygame_screen()
                 time.sleep(2)
         elif char == pygame.K_4:
-            print("4 painettu")
+            data_list = show_current_users()
             draw_user_list(screen, font, data_list)
         elif char == pygame.K_5:
             pygame.quit()

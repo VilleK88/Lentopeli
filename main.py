@@ -4,7 +4,7 @@ from datetime import datetime
 from Utils.utils import get_valid_icao, draw_arrived_airport, initialize_pygame_screen
 from Database.db import get_columns_and_tables, get_airport_coords
 
-time_multiplier = 125 # tämä muuttuja määrittää pelin nopeuden
+time_multiplier = 150 # tämä muuttuja määrittää pelin nopeuden
 remaining_distance = None
 current_time = None
 current_location = 60.3172, 24.9633 # Latitude & Longitude tallennetaan tähän
@@ -64,7 +64,7 @@ def main_program():
         """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
         # Käynnistetään ingame menu
         while menu_on:
-            menu_on = user.ingame_menu(screen, font, flight.current_fuel, current_icao[1], remaining_distance)
+            menu_on = user.ingame_menu(screen, font, current_icao[1], remaining_distance)
 
         # ICAO-koodin syöttö seuraavalle lentokentälle
         icao = get_valid_icao(screen, font, "ICAO-koodi: ")

@@ -28,31 +28,23 @@ def get_columns_and_tables():
 
     result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'logged_in'")
     if not result:
-        print("Saraketta 'logged_in' ei löydy, luodaan se....")
+        #print("Saraketta 'logged_in' ei löydy, luodaan se....")
         commit_to_db("alter table game add column logged_in boolean default false")
-    else:
-        print("Sarake 'logged_in' on jo olemassa.")
 
     result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'current_fuel'")
     if not result:
         print("Saraketta 'current_fuel' ei löydy, luodaan se....")
         commit_to_db("alter table game add column current_fuel float default 25941")
-    else:
-        print("Sarake 'current_fuel' on jo olemassa.")
 
     result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'reputation'")
     if not result:
         print("Saraketta 'reputation' ei löydy, luodaan se....")
         commit_to_db("alter table game add column reputation int default 10")
-    else:
-        print("Sarake 'reputation' on jo olemassa.")
 
     result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'current_icao'")
     if not result:
         print("Saraketta 'current_icao' ei löydy, luodaan se....")
         commit_to_db("alter table game add column current_icao text default 'EFHK'")
-    else:
-        print("Sarake 'current_icao' on jo olemassa.")
 
     result = get_info_from_db("select table_name from information_schema.tables where table_name = 'inventory'")
     if not result:
@@ -72,8 +64,6 @@ def get_columns_and_tables():
         commit_to_db("""CREATE TRIGGER after_game_insert AFTER INSERT ON game FOR EACH ROW
         INSERT INTO inventory (inventory_id, cash, current_fuel, fruits, alcohol , snacks, soda, meals, water)
         VALUES (NEW.id, 100, 48900, 0, 0, 0, 0, 0, 0);""")
-    else:
-        print("Taulukko 'inventory' on jo olemassa.")
 
 # Tarkistaa onko sarake tai taulu jo olemassa
 def get_info_from_db(sql):

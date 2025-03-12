@@ -14,7 +14,6 @@ user_name = ""
 user_id = ""
 logged_in = ""
 current_icao = ""
-current_fuel = 0
 co2_consumed = ""
 co2_budget = ""
 cash = 0
@@ -45,7 +44,6 @@ def main_menu(screen, font):
     last_weather_update = time.time()
 
     while active:
-        #data_list = show_current_users()
         wipe_pygame_screen(screen)
 
         # Kirjoittaa käyttäjän tiedot pygame-ikkunaan
@@ -145,7 +143,7 @@ def add_new_user(screen, font):
 
 # Hakee sisäänkirjautuneen käyttäjän tiedot
 def get_user_data():
-    global user_id, user_name, current_icao, cash, current_fuel, reputation
+    global user_id, user_name, current_icao, cash, reputation
 
     result_game = get_logged_in_user_data()
 
@@ -158,23 +156,22 @@ def get_user_data():
     result_inventory = get_inventory(user_id)
 
     if result_inventory:
-        cash = result_inventory[0]
-        current_fuel = result_inventory[1]
-        flight.current_fuel = result_inventory[1]
+        cash = result_inventory[1]
+        flight.current_fuel = result_inventory[0]
 
 # Piirtää sisäänkirjautuneen käyttäjän tiedot pygame-ikkunaan
 def user_info_on_screen(screen, font):
-    global user_id, user_name, current_icao, cash, current_fuel
+    global user_id, user_name, current_icao, cash#, current_fuel
 
     if user_id != "" and user_name != "":
         draw_text(screen, f"{user_name}", 10, 10, font)
         draw_text(screen, f"{current_icao}", 10, 40, font)
-        draw_text(screen, f"{current_fuel}", 10, 70, font)
+        draw_text(screen, f"{flight.current_fuel:.0f}", 10, 70, font)
 
 """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
 # ingame menu
-def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
-    global cash
+def ingame_menu(screen, font, current_icao, remaining_distance):
+    global user_id
 
     # Lista käytössä olevista näppäimistä
     key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]
@@ -209,11 +206,11 @@ def ingame_menu(screen, font, current_fuel, current_icao, remaining_distance):
         if char == pygame.K_1:
             active = False
         elif char == pygame.K_4 and remaining_distance <= 0:
-            save_game_progress(user_id, current_fuel, current_icao, False)
+            save_game_progress(user_id, flight.current_fuel, current_icao, False)
             pygame.quit()
             sys.exit()
         elif char == pygame.K_5 and remaining_distance <= 0:
-            save_game_progress(user_id, current_fuel, current_icao, True)
+            save_game_progress(user_id, flight.current_fuel, current_icao, True)
             pygame.quit()
             sys.exit()
         elif char == pygame.K_2 and remaining_distance <= 0:

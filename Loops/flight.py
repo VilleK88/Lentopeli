@@ -147,4 +147,4 @@ def was_flight_interrupted(remaining_distance, current_icao, icao, current_locat
 
 def process_arrived_at_airport(current_icao1, current_icao2, screen, font):
     draw_arrived_airport(current_icao1, current_icao2, screen, 165, font)
-    #customers.process_flight(customers.current_customer, customers.wind_speed, inventory, icao)
+    # Kutsutaan tässä customers.py lennonloppumis-funktiota.

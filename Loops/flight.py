@@ -5,7 +5,6 @@ from geopy.distance import geodesic
 from Routes import server
 from Utils.weather import get_weather
 from Utils.utils import wipe_pygame_screen, update_pygame_screen, draw_centered_list, calculate_distance, calculate_distance_between_airports, draw_arrived_airport
-from Loops import customers
 
 # Lentokoneen tiedot
 max_speed_kmh = 780

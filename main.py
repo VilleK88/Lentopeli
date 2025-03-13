@@ -58,6 +58,7 @@ def main_program():
         if remaining_distance != None:
             if remaining_distance <= 0:
                 draw_arrived_airport(current_icao[0], current_icao[1], screen,165, font)
+                """process_flight voi kutsua tässä"""
         else:
             remaining_distance = 0
 

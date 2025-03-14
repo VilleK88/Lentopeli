@@ -9,7 +9,7 @@ import time
 import sys
 from Loops import flight, shop, customers
 
-# User info
+# Käyttäjän tiedot (globaalit muuttujat)
 user_name = ""
 user_id = ""
 logged_in = ""
@@ -19,35 +19,29 @@ co2_budget = ""
 cash = 0
 reputation = 0
 
+# Päävalikko, jossa käyttäjä voi luoda uuden pelaajan, valita pelaajan tai aloittaa pelin
 def main_menu(screen, font):
     global user_id, user_name
 
-    # Lista painikkeista, jotka ovat käytössä
-    key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]
-    # Alustaa loopin aktiiviseksi
-    active = True
+    key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6] # Käytettävissä olevat painikkeet
+    active = True # Loopin tila
 
-    # Alustetaan sisäänkirjautunut käyttäjä, jos sellainen on
-    get_user_data()
+    get_user_data() # Haetaan kirjautuneen käyttäjän tiedot
+    starting_airport = initialize_starting_airport() # Haetaan aloituslentokenttä
 
-    # Alustetaan aloitus lentoasema
-    starting_airport = initialize_starting_airport()
-
-    # Haetaan ja alustetaan lentoaseman koordinaatit
+    # Haetaan lentoaseman koordinaatit, jos aloitusasema on määritetty
     if starting_airport:
         airport = get_airport_coords(starting_airport)
         main.current_location = airport[2], airport[3]
 
-    # Alustetaan sää
+    # Haetaan ja päivitetään säätila
     weather = get_weather(main.current_location[0], main.current_location[1])
     weather, turbulence_warning = update_weather_on_ground(weather)
     last_weather_update = time.time()
 
     while active:
-        wipe_pygame_screen(screen)
-
-        # Kirjoittaa käyttäjän tiedot pygame-ikkunaan
-        user_info_on_screen(screen, font)
+        wipe_pygame_screen(screen) # Pyyhitään ruutu
+        user_info_on_screen(screen, font) # Näytetään käyttäjän tiedot
 
         # Päivitetään sää
         weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
@@ -85,7 +79,7 @@ def main_menu(screen, font):
             pygame.quit()
             sys.exit()
 
-# Käyttäjän valinta
+# Funktio käyttäjän valintaan tietokannasta
 def select_user(screen, font):
     global user_id, user_name, weather, current_icao
     input_text = ""
@@ -112,7 +106,7 @@ def select_user(screen, font):
         update_pygame_screen()
         time.sleep(2)
 
-
+# Funktio uuden käyttäjän lisäämiseksi tietokantaan
 def add_new_user(screen, font):
     active = True
     new_user_name = ""
@@ -141,7 +135,7 @@ def add_new_user(screen, font):
             time.sleep(2)
     wipe_pygame_screen(screen)
 
-# Hakee sisäänkirjautuneen käyttäjän tiedot
+# Hakee sisäänkirjautuneen käyttäjän tiedot tietokannasta
 def get_user_data():
     global user_id, user_name, current_icao, cash, reputation
 
@@ -159,7 +153,7 @@ def get_user_data():
         cash = result_inventory[1]
         flight.current_fuel = result_inventory[0]
 
-# Piirtää sisäänkirjautuneen käyttäjän tiedot pygame-ikkunaan
+# Näyttää käyttäjän tiedot ruudulla
 def user_info_on_screen(screen, font):
     global user_id, user_name, current_icao, cash#, current_fuel
 
@@ -174,32 +168,28 @@ def ingame_menu(screen, font, current_icao, remaining_distance):
     global user_id
 
     # Lista käytössä olevista näppäimistä
-    key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]
+    key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5] # Käytettävissä olevat painikkeet
     if remaining_distance <= 0:
         flight_menu = ["1 - Syötä ICAO-koodi", "2 - Kauppa", "3 - Matkustajat",
             "4 - Tallenna ja lopeta", "5 - Tallenna, lopeta ja kirjaudu ulos"]
     else:
         flight_menu = ["1 - Syötä ICAO-koodi"]
-    active = True
+    active = True # Loopin tila
 
-    # Alustetaan sää muuttujat
+    # Haetaan säätila
     weather = get_weather(main.current_location[0], main.current_location[1])
     weather, turbulence_warning = update_weather_on_ground(weather)
     last_weather_update = time.time()
 
     while active:
         wipe_pygame_screen(screen)
-
         draw_centered_list(screen, font, 100, flight_menu)
-
-        # Kirjoittaa käyttäjän tiedot pygame-ikkunaan
         user_info_on_screen(screen, font)
 
         # Päivitetään sää
         weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
         weather, turbulence_warning = update_weather_on_ground(weather)
         weather_info_on_screen(weather, last_weather_update, screen, font)
-
         update_pygame_screen()
 
         char = press_button_list(key_list)
@@ -214,21 +204,19 @@ def ingame_menu(screen, font, current_icao, remaining_distance):
             pygame.quit()
             sys.exit()
         elif char == pygame.K_2 and remaining_distance <= 0:
-            # Avaa kauppa-funktio
-            shop.shop(user_id, cash, screen, font)
+            shop.shop(user_id, cash, screen, font) # Avaa kauppa
         elif char == pygame.K_3 and remaining_distance <= 0:
-            # Avaa load_and_select_customer-funktio customers.py-tiedostosta
-            customers.load_and_select_customer(current_icao, screen, font)
+            customers.load_and_select_customer(current_icao, screen, font) # Avaa matkustajavalinnan
 
     return active
 
-# Alustetaan aloituslentokenttä
+# Alustaa aloituslentokentän ja palauttaa sen ICAO-koodin
 def initialize_starting_airport():
     global current_icao
     starting_airport = current_icao
     return starting_airport
 
-# Päivittää sään
+# Päivittää säätilan ja määrittää turbulenssivaroituksen
 def update_weather_on_ground(weather):
     if weather is None:
         weather = {"weather": "Tuntematon", "temp": 0, "wind": 0}
@@ -241,7 +229,7 @@ def update_weather_on_ground(weather):
 
     return weather, turbulence_warning
 
-# Sään päivityksen ajastus 5 s
+# Tarkistaa, onko sää päivitettävä ja päivittää sen 5 sekunnin välein
 def weather_timer_ground(weather, last_weather_update):
     if time.time() - last_weather_update >= 5:
         new_weather = get_weather(main.current_location[0], main.current_location[1])
@@ -250,10 +238,9 @@ def weather_timer_ground(weather, last_weather_update):
             last_weather_update = time.time()
     return weather, last_weather_update
 
-# Päivittää sään pygame-ikkunassa
+# Näyttää säätilan pygame-ikkunassa
 def weather_info_on_screen(weather, last_weather_update, screen, font):
     if user_name != "":
-        # Päivitetään sää
         weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
         weather, turbulence_warning = update_weather_on_ground(weather)
         draw_text(screen, f"Sää: {weather['weather']}, Tuuli: {weather['wind']:.2f} m/s {turbulence_warning}", 10, 365,

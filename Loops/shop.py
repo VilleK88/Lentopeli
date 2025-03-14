@@ -29,8 +29,8 @@ def shop(player_id, cash, screen, font):
     while active:
         wipe_pygame_screen(screen)
         draw_text(screen, "ESC - Poistu", 5, 5, font)
-        draw_centered_shop_list(screen, font, 50, products_list)
-        draw_text_to_center_x(screen, input_text, 180, font)
+        draw_centered_shop_list(screen, font, 25, products_list)
+        draw_text_to_center_x(screen, input_text, 370, font)
         update_pygame_screen()
 
         # Käsitellään näppäinkomennot

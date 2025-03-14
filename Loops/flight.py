@@ -4,7 +4,7 @@ from datetime import timedelta
 from geopy.distance import geodesic
 from Routes import server
 from Utils.weather import get_weather
-from Utils.utils import wipe_pygame_screen, update_pygame_screen, draw_centered_list, calculate_distance, calculate_distance_between_airports
+from Utils.utils import wipe_pygame_screen, update_pygame_screen, draw_centered_list, calculate_distance, calculate_distance_between_airports, draw_arrived_airport
 
 # Lentokoneen tiedot
 max_speed_kmh = 780
@@ -143,3 +143,7 @@ def was_flight_interrupted(remaining_distance, current_icao, icao, current_locat
     else:
         remaining_distance = calculate_distance(current_location, icao)
     return remaining_distance
+
+def process_arrived_at_airport(current_icao1, current_icao2, screen, font):
+    draw_arrived_airport(current_icao1, current_icao2, screen, 165, font)
+    # Kutsutaan tässä customers.py lennonloppumis-funktiota.

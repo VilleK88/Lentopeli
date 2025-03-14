@@ -2,7 +2,7 @@ import mysql.connector
 from Routes.config import db_config
 import uuid
 
-# Yhdistää tietokantaan
+# Yhdistää MySQL-tietokantaan käyttäen asetustiedoston konfiguraatiota
 def connect_db():
     try:
         conn = mysql.connector.connect(**db_config)
@@ -11,7 +11,7 @@ def connect_db():
         print(f"Virhe yrittäessä yhdistää tietokantaan: {err}")
         return None
 
-# Palauttaa lentokenttien koordinaatit
+# Hakee tietokannasta lentokentän koordinaatit ICAO-koodin perusteella
 def get_airport_coords(icao):
     conn = connect_db()
     if conn:
@@ -23,36 +23,28 @@ def get_airport_coords(icao):
         return (result[0], result[1], result[2], result[3]) if result else None
     return None
 
-# Tarkistaa löytyykö lisättyjä sarakkeita ja taulukkoa tietokannasta ja jos ei löydy niin lisää ne
+# Tarkistaa ja luo tarvittavat tietokantataulut ja sarakkeet, jos niitä ei ole olemassa
 def get_columns_and_tables():
 
     result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'logged_in'")
     if not result:
-        print("Saraketta 'logged_in' ei löydy, luodaan se....")
+        #print("Saraketta 'logged_in' ei löydy, luodaan se....")
         commit_to_db("alter table game add column logged_in boolean default false")
-    else:
-        print("Sarake 'logged_in' on jo olemassa.")
 
     result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'current_fuel'")
     if not result:
         print("Saraketta 'current_fuel' ei löydy, luodaan se....")
         commit_to_db("alter table game add column current_fuel float default 25941")
-    else:
-        print("Sarake 'current_fuel' on jo olemassa.")
 
     result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'reputation'")
     if not result:
         print("Saraketta 'reputation' ei löydy, luodaan se....")
         commit_to_db("alter table game add column reputation int default 10")
-    else:
-        print("Sarake 'reputation' on jo olemassa.")
 
     result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'current_icao'")
     if not result:
         print("Saraketta 'current_icao' ei löydy, luodaan se....")
         commit_to_db("alter table game add column current_icao text default 'EFHK'")
-    else:
-        print("Sarake 'current_icao' on jo olemassa.")
 
     result = get_info_from_db("select table_name from information_schema.tables where table_name = 'inventory'")
     if not result:
@@ -72,10 +64,8 @@ def get_columns_and_tables():
         commit_to_db("""CREATE TRIGGER after_game_insert AFTER INSERT ON game FOR EACH ROW
         INSERT INTO inventory (inventory_id, cash, current_fuel, fruits, alcohol , snacks, soda, meals, water)
         VALUES (NEW.id, 100, 48900, 0, 0, 0, 0, 0, 0);""")
-    else:
-        print("Taulukko 'inventory' on jo olemassa.")
 
-# Tarkistaa onko sarake tai taulu jo olemassa
+# Suorittaa SQL-kyselyn ja palauttaa tuloksen
 def get_info_from_db(sql):
     conn = connect_db()
     if conn:
@@ -85,7 +75,7 @@ def get_info_from_db(sql):
         conn.close()
         return result if result else None
 
-# Committaa uuden sarakkeen tai taulukon tietokantaan
+# Suorittaa SQL-komennon, joka muuttaa tietokantaa
 def commit_to_db(sql):
     conn = connect_db()
     if conn:
@@ -94,7 +84,7 @@ def commit_to_db(sql):
         conn.commit()
         conn.close()
 
-# Hakee sisään kirjautuneen käyttäjän tiedot tietokannan game-taulusta
+# Hakee kirjautuneen käyttäjän tiedot tietokannasta
 def get_logged_in_user_data():
     conn = connect_db()
     if conn:
@@ -105,7 +95,7 @@ def get_logged_in_user_data():
         conn.close()
         return (result[0], result[1], result[2], result[3]) if result else None
 
-# Hakee käyttäjän polttoaineen tietokannan inventory-taulusta
+# Hakee käyttäjän polttoaineen ja käteisen inventaariosta
 def get_inventory(user_id):
     conn = connect_db()
     if conn:
@@ -115,7 +105,7 @@ def get_inventory(user_id):
         result = cursor.fetchone()
         return (result[0],result[1]) if result else None
 
-# Palauttaa käyttäjä listan
+# Palauttaa listan kaikista käyttäjistä tietokannasta
 def show_current_users():
     conn = connect_db()
     if conn:
@@ -126,8 +116,7 @@ def show_current_users():
         conn.close()
         return result if result else None
 
-# Hakee käyttäjän tiedot tietokannasta ja muuttaa haetun käyttäjän
-# tilan logged_in = 1 ja nollaa muut käyttäjät logged_in = 0
+# Kirjaa käyttäjän sisään ja asettaa kaikki muut käyttäjät tilaan logged_in = 0
 def get_users_and_set_as_logged_in(name):
     conn = connect_db()
     if conn:
@@ -160,7 +149,7 @@ def check_if_name_in_db(name):
         else:
             return False
 
-# Lisää käyttäjän tietokantaan
+# Lisää uuden käyttäjän tietokantaan
 def add_user_to_db(name):
     conn = connect_db()
     if conn:
@@ -171,7 +160,7 @@ def add_user_to_db(name):
         conn.commit()
         conn.close()
 
-# Tallentaa pelin edistymisen
+# Tallentaa käyttäjän pelin edistymisen tietokantaan
 def save_game_progress(user_id, fuel, icao, logging_out):
     conn = connect_db()
     if conn:
@@ -186,7 +175,7 @@ def save_game_progress(user_id, fuel, icao, logging_out):
             log_out()
         conn.close()
 
-# Kirjaa käyttäjän ulos
+# Kirjaa käyttäjän ulos ja asettaa logged_in-arvon 0:ksi kaikille käyttäjille
 def log_out():
     conn = connect_db()
     if conn:

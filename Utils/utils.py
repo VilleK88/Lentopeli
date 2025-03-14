@@ -3,7 +3,7 @@ from Database.db import get_airport_coords
 import pygame
 import time
 
-# Alustaa pygame ikkunan pelin alussa
+# Alustaa Pygame-ikkunan ja fontin pelin alussa
 def initialize_pygame_screen():
     pygame.init()
     screen = pygame.display.set_mode((600, 400))
@@ -11,26 +11,26 @@ def initialize_pygame_screen():
     font = pygame.font.Font(None, 30)
     return screen, font
 
-# Pyyhkii pygame-ikkunan tyhjäksi
+# Pyyhkii Pygame-ikkunan mustaksi
 def wipe_pygame_screen(screen):
     screen.fill((0, 0, 0))
 
-# Päivittää pygame-ikkunan
+# Päivittää Pygame-ikkunan sisällön
 def update_pygame_screen():
     pygame.display.flip()
 
-# Määrittää pygame-ikkunan koon
+# Palauttaa Pygame-ikkunan nykyisen koon
 def get_pygame_screen_size(screen):
     screen_width, screen_height = screen.get_size()
     return screen_width, screen_height
 
-# Laskee lentokenttien välisen etäisyyden ICAO-koodien perusteella
+# Laskee kahden lentokentän välisen etäisyyden ICAO-koodien perusteella
 def calculate_distance_between_airports(icao1, icao2):
     koord1 = icao1[2], icao1[3]
     koord2 = icao2[2], icao2[3]
     return geodesic(koord1, koord2).kilometers
 
-# Laskee etäisyyden sen hetkisen sijainnin ja määränpään välillä
+# Laskee etäisyyden nykyisen sijainnin ja kohdelentokentän välillä
 def calculate_distance(current_location, icao2):
     koord1 = current_location[0], current_location[1]
     koord2 = icao2[2], icao2[3]
@@ -48,12 +48,12 @@ def get_valid_icao(screen, font, prompt):
         draw_text(screen, f"Virhe: ICAO-koodia '{icao}' ei löytynyt.", 20, 150, font)
         pygame.display.flip()
 
-# Piirtää kirjaimia
+# Piirtää tekstin ruudulle annetussa kohdassa
 def draw_text(screen, text, x, y, font):
     rendered_text = font.render(text, True, (255, 255, 255))
     screen.blit(rendered_text, (x, y))
 
-# Piirtää kirjaimia keskelle näyttöä x-akselilla
+# Piirtää tekstin keskelle ruutua x-akselilla
 def draw_text_to_center_x(screen, text, y, font):
     width, _ = get_pygame_screen_size(screen)
     rendered_text = font.render(text, True, (255, 255, 255))
@@ -61,7 +61,7 @@ def draw_text_to_center_x(screen, text, y, font):
 
     screen.blit(rendered_text, text_rect)
 
-# Piirtää käyttäjälistan
+# Piirtää käyttäjälistan näytölle
 def draw_user_list(screen, font, data_list):
     wipe_pygame_screen(screen)
     screen_width, screen_height = get_pygame_screen_size(screen)
@@ -102,7 +102,7 @@ def draw_user_list(screen, font, data_list):
         if char == pygame.K_ESCAPE:
             break
 
-# Piirtää saavuit lentoasemalle tekstin
+# Piirtää lentokentälle saapumisilmoituksen
 def draw_arrived_airport(airport, icao, screen, y, font):
     time.sleep(1)
     wipe_pygame_screen(screen)
@@ -133,7 +133,7 @@ def get_icao_input(screen, font, prompt, upper):
 
     return input_text.strip()
 
-# Palauttaa käyttäjän syöttään 'enter' painalluksen jälkeen
+# Käsittelee käyttäjän syötteen ja palauttaa sen, kun enter tai escape painetaan
 def get_user_input(input_text, active, upper, if_esc):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -154,7 +154,7 @@ def get_user_input(input_text, active, upper, if_esc):
 
     return input_text, active
 
-# Palauttaa käyttäjän syötteen suoraan ilman 'enter' painallusta, jos se löytyy vastaanotetulta listalta
+# Tarkistaa, painaako käyttäjä jotakin listalla annetuista näppäimistä
 def press_button_list(key_list):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -166,7 +166,7 @@ def press_button_list(key_list):
 
     return None
 
-# Ottaa yksittäisen käyttäjän näppäimen syötteen vastaan
+# Kuuntelee yksittäistä näppäinpainallusta
 def press_button(button):
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -175,23 +175,24 @@ def press_button(button):
 
     return None
 
-# Piirtää listan keskelle pygame-ruutua
+# Piirtää listan keskelle Pygame-ruutua
 def draw_centered_list(screen, font, y_start, list):
     screen_width, screen_height = get_pygame_screen_size(screen)
-    y_offset = 50
-    max_width = max(font.size(item)[0] for item in list)
+    y_offset = 50 # Rivien välinen etäisyys
+    max_width = max(font.size(item)[0] for item in list) # Suurin tekstin leveys
     for i, item in enumerate(list):
         text_surface = font.render(item, True, (255, 255, 255))
-        text_x = (screen_width - max_width) // 2
-        text_y = y_start + i * y_offset
+        text_x = (screen_width - max_width) // 2 # Keskitä x-akselilla
+        text_y = y_start + i * y_offset # Määritä y-akselin sijainti
         screen.blit(text_surface, (text_x, text_y))
 
+# Piirtää kaupan listan keskelle Pygame-ruutua
 def draw_centered_shop_list(screen, font, y_start, list):
     screen_width, screen_height = get_pygame_screen_size(screen)
-    y_offset = 50
-    max_width = max(font.size(item)[0] for item in list)
+    y_offset = 50 # Rivien välinen etäisyys
+    max_width = max(font.size(item)[0] for item in list) # Suurin tekstin leveys
     for i, item in enumerate(list):
         text_surface = font.render(item, True, (255, 255, 255))
-        text_x = (screen_width - max_width) // 2
-        text_y = y_start + i * y_offset
+        text_x = (screen_width - max_width) // 2 # Keskitä x-akselilla
+        text_y = y_start + i * y_offset # Määritä y-akselin sijainti
         screen.blit(text_surface, (text_x, text_y))

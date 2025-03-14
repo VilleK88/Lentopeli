@@ -4,7 +4,7 @@ from datetime import datetime
 from Utils.utils import get_valid_icao, initialize_pygame_screen
 from Database.db import get_columns_and_tables, get_airport_coords
 
-time_multiplier = 150 # tämä muuttuja määrittää pelin nopeuden
+time_multiplier = 100 # tämä muuttuja määrittää pelin nopeuden
 remaining_distance = None
 current_time = None
 current_location = 60.3172, 24.9633 # Latitude & Longitude tallennetaan tähän

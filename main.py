@@ -83,6 +83,7 @@ def main_program():
 
         # Päivitetään nykyinen lentoasema ja asetetaan valikko takaisin aktiiviseksi
         current_icao = icao
+        user.current_icao = current_icao[1]
         menu_on = True
 
 if __name__ == '__main__':

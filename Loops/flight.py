@@ -19,7 +19,7 @@ new_lon = 0
 turbulence_warning = ""
 
 def flight_loop(screen, font, start_coords, end_coords, remaining_distance, current_time, time_multiplier, current_location):
-    """ Lentopelin pääsilmukka 'curses' -kirjastolla """
+
     global stop_flight, zoom, new_lat, new_lon, turbulence_warning, current_speed_kmh, current_fuel
 
     print("\n📍 Paina '1' muuttaakseksi kurssia tai odota...\n")

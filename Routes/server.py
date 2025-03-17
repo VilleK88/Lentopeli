@@ -23,7 +23,7 @@ def starting_coordinates(lat, lon):
 class CustomHandler(http.server.SimpleHTTPRequestHandler):
 
     # Käsittelee POST-pyynnöt, joita käytetään sijainnin päivittämiseen
-    def do_post(self):
+    def do_POST(self):
         # Tarkistetaan, että pyyntö on /update_location, muuten palautetaan 404
         if self.path != "/update_location":
             self.send_response(404)

@@ -18,7 +18,7 @@ new_lat = 0
 new_lon = 0
 turbulence_warning = ""
 
-def flight_loop(screen, font, start_coords, end_coords, remaining_distance, current_time, time_multiplier, current_location):
+def flight_loop(screen, font, start_coords, icao, remaining_distance, current_time, time_multiplier, current_location):
 
     global stop_flight, zoom, new_lat, new_lon, turbulence_warning, current_speed_kmh, current_fuel
 
@@ -27,6 +27,7 @@ def flight_loop(screen, font, start_coords, end_coords, remaining_distance, curr
     # Alustetaan lähtö ja meno koordinaatit
     print("Aloitus koordinaatit:", start_coords)
     lat1, lon1 = start_coords
+    end_coords = icao[2], icao[3]
     lat2, lon2 = end_coords
     new_lat, new_lon = lat1, lon1
 

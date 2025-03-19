@@ -3,6 +3,7 @@ let currentPage = 0;
 const usersPerPage = 10;
 
 function showUserNameInput() {
+    hideUserList();
     document.getElementById("username-container").style.display = "block";
     let usernameInput = document.getElementById("username_input");
     usernameInput.value = "";
@@ -66,6 +67,8 @@ function fetchUsers() {
             users = data;
             currentPage = 0;
             displayUsers();
+            let userListContainer = document.getElementById("user-list-container");
+            userListContainer.style.display = "block";
         })
         .catch(error => {
             console.error("Virhe käyttäjälistan haussa:", error);
@@ -74,6 +77,7 @@ function fetchUsers() {
 }
 
 function displayUsers() {
+    hideUserNameContainer();
     let userListContainer= document.getElementById("user-list");
     userListContainer.innerHTML = ""
     let start = currentPage * usersPerPage;
@@ -109,4 +113,12 @@ function prevPage() {
 function updatePaginationButtons() {
     document.getElementById("prev-page").style.display = currentPage > 0 ? "inline-block" : "none";
     document.getElementById("next-page").style.display = (currentPage + 1) * usersPerPage < users.length ? "inline-block" : "none";
+}
+
+function hideUserList() {
+    document.getElementById("user-list-container").style.display = "none";
+}
+
+function hideUserNameContainer() {
+    document.getElementById("username-container").style.display = "none";
 }

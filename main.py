@@ -27,6 +27,7 @@ def start():
     get_columns_and_tables()
 
     # Käynnistetään päävalikko, jossa käyttäjä voi valita pelaajan tai luoda uuden
+    server.start_server()
     user.main_menu(screen, font)
 
     # Alustetaan peliaika

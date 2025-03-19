@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/css/main_menu.css">
+    <script src="/static/js/main_menu.js" defer></script>
+</head>
+<body>
+  <div class="menu_container">
+      <h1>Päävalikko</h1>
+      <p>Tervetuloa pelaamaan lentopeliä!</p>
+      <input type="text" id="username_input" placeholder="Syötä käyttäjänimi">
+      <button onclick="selectUser()">Valitse käyttäjä</button>
+      <p id="user_info"></p>
+  </div>
+  <div class="user_info_container">
+      <p id="user-info">Klikkaa nappia hakeaksesi käyttäjänimen.</p>
+      <button onclick="fetchUserInfo()">Hae käyttäjänimi</button>
+  </div>
+</body>
+</html>

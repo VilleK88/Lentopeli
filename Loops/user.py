@@ -80,7 +80,7 @@ def main_menu(screen, font):
             sys.exit()
 
 # Funktio käyttäjän valintaan tietokannasta
-def select_user(screen, font):
+"""def select_user(screen, font):
     global user_id, user_name, weather, current_icao
     input_text = ""
     active = True
@@ -104,7 +104,20 @@ def select_user(screen, font):
         wipe_pygame_screen(screen)
         draw_text_to_center_x(screen, f"Käyttäjä {user_name} kirjautunut sisään", 165, font)
         update_pygame_screen()
-        time.sleep(2)
+        time.sleep(2)"""
+
+# Funktio käyttäjän valintaan tietokannasta
+def select_user(name):
+    global user_id, user_name, weather, current_icao
+
+    result = get_users_and_set_as_logged_in(name)
+    if result:
+        user_id = result[0]
+        user_name = result[1]
+        get_user_data()
+        airport = get_airport_coords(current_icao)
+        main.current_location = airport[2], airport[3]
+        return True
 
 # Funktio uuden käyttäjän lisäämiseksi tietokantaan
 def add_new_user(screen, font):

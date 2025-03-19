@@ -1,0 +1,26 @@
+body {
+    color: maroon;
+}
+
+.menu_container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.user_info_container {
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 180px); /* Siirretään oikealle menu_containerista */
+    transform: translate(0, -50%);
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    width: 200px; /* Kiinteä leveys */
+}

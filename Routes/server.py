@@ -4,14 +4,18 @@ import http.server
 import json
 import requests
 import os
+from Loops import user, flight
 
 # Määritetään palvelimen portti ja muut asetukset
 PORT = 8000
 MAX_CONTENT_LENGTH = 1024
-ALLOWED_FILES = {"/templates/map.html", "/templates/location.json", "/templates/airplane.svg"}
+ALLOWED_FILES = {"/templates/map.html", "/templates/location.json", "/templates/airplane.svg", "/templates/main_menu.html"}
 MAP_FILE_PATH = "templates/map.html"
 LOCATION_FILE_PATH = "templates/location.json"
-URL = f"http://127.0.0.1:{PORT}/templates/map.html"
+PLAYER_FILE_PATH = "database/players.json"
+#URL = f"http://127.0.0.1:{PORT}/templates/map.html"
+URL = f"http://127.0.0.1:{PORT}/templates/main_menu.html"
+STATIC_DIR = "static"
 
 # Alustaa pelaajan aloituskoordinaatit ja tallentaa ne JSON-tiedostoon
 def starting_coordinates(lat, lon):
@@ -24,7 +28,38 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
 
     # Käsittelee POST-pyynnöt, joita käytetään sijainnin päivittämiseen
     def do_POST(self):
-        # Tarkistetaan, että pyyntö on /update_location, muuten palautetaan 404
+        if self.path == "/select_user":
+            content_length = int(self.headers["Content-Length"])
+            post_data = self.rfile.read(content_length)
+
+            try:
+                data = json.loads(post_data)
+                user_name = data.get("user_name")
+                command = data.get("command")
+
+                if command == "select_user":
+                    result = user.select_user(user_name)
+
+                    self.send_response(200)
+                    self.send_header("Content-type", "application/json")
+                    self.end_headers()
+                    #self.wfile.write(json.dumps({"message": f"Käyttäjä {user_name} valittu!"}).encode())
+                    self.wfile.write(json.dumps({"success": True}).encode())
+                else:
+                    self.send_response(400)
+                    self.end_headers()
+                    self.wfile.write(json.dumps({"error": "Tuntematon komento"}).encode())
+            except json.JSONDecodeError:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": "Virheellinen JSON"}).encode())
+        else:
+            self.send_response(404)
+            self.end_headers()
+            self.wfile.write(b'{"error": "Not found"}')
+
+
+        """"# Tarkistetaan, että pyyntö on /update_location, muuten palautetaan 404
         if self.path != "/update_location":
             self.send_response(404)
             self.end_headers()
@@ -65,11 +100,32 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         except json.JSONDecodeError:
             self.send_response(400)
             self.end_headers()
-            self.wfile.write(b'{"error": "Invalid JSON"}')
+            self.wfile.write(b'{"error": "Invalid JSON"}')"""
 
     # Käsittelee GET-pyynnöt, kuten sijaintitiedon hakemisen
     def do_GET(self):
-        if self.path == "/location":
+        if self.path in ALLOWED_FILES:
+            super().do_GET()
+        elif self.path.startswith("/static/"):
+            self.path = self.path.lstrip("/")
+            super().do_GET()
+        elif self.path == "/get_user":
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            user_data = {
+                "user_name": user.user_name,
+                "current_icao": user.current_icao,
+                "cash": user.cash,
+                "fuel": flight.current_fuel
+            }
+            self.wfile.write(json.dumps(user_data).encode())
+        else:
+            self.send_response(404)
+            self.end_headers()
+            self.wfile.write(b'{"error": "Not found"}')
+
+        """if self.path == "/location":
             try:
                 with open(LOCATION_FILE_PATH, "r") as file:
                     data = json.load(file)
@@ -86,13 +142,13 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         else:
             self.send_response(403)
             self.end_headers()
-            self.wfile.write(b'{"error": "Forbidden"}')
+            self.wfile.write(b'{"error": "Forbidden"}')"""
 
 # Käynnistää HTTP-palvelimen, joka toimii paikallisella koneella
 def run_http_server():
     with http.server.HTTPServer(("127.0.0.1", PORT), CustomHandler) as httpd:
         print(f"Palvelin käynnissä osoitteessa http://127.0.0.1:{PORT}")
-        webbrowser.open(URL) # Avaa selaimen karttasivulle
+        webbrowser.open(URL) # Avaa selaimen etusivulle
         httpd.serve_forever()
 
 # Käynnistää palvelimen erillisessä säikeessä, jotta ohjelma ei jää jumiin

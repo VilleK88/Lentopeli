@@ -54,3 +54,26 @@ function selectUser() {
             document.getElementById("user_info").innerText = "Virhe käyttäjän valinnassa";
         });
 }
+
+function fetchUsers() {
+    fetch("/get_users")
+        .then(response => response.json())
+        .then(data => {
+            let userListContainer = document.getElementById("user-list");
+            userListContainer.innerHTML = "";
+
+            if(Array.isArray(data)) {
+                data.forEach(user => {
+                    let listItem = document.createElement("li");
+                    listItem.textContent = user.screen_name;
+                    userListContainer.appendChild(listItem);
+                });
+            } else {
+                userListContainer.innerText = "Käyttäjiä ei löytynyt.";
+            }
+        })
+        .catch(error => {
+            console.error("Virhe käyttäjälistan haussa:", error);
+            document.getElementById("user-list").innerText = "Virhe käyttäjälistan haussa.";
+        });
+}

@@ -24,3 +24,15 @@ body {
     border-radius: 10px;
     width: 200px; /* Kiinteä leveys */
 }
+
+#user-list {
+    list-style-type: none; /* Poistaa listan merkit (•) */
+    padding: 0;
+    margin-top: 10px;
+}
+
+#user-list li {
+    padding: 5px 10px;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+}

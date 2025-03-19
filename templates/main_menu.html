@@ -15,6 +15,10 @@
           <input type="text" id="username_input" placeholder="Syötä käyttäjänimi">
           <button onclick="selectUser()">OK</button>
       </div>
+      <button onclick="fetchUsers()">Käyttäjälista</button>
+      <div id="user-list-container">
+          <ul id="user-list"></ul>
+      </div>
       <p id="user_info"></p>
   </div>
   <div class="user_info_container">

@@ -5,6 +5,7 @@ import json
 import requests
 import os
 from Loops import user, flight
+from Database import db
 
 # Määritetään palvelimen portti ja muut asetukset
 PORT = 8000
@@ -39,11 +40,9 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
 
                 if command == "select_user":
                     result = user.select_user(user_name)
-
                     self.send_response(200)
                     self.send_header("Content-type", "application/json")
                     self.end_headers()
-                    #self.wfile.write(json.dumps({"message": f"Käyttäjä {user_name} valittu!"}).encode())
                     self.wfile.write(json.dumps({"success": True}).encode())
                 else:
                     self.send_response(400)
@@ -120,6 +119,18 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
                 "fuel": flight.current_fuel
             }
             self.wfile.write(json.dumps(user_data).encode())
+        elif self.path == "/get_users":
+            users = db.show_current_users()
+            if users:
+                user_list = [{"id": player[0], "screen_name": player[1]} for player in users]
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps(user_list).encode())
+            else:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b'{"error": "No users found"}')
         else:
             self.send_response(404)
             self.end_headers()

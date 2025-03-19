@@ -38,6 +38,13 @@ body {
     gap: 5px;
 }
 
+#add-user-container {
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+    gap: 5px;
+}
+
 #user-list {
     list-style-type: none; /* Poistaa listan merkit (•) */
     padding: 0;

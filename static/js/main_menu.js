@@ -20,11 +20,19 @@ function showAddNewUserInput() {
     let usernameInput = document.getElementById("new-username");
     usernameInput.value = "";
     usernameInput.focus();
+    usernameInput.removeEventListener("keydown", handleNewUserEnter);
+    usernameInput.addEventListener("keydown", handleNewUserEnter);
 }
 
 function handleSelectUserEnter(event) {
     if(event.key === "Enter") {
         selectUser();
+    }
+}
+
+function handleNewUserEnter(event) {
+    if(event.key === "Enter") {
+        addUser();
     }
 }
 
@@ -88,6 +96,7 @@ function addUser() {
         .then(response => response.json())
         .then(data => {
             document.getElementById("add-user-message").innerText = data.message;
+            document.getElementById("add-user-container").style.display = "none";
 
             if(data.success) {
                 document.getElementById("new-username").value = "";

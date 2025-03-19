@@ -4,13 +4,19 @@ body {
 
 .menu_container {
     position: absolute;
-    top: 20%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     background-color: rgba(255, 255, 255, 0.1);
     padding: 20px;
     border-radius: 10px;
+    width: 250px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .user_info_container {

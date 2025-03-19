@@ -14,6 +14,7 @@
 
       <div class="button-container">
           <button onclick="showUserNameInput()">Valitse käyttäjä</button>
+          <button onclick="showAddNewUserInput()">Lisää käyttäjä</button>
           <button onclick="fetchUsers()">Käyttäjälista</button>
       </div>
 
@@ -21,6 +22,12 @@
           <input type="text" id="username_input" placeholder="Syötä käyttäjänimi">
           <button onclick="selectUser()">OK</button>
       </div>
+
+      <div id="add-user-container" style="display: none;">
+          <input type="text" id="new-username" placeholder="Syötä uusi käyttäjä">
+          <button onclick="addUser()">OK</button>
+      </div>
+      <p id="add-user-message"></p>
 
       <div id="user-list-container">
           <ul id="user-list"></ul>

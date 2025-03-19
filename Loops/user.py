@@ -120,7 +120,7 @@ def select_user(name):
         return True
 
 # Funktio uuden käyttäjän lisäämiseksi tietokantaan
-def add_new_user(screen, font):
+"""def add_new_user(screen, font):
     active = True
     new_user_name = ""
     while active:
@@ -146,7 +146,18 @@ def add_new_user(screen, font):
             draw_text_to_center_x(screen, f"Käyttäjä {new_user_name} lisätty tietokantaan", 165, font)
             update_pygame_screen()
             time.sleep(2)
-    wipe_pygame_screen(screen)
+    wipe_pygame_screen(screen)"""
+
+# Funktio uuden käyttäjän lisäämiseksi tietokantaan
+def add_new_user(name):
+    if name == "" or len(name) > 15:
+        return False
+    result = check_if_name_in_db(name)
+    if result:
+        return False
+    else:
+        add_user_to_db(name)
+        return True
 
 # Hakee sisäänkirjautuneen käyttäjän tiedot tietokannasta
 def get_user_data():

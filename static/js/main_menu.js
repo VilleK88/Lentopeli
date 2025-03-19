@@ -4,12 +4,22 @@ const usersPerPage = 10;
 
 function showUserNameInput() {
     hideUserList();
+    hideNewUserContainer();
     document.getElementById("username-container").style.display = "block";
     let usernameInput = document.getElementById("username_input");
     usernameInput.value = "";
     usernameInput.focus();
     usernameInput.removeEventListener("keydown", handleSelectUserEnter);
     usernameInput.addEventListener("keydown", handleSelectUserEnter);
+}
+
+function showAddNewUserInput() {
+    hideUserList();
+    hideUserNameContainer();
+    document.getElementById("add-user-container").style.display = "block";
+    let usernameInput = document.getElementById("new-username");
+    usernameInput.value = "";
+    usernameInput.focus();
 }
 
 function handleSelectUserEnter(event) {
@@ -60,6 +70,35 @@ function selectUser() {
         });
 }
 
+function addUser() {
+    let name = document.getElementById("new-username").value.trim();
+
+    if (!name) {
+        document.getElementById("add-user-message").innerText = "Nimi ei voi olla tyhjä!";
+        return;
+    }
+
+    fetch("/add_user", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({name: name})
+    })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("add-user-message").innerText = data.message;
+
+            if(data.success) {
+                document.getElementById("new-username").value = "";
+            }
+        })
+        .catch(error => {
+            console.error("Virhe käyttäjän lisäyksessä:", error);
+            document.getElementById("add-user-message").innerText = "Käyttäjän lisääminen tietokantaan epäonnistui.";
+        });
+}
+
 function fetchUsers() {
     fetch("/get_users")
         .then(response => response.json())
@@ -78,6 +117,7 @@ function fetchUsers() {
 
 function displayUsers() {
     hideUserNameContainer();
+    hideNewUserContainer();
     let userListContainer= document.getElementById("user-list");
     userListContainer.innerHTML = ""
     let start = currentPage * usersPerPage;
@@ -121,4 +161,8 @@ function hideUserList() {
 
 function hideUserNameContainer() {
     document.getElementById("username-container").style.display = "none";
+}
+
+function hideNewUserContainer() {
+    document.getElementById("add-user-container").style.display = "none";
 }

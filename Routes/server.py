@@ -52,6 +52,34 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_response(400)
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": "Virheellinen JSON"}).encode())
+        elif self.path == "/add_user":
+            content_length = int(self.headers["Content-Length"])
+            post_data = self.rfile.read(content_length)
+            try:
+                data = json.loads(post_data)
+                name = data.get("name", "").strip()
+
+                if not name:
+                    self.send_response(400)
+                    self.send_header("Content-type", "application/json")
+                    self.end_headers()
+                    self.wfile.write(json.dumps({"success": False, "message": "Nimi ei voi olla tyhjä."}).encode())
+                    return
+
+                success = user.add_new_user(name)
+
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                if success:
+                    self.wfile.write(json.dumps({"success": True, "message": f"Käyttäjä '{name}' lisätty tietokantaan."}).encode())
+                else:
+                    self.wfile.write(json.dumps({"success": False, "message": "Käyttäjänimi on jo käytössä tai virheellinen."}).encode())
+            except json.JSONDecodeError:
+                self.send_response(400)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "message": "Virheellinen JSON-data."}).encode())
         else:
             self.send_response(404)
             self.end_headers()

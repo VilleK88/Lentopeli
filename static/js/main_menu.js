@@ -1,3 +1,7 @@
+let users = [];
+let currentPage = 0;
+const usersPerPage = 10;
+
 function showUserNameInput() {
     document.getElementById("username-container").style.display = "block";
     let usernameInput = document.getElementById("username_input");
@@ -59,21 +63,50 @@ function fetchUsers() {
     fetch("/get_users")
         .then(response => response.json())
         .then(data => {
-            let userListContainer = document.getElementById("user-list");
-            userListContainer.innerHTML = "";
-
-            if(Array.isArray(data)) {
-                data.forEach(user => {
-                    let listItem = document.createElement("li");
-                    listItem.textContent = user.screen_name;
-                    userListContainer.appendChild(listItem);
-                });
-            } else {
-                userListContainer.innerText = "Käyttäjiä ei löytynyt.";
-            }
+            users = data;
+            currentPage = 0;
+            displayUsers();
         })
         .catch(error => {
             console.error("Virhe käyttäjälistan haussa:", error);
             document.getElementById("user-list").innerText = "Virhe käyttäjälistan haussa.";
         });
+}
+
+function displayUsers() {
+    let userListContainer= document.getElementById("user-list");
+    userListContainer.innerHTML = ""
+    let start = currentPage * usersPerPage;
+    let end = start + usersPerPage;
+    let paginatedUsers = users.slice(start, end);
+
+    if(paginatedUsers.length > 0) {
+        paginatedUsers.forEach(user => {
+            let listItem = document.createElement("li");
+            listItem.textContent = user.screen_name;
+            userListContainer.appendChild(listItem);
+        });
+    } else {
+        userListContainer.innerText = "Ei käyttäjiä.";
+    }
+    updatePaginationButtons();
+}
+
+function nextPage() {
+    if((currentPage + 1) * usersPerPage < users.length) {
+        currentPage++;
+        displayUsers();
+    }
+}
+
+function prevPage() {
+    if(currentPage > 0) {
+        currentPage--;
+        displayUsers();
+    }
+}
+
+function updatePaginationButtons() {
+    document.getElementById("prev-page").style.display = currentPage > 0 ? "inline-block" : "none";
+    document.getElementById("next-page").style.display = (currentPage + 1) * usersPerPage < users.length ? "inline-block" : "none";
 }

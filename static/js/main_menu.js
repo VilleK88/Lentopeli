@@ -1,3 +1,18 @@
+function showUserNameInput() {
+    document.getElementById("username-container").style.display = "block";
+    let usernameInput = document.getElementById("username_input");
+    usernameInput.value = "";
+    usernameInput.focus();
+    usernameInput.removeEventListener("keydown", handleSelectUserEnter);
+    usernameInput.addEventListener("keydown", handleSelectUserEnter);
+}
+
+function handleSelectUserEnter(event) {
+    if(event.key === "Enter") {
+        selectUser();
+    }
+}
+
 function fetchUserInfo() {
     fetch("/get_user")
         .then(response => response.json())
@@ -31,9 +46,8 @@ function selectUser() {
             if(data.success) {
                 document.getElementById("user-info").innerText = data.message;
                 fetchUserInfo();
+                document.getElementById("username-container").style.display = "none";
             }
-            //document.getElementById("user-info").innerText = data.message;
-            //fetchUserInfo();
         })
         .catch(error => {
             console.error("Virhe:", error);

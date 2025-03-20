@@ -3,25 +3,23 @@ let currentPage = 0;
 const usersPerPage = 10;
 
 function showUserNameInput() {
-    hideUserList();
-    hideNewUserContainer();
-    document.getElementById("username-container").style.display = "block";
-    let usernameInput = document.getElementById("username_input");
-    usernameInput.value = "";
-    usernameInput.focus();
-    usernameInput.removeEventListener("keydown", handleSelectUserEnter);
-    usernameInput.addEventListener("keydown", handleSelectUserEnter);
+    showInputContainer("username-container", "username_input", handleSelectUserEnter);
 }
 
 function showAddNewUserInput() {
+    showInputContainer("add-user-container", "new-username", handleNewUserEnter);
+}
+
+function showInputContainer(container, input_field, handleEnterFunction) {
     hideUserList();
     hideUserNameContainer();
-    document.getElementById("add-user-container").style.display = "block";
-    let usernameInput = document.getElementById("new-username");
+    hideNewUserContainer();
+    document.getElementById(container).style.display = "block";
+    let usernameInput = document.getElementById(input_field);
     usernameInput.value = "";
     usernameInput.focus();
-    usernameInput.removeEventListener("keydown", handleNewUserEnter);
-    usernameInput.addEventListener("keydown", handleNewUserEnter);
+    usernameInput.removeEventListener("keydown", handleEnterFunction);
+    usernameInput.addEventListener("keydown", handleEnterFunction);
 }
 
 function handleEnter(event, actionFunction) {

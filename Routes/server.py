@@ -7,6 +7,9 @@ import os
 import sys
 from Loops import user, flight
 from Database import db
+import time
+from dotenv import load_dotenv
+import main
 
 # Määritetään palvelimen portti ja muut asetukset
 PORT = 8000
@@ -17,6 +20,10 @@ LOCATION_FILE_PATH = "templates/location.json"
 PLAYER_FILE_PATH = "database/players.json"
 URL = f"http://127.0.0.1:{PORT}/templates/main_menu.html"
 STATIC_DIR = "static"
+
+# Alustetaan säämuuttujat
+last_weather_update = 0
+cached_weather = None
 
 # Alustaa pelaajan aloituskoordinaatit ja tallentaa ne JSON-tiedostoon
 def starting_coordinates(lat, lon):
@@ -129,7 +136,8 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         routes = {
             "/get_user": self.handle_get_user,
             "/get_users": self.handle_get_users,
-            "/location": self.handle_get_location
+            "/location": self.handle_get_location,
+            "/get_weather": self.handle_get_weather
         }
 
         # Käsitellään staattiset tiedostot
@@ -144,6 +152,20 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             handler()
         else:
             self.send_json_response(404, {"error": "Not found"})
+
+    def handle_get_weather(self):
+        """Palauttaa ajankohtaiset säätiedot JSON-muodossa."""
+        if main.current_location:
+            lat, lon = main.current_location
+            print(f"main.current_location: ", main.current_location)
+            weather_data = fetch_weather(lat, lon)
+
+            if "error" in weather_data:
+                self.send_json_response(500, weather_data)
+            else:
+                self.send_json_response(200, weather_data)
+        else:
+            self.send_json_response(400, {"error": "Sijaintia ei ole asetettu"})
 
     def handle_get_user(self):
         """Käsittelee käyttäjän tietojen haun."""
@@ -220,3 +242,53 @@ def update_server(latitude, longitude, on_flight):
 
     except Exception as e:
         print(f"Virhe sijainnin tallentamisessa: {e}")
+
+def fetch_weather(lat, lon):
+    """Hakee säätiedot OpenWeatherMapista käyttäjän sijainnin perusteella."""
+    global last_weather_update, cached_weather
+
+    # Ladataan API-avain ympäristömuuttujista
+    load_dotenv()
+    API_KEY = os.getenv("OPENWEATHER_API_KEY")
+    if not API_KEY:
+        return {"error": "API-avain puuttuu"}
+
+    # Jos viimeisimmästä päivityksestä on alle 3 minuuttia, käytetään välimuistia
+    if time.time() - last_weather_update < 180 and cached_weather:
+        return cached_weather
+
+    # Määritetään OpenWeatherMap API:n URL
+    BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
+    url = f"{BASE_URL}?lat={lat}&lon={lon}&appid={API_KEY}&units=metric&lang=fi"
+
+    try:
+        response = requests.get(url, timeout=2)
+        if response.status_code == 200:
+            data = response.json()
+
+            # Haetaan sääparametrit
+            weather_condition = data["weather"][0]["description"].capitalize()
+            temp = data["main"]["temp"]
+            wind_speed = data["wind"]["speed"]
+            wind_direction = data["wind"].get("deg", 0)
+
+            # Turbulenssivaroitus: jos tuuli yli 10 m/s
+            turbulence_warning = wind_speed > 10
+
+            # Tallennetaan tiedot välimuistiin
+            cached_weather = {
+                "temperature": temp,
+                "wind_speed": wind_speed,
+                "wind_direction": wind_direction,
+                "weather": weather_condition,
+                "turbulence_warning": turbulence_warning
+            }
+            last_weather_update = time.time()
+
+            return cached_weather
+
+        else:
+            return {"error": f"Virhe API-kutsussa. Koodi: {response.status_code}"}
+
+    except requests.RequestException as e:
+        return {"error": f"Yhteysvirhe: {e}"}

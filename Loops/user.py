@@ -122,9 +122,9 @@ def ingame_menu(current_icao, remaining_distance):
     #ingame_menu_active = True # Loopin tila
 
     # Haetaan säätila
-    weather = get_weather(main.current_location[0], main.current_location[1])
-    weather, turbulence_warning = update_weather_on_ground(weather)
-    last_weather_update = time.time()
+    #weather = get_weather(main.current_location[0], main.current_location[1])
+    #weather, turbulence_warning = update_weather_on_ground(weather)
+    #last_weather_update = time.time()
 
     while ingame_menu_active:
         time.sleep(1)

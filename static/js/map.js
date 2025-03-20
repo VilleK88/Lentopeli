@@ -92,3 +92,33 @@ function fetchUserInfo() {
         });
 }
 document.addEventListener("DOMContentLoaded", fetchUserInfo)
+
+// Haetaan reaaliaikainen sää
+async function fetchWeather() {
+    try {
+        let response = await fetch("/get_weather");
+        let data = await response.json();
+
+        if(data.error) {
+            document.getElementById("weather-info").innerText = "Säätietoja ei saatavilla.";
+            console.error("Säätietojen virhe:", data.error);
+            return;
+        }
+
+        document.getElementById("weather-info").innerHTML = `
+            Lämpötila: ${data.temperature}°C <br>
+            Tuuli: ${data.wind_speed} m/s <br>
+            Suunta: ${data.wind_direction}° <br>
+            ${data.turbulence_warning ? "<span style='color:red;'>Varoitus: Turbulenssia!</span>" : ""}
+        `;
+    } catch (error) {
+        console.error("Virhe säätietojen haussa:", error);
+        document.getElementById("weather-info").innerText = "Säätietoja ei saatavilla.";
+    }
+}
+
+// Päivitetään sää automaattisesti 5 sekunnin välein
+setInterval(fetchWeather, 5000);
+
+// Haetaan sää heti sivun latautuessa
+document.addEventListener("DOMContentLoaded", fetchWeather);

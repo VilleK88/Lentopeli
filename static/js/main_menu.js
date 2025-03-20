@@ -7,13 +7,16 @@ function showUserNameInput() {
 }
 
 function showAddNewUserInput() {
+    document.getElementById("add-user-message").innerText = "";
     showInputContainer("add-user-container", "new-username", handleNewUserEnter);
+    document.getElementById("add-user-message").style.display = "block";
 }
 
 function showInputContainer(container, input_field, handleEnterFunction) {
     hideUserList();
     hideUserNameContainer();
     hideNewUserContainer();
+    document.getElementById("add-user-message").style.display = "none";
     document.getElementById(container).style.display = "block";
     let usernameInput = document.getElementById(input_field);
     usernameInput.value = "";

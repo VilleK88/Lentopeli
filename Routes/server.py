@@ -15,7 +15,6 @@ ALLOWED_FILES = {"/templates/map.html", "/templates/location.json", "/templates/
 MAP_FILE_PATH = "templates/map.html"
 LOCATION_FILE_PATH = "templates/location.json"
 PLAYER_FILE_PATH = "database/players.json"
-#URL = f"http://127.0.0.1:{PORT}/templates/map.html"
 URL = f"http://127.0.0.1:{PORT}/templates/main_menu.html"
 STATIC_DIR = "static"
 

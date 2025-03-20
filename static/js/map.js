@@ -13,7 +13,7 @@ var airplaneIcon = L.icon({
 
 // Funktio, joka alustaa kartan ja sijoittaa lentokoneen siihen
 function initializeMap(lat, lon) {
-    if(!map) {
+    if (!map) {
         // Jos karttaa ei ole vielä luotu, luodaan se
         map = L.map('map').setView([lat, lon], 12);
 
@@ -26,9 +26,9 @@ function initializeMap(lat, lon) {
         marker = L.marker([lat, lon], {icon: airplaneIcon}).addTo(map);
     } else {
         // Jos kartta on jo olemassa, päivitetään sijainti vain tarvittaessa
-        if(lastLat !== lat || lastLon !== lon) {
+        if (lastLat !== lat || lastLon !== lon) {
             marker.setLatLng([lat, lon]) // Päivitetään merkin sijainti
-            map.setView([lat, lon], map.getZoom(), {animate: true }); // Liikutetaan näkymää
+            map.setView([lat, lon], map.getZoom(), {animate: true}); // Liikutetaan näkymää
 
             // Päivitetään viimeisimmät koordinaatit
             lastLat = lat;
@@ -44,11 +44,11 @@ async function fetchLocation() {
         let response = await fetch('/location');
         let data = await response.json(); // Muuntaa vastauksen JSON-muotoon
 
-        if(data.lat && data.lon) {
+        if (data.lat && data.lon) {
             initializeMap(data.lat, data.lon) // Päivittää kartan
         }
         setTimeout(fetchLocation, 3000); // Uudelleenhaku 1 sekunnin välein
-    } catch(error) {
+    } catch (error) {
         console.error("Virhe haettaessa sijaintia:", error);
     }
 }
@@ -59,18 +59,36 @@ async function fetchInitialLocation() {
         let response = await fetch('location.json'); // Hakee sijaintitiedoston
         let data = await response.json(); // Muuntaa vastauksen JSON-muotoon
 
-        if(data.lat && data.lon) {
+        if (data.lat && data.lon) {
             initializeMap(data.lat, data.lon); // Asettaa aloitussijainnin
 
-            if(data.on_flight) {
+            if (data.on_flight) {
                 fetchLocation(); // Aloittaa jatkuvan sijaintipäivityksen, jos lentokone on ilmassa
             }
         }
         setTimeout(fetchLocation, 1000); // Uudelleenhaku 1 sekunnin välein
-    } catch(error) {
+    } catch (error) {
         console.error("Virhe haettaessa sijaintia:", error);
     }
 }
 
 // Käynnistää alkuperäisen sijainninhaun, kun sivu latautuu
 window.onload = fetchInitialLocation;
+
+function fetchUserInfo() {
+    fetch("/get_user")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("user-info").innerText =
+                `Käyttäjä: ${data.user_name}
+                Lentoasema: ${data.airport_name}
+                ICAO: ${data.current_icao}
+                Käteinen: ${data.cash} €
+                Polttoaine: ${data.fuel} L`;
+        })
+        .catch(error => {
+            console.error("Virhe käyttäjätietojen haussa:", error);
+            document.getElementById("user-info").innerText = "Tietojen haku epäonnistui";
+        });
+}
+document.addEventListener("DOMContentLoaded", fetchUserInfo)

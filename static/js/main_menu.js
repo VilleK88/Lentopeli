@@ -139,6 +139,7 @@ function fetchUsers() {
 function displayUsers() {
     hideUserNameContainer();
     hideNewUserContainer();
+    document.getElementById("add-user-message").style.display = "none";
     let userListContainer= document.getElementById("user-list");
     userListContainer.innerHTML = ""
     let start = currentPage * usersPerPage;

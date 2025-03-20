@@ -37,7 +37,8 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             "/select_user": self.handle_select_user,
             "/add_user": self.handle_add_user,
             "/log_out": self.handle_logout,
-            "/exit_game": self.handle_exit_game
+            "/exit_game": self.handle_exit_game,
+            "/start_game": self.handle_start_game
         }
 
         # Tarkistetaan, onko polku olemassa reitityksessä
@@ -79,6 +80,10 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
     def handle_exit_game(self):
         """Sulkee ohjelman"""
         sys.exit()
+
+    def handle_start_game(self):
+        """Käsittelee pelin käynnistyksen"""
+        user.start_game()
 
     def handle_select_user(self):
         """Käsittelee käyttäjän valinnan."""

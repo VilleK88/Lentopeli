@@ -21,14 +21,14 @@ def start():
     global remaining_distance, current_time, current_location, screen, font
 
     # Alustetaan pygame-ikkuna ja kirjasin
-    screen, font = initialize_pygame_screen()
+    #screen, font = initialize_pygame_screen()
 
     # Tarkistetaan ja luodaan tarvittavat tietokantataulukot ja sarakkeet
     get_columns_and_tables()
 
     # Käynnistetään päävalikko, jossa käyttäjä voi valita pelaajan tai luoda uuden
     server.start_server()
-    user.main_menu(screen, font)
+    user.main_menu()
 
     # Alustetaan peliaika
     current_time = datetime.now()
@@ -39,19 +39,19 @@ def start():
     # Haetaan lähtölentoaseman koordinaatit tietokannasta
     airport = get_airport_coords(starting_airport)
 
-    return airport, screen
+    return airport
 
 # Pääohjelman silmukka, joka pyörittää pelin kulkua
 def main_program():
     global remaining_distance, current_location, current_time, time_multiplier, screen, font
 
     # Käynnistetään peli ja saadaan lähtölentoaseman tiedot sekä Pygame-ikkuna
-    current_icao, screen = start()
+    current_icao = start()
     current_location = current_icao[2], current_icao[3]
 
     # Käynnistetään palvelin ja asetetaan sen aloituskoordinaatit
     server.starting_coordinates(current_icao[2], current_icao[3])
-    server.start_server()
+    #server.start_server()
 
     menu_on = True # Määrittää, onko valikko aktiivinen
 
@@ -70,7 +70,7 @@ def main_program():
 
         # Käynnistetään pelin sisäinen valikko, jos se on aktiivinen
         while menu_on:
-            menu_on = user.ingame_menu(screen, font, current_icao[1], remaining_distance)
+            menu_on = user.ingame_menu(current_icao[1], remaining_distance)
 
         # Pyydetään käyttäjää syöttämään seuraavan lentoaseman ICAO-koodi
         icao = get_valid_icao(screen, font, "ICAO-koodi: ")

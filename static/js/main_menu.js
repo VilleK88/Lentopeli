@@ -62,9 +62,22 @@ function logOut() {
 
 function exitGame() {
     window.close();
-    fetch("/exit_game", {
-        method: "POST"
-    })
+    fetch("/exit_game", { method: "POST" })
+        .catch(error => console.error("Virhe uloskirjautumisessa:", error));
+}
+
+function startGame() {
+    fetch("/start_game", { method: "POST" })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                // avataan map.html-sivu
+                alert("Peli alkaa.");
+            } else {
+                alert("Sinun pitää kirjautua sisään, ennen kuin voit aloittaa pelin.");
+            }
+        })
+        .catch(error => console.error("Virhe pelin aloituksessa:", error));
 }
 
 function fetchUserInfo() {

@@ -8,6 +8,7 @@ from Database.db import show_current_users, get_users_and_set_as_logged_in, chec
 import time
 import sys
 from Loops import flight, shop, customers
+import requests
 
 # Käyttäjän tiedot (globaalit muuttujat)
 user_name = ""
@@ -20,12 +21,14 @@ co2_budget = ""
 cash = 0
 reputation = 0
 
-# Päävalikko, jossa käyttäjä voi luoda uuden pelaajan, valita pelaajan tai aloittaa pelin
-def main_menu(screen, font):
-    global user_id, user_name
+# Muut globaalit muuttujat
+main_menu_active = True
+ingame_menu_active = True
 
-    key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6] # Käytettävissä olevat painikkeet
-    active = True # Loopin tila
+# Päävalikko, jossa käyttäjä voi luoda uuden pelaajan, valita pelaajan tai aloittaa pelin
+def main_menu():
+    global user_id, user_name, main_menu_active
+
 
     get_user_data() # Haetaan kirjautuneen käyttäjän tiedot
     starting_airport = initialize_starting_airport() # Haetaan aloituslentokenttä
@@ -36,49 +39,20 @@ def main_menu(screen, font):
         main.current_location = airport[2], airport[3]
 
     # Haetaan ja päivitetään säätila
-    weather = get_weather(main.current_location[0], main.current_location[1])
-    weather, turbulence_warning = update_weather_on_ground(weather)
-    last_weather_update = time.time()
+    #weather = get_weather(main.current_location[0], main.current_location[1])
+    #weather, turbulence_warning = update_weather_on_ground(weather)
+    #last_weather_update = time.time()
 
-    while active:
-        wipe_pygame_screen(screen) # Pyyhitään ruutu
-        user_info_on_screen(screen, font) # Näytetään käyttäjän tiedot
+    while main_menu_active:
+        time.sleep(1)
 
-        # Päivitetään sää
-        weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
-        weather, turbulence_warning = update_weather_on_ground(weather)
-        weather_info_on_screen(weather, last_weather_update, screen, font)
-
-        menu = ["1 - Tee uusi pelaaja", "2 - Valitse pelaaja",
-                "3 - Aloita peli", "4 - Käyttäjälista" , "5 - Lopeta", "6 - Lopeta ja kirjaudu ulos"]
-
-        draw_centered_list(screen, font, 70, menu)
-        update_pygame_screen()
-
-        char = press_button_list(key_list)
-        if char == pygame.K_1:
-            add_new_user(screen, font)
-        elif char == pygame.K_2:
-            select_user(screen, font)
-        elif char == pygame.K_3:
-            if user_name != "":
-                active = False
-            else:
-                wipe_pygame_screen(screen)
-                draw_text_to_center_x(screen, "Kirjaudu sisään ensiksi", 165, font)
-                update_pygame_screen()
-                time.sleep(2)
-        elif char == pygame.K_4:
-            data_list = show_current_users()
-            draw_user_list(screen, font, data_list)
-        elif char == pygame.K_5:
-            pygame.quit()
-            sys.exit()
-        elif char == pygame.K_6:
-            if user_name != "":
-                log_out()
-            pygame.quit()
-            sys.exit()
+def start_game():
+    global user_name, main_menu_active
+    if user_name != "":
+        main_menu_active = False
+        print("Aloita peli")
+        return True
+    return False
 
 # Funktio käyttäjän valintaan tietokannasta
 def select_user(name):
@@ -135,37 +109,38 @@ def user_info_on_screen(screen, font):
 
 """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
 # ingame menu
-def ingame_menu(screen, font, current_icao, remaining_distance):
-    global user_id
+def ingame_menu(current_icao, remaining_distance):
+    global user_id, ingame_menu_active
 
     # Lista käytössä olevista näppäimistä
-    key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5] # Käytettävissä olevat painikkeet
+    """key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5] # Käytettävissä olevat painikkeet
     if remaining_distance <= 0:
         flight_menu = ["1 - Syötä ICAO-koodi", "2 - Kauppa", "3 - Matkustajat",
             "4 - Tallenna ja lopeta", "5 - Tallenna, lopeta ja kirjaudu ulos"]
     else:
-        flight_menu = ["1 - Syötä ICAO-koodi"]
-    active = True # Loopin tila
+        flight_menu = ["1 - Syötä ICAO-koodi"]"""
+    #ingame_menu_active = True # Loopin tila
 
     # Haetaan säätila
     weather = get_weather(main.current_location[0], main.current_location[1])
     weather, turbulence_warning = update_weather_on_ground(weather)
     last_weather_update = time.time()
 
-    while active:
-        wipe_pygame_screen(screen)
-        draw_centered_list(screen, font, 100, flight_menu)
-        user_info_on_screen(screen, font)
+    while ingame_menu_active:
+        time.sleep(1)
+        #wipe_pygame_screen(screen)
+        #draw_centered_list(screen, font, 100, flight_menu)
+        #user_info_on_screen(screen, font)
 
         # Päivitetään sää
-        weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
-        weather, turbulence_warning = update_weather_on_ground(weather)
-        weather_info_on_screen(weather, last_weather_update, screen, font)
-        update_pygame_screen()
+        #weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
+        #weather, turbulence_warning = update_weather_on_ground(weather)
+        #weather_info_on_screen(weather, last_weather_update, screen, font)
+        #update_pygame_screen()
 
-        char = press_button_list(key_list)
+        """char = press_button_list(key_list)
         if char == pygame.K_1:
-            active = False
+            ingame_menu_active = False
         elif char == pygame.K_4 and remaining_distance <= 0:
             save_game_progress(user_id, flight.current_fuel, current_icao, False)
             pygame.quit()
@@ -177,9 +152,9 @@ def ingame_menu(screen, font, current_icao, remaining_distance):
         elif char == pygame.K_2 and remaining_distance <= 0:
             shop.shop(user_id, cash, screen, font) # Avaa kauppa
         elif char == pygame.K_3 and remaining_distance <= 0:
-            customers.load_and_select_customer(current_icao, screen, font) # Avaa matkustajavalinnan
+            customers.load_and_select_customer(current_icao, screen, font) # Avaa matkustajavalinnan"""
 
-    return active
+    return ingame_menu_active
 
 # Alustaa aloituslentokentän ja palauttaa sen ICAO-koodin
 def initialize_starting_airport():

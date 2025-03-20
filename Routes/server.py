@@ -148,39 +148,53 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
 
     # Käsittelee GET-pyynnöt, kuten sijaintitiedon hakemisen
     def do_GET(self):
-        if self.path in ALLOWED_FILES:
-            super().do_GET()
-        elif self.path.startswith("/static/"):
+        """Käsittelee kaikki GET-pyynnöt dynaamisen reitityksen kautta."""
+
+        # Määritetään GET-reitit ja niihin liittyvät funktiot
+        routes = {
+            "/get_user": self.handle_get_user,
+            "/get_users": self.handle_get_users
+        }
+
+        # Käsitellään staattiset tiedostot
+        if self.path in ALLOWED_FILES or self.path.startswith("/static/"):
             self.path = self.path.lstrip("/")
             super().do_GET()
-        elif self.path == "/get_user":
-            self.send_response(200)
-            self.send_header("Content-type", "application/json")
-            self.end_headers()
-            user_data = {
-                "user_name": user.user_name,
-                "airport_name": user.airport_name,
-                "current_icao": user.current_icao,
-                "cash": user.cash,
-                "fuel": flight.current_fuel
-            }
-            self.wfile.write(json.dumps(user_data).encode())
-        elif self.path == "/get_users":
-            users = db.show_current_users()
-            if users:
-                user_list = [{"id": player[0], "screen_name": player[1]} for player in users]
-                self.send_response(200)
-                self.send_header("Content-type", "application/json")
-                self.end_headers()
-                self.wfile.write(json.dumps(user_list).encode())
-            else:
-                self.send_response(404)
-                self.end_headers()
-                self.wfile.write(b'{"error": "No users found"}')
+            return
+
+        # Haetaan reitti sanakirjasta ja suoritetaan funktio, jos löytyy
+        handler = routes.get(self.path)
+        if handler:
+            handler()
         else:
-            self.send_response(404)
-            self.end_headers()
-            self.wfile.write(b'{"error": "Not found"}')
+            self.send_json_response(404, {"error": "Not found"})
+
+    def send_json_response(self, status, data):
+        """Lähettää JSON-muotoisen vastauksen."""
+        self.send_response(status)
+        self.send_header("Content-type", "application/json")
+        self.end_headers()
+        self.wfile.write(json.dumps(data).encode())
+
+    def handle_get_user(self):
+        """Käsittelee käyttäjän tietojen haun."""
+        user_data = {
+            "user_name": user.user_name,
+            "airport_name": user.airport_name,
+            "current_icao": user.current_icao,
+            "cash": user.cash,
+            "fuel": flight.current_fuel
+         }
+        self.send_json_response(200, user_data)
+
+    def handle_get_users(self):
+        """Käsittelee kaikkien käyttäjien haun."""
+        users = db.show_current_users()
+        if users:
+            user_list = [{"id": player[0], "screen_name": player[1]} for player in users]
+            self.send_json_response(200, user_list)
+        else:
+            self.send_json_response(404, {"error": "No users found"})
 
         """if self.path == "/location":
             try:

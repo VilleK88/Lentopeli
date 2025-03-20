@@ -19,16 +19,47 @@ body {
     align-items: center;
 }
 
+.button-container {
+    display: flex;
+    justify-content: center; /* Keskittää napit */
+    gap: 10px; /* Lisää väliä painikkeiden väliin */
+
+    margin-top: 20px; /* Lisää väliä yläpuolelle */
+    background-color: #8B0000; /* Tumma punainen tausta */
+    padding: 15px;
+    border-radius: 15px; /* Pehmeät reunat */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.button-container button {
+    background-color: white; /* Kontrasti punaiseen taustaan */
+    color: #8B0000; /* Punainen teksti */
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: 2px solid #8B0000;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button-container button:hover {
+    background-color: #B22222; /* Vaaleampi punainen hover-efekti */
+    color: white; /* Teksti muuttuu valkoiseksi */
+    transform: scale(1.05); /* Kevyt zoomaus */
+}
+
+.button-container button:active {
+    transform: scale(0.95);
+}
+
 .user_info_container {
+    display: flex;
+    gap: 10px; /* Lisää väliä kenttien väliin */
+    flex-wrap: wrap; /* Varmistaa, että tiedot eivät veny liikaa */
     position: absolute;
-    top: 50%;
-    left: calc(50% + 180px); /* Siirretään oikealle menu_containerista */
-    transform: translate(0, -50%);
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 10px;
-    width: 200px; /* Kiinteä leveys */
+    top: 10px;
+    left: 20px;
 }
 
 #username-container {

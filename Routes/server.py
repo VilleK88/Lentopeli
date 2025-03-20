@@ -142,6 +142,7 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             user_data = {
                 "user_name": user.user_name,
+                "airport_name": user.airport_name,
                 "current_icao": user.current_icao,
                 "cash": user.cash,
                 "fuel": flight.current_fuel

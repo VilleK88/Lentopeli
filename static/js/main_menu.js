@@ -36,12 +36,17 @@ function handleNewUserEnter(event) {
     }
 }
 
+function closeGame() {
+    window.close();
+}
+
 function fetchUserInfo() {
     fetch("/get_user")
         .then(response => response.json())
         .then(data => {
             document.getElementById("user-info").innerText =
                 `Käyttäjä: ${data.user_name}
+                Lentoasema: ${data.airport_name}
                 ICAO: ${data.current_icao}
                 Käteinen: ${data.cash} €
                 Polttoaine: ${data.fuel} L`;

@@ -1,7 +1,7 @@
 from Loops import flight, user
 from Routes import server
 from datetime import datetime
-from Utils.utils import get_valid_icao, initialize_pygame_screen
+from Utils.utils import get_valid_icao
 from Database.db import get_columns_and_tables, get_airport_coords
 
 # Pelin nopeuden määritys (mitä suurempi arvo, sitä nopeammin aika kuluu)
@@ -19,9 +19,6 @@ font = None # Pygame-kirjasinobjekti
 # Käynnistää pelin ja alustaa tarvittavat asetukset
 def start():
     global remaining_distance, current_time, current_location, screen, font
-
-    # Alustetaan pygame-ikkuna ja kirjasin
-    #screen, font = initialize_pygame_screen()
 
     # Tarkistetaan ja luodaan tarvittavat tietokantataulukot ja sarakkeet
     get_columns_and_tables()
@@ -51,7 +48,6 @@ def main_program():
 
     # Käynnistetään palvelin ja asetetaan sen aloituskoordinaatit
     server.starting_coordinates(current_icao[2], current_icao[3])
-    #server.start_server()
 
     menu_on = True # Määrittää, onko valikko aktiivinen
 

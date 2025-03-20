@@ -24,16 +24,18 @@ function showAddNewUserInput() {
     usernameInput.addEventListener("keydown", handleNewUserEnter);
 }
 
-function handleSelectUserEnter(event) {
+function handleEnter(event, actionFunction) {
     if(event.key === "Enter") {
-        selectUser();
+        actionFunction();
     }
 }
 
+function handleSelectUserEnter(event) {
+    handleEnter(event, selectUser);
+}
+
 function handleNewUserEnter(event) {
-    if(event.key === "Enter") {
-        addUser();
-    }
+    handleEnter(event, addUser);
 }
 
 function closeGame() {

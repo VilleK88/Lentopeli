@@ -4,6 +4,7 @@ import http.server
 import json
 import requests
 import os
+import sys
 from Loops import user, flight
 from Database import db
 
@@ -34,7 +35,9 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         # Määritetään POST-reitit ja niihin liittyvät funktiot
         routes = {
             "/select_user": self.handle_select_user,
-            "/add_user": self.handle_add_user
+            "/add_user": self.handle_add_user,
+            "/log_out": self.handle_logout,
+            "/exit_game": self.handle_exit_game
         }
 
         # Tarkistetaan, onko polku olemassa reitityksessä
@@ -67,6 +70,15 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Content-type", "application/json")
         self.end_headers()
         self.wfile.write(json.dumps(data).encode())
+
+    def handle_logout(self):
+        """Käsittelee käyttäjän uloskirjautumisen"""
+        db.log_out()
+        self.send_json_response(200, {"success": True, "message": "Käyttäjä kirjattu ulos"})
+
+    def handle_exit_game(self):
+        """Sulkee ohjelman"""
+        sys.exit()
 
     def handle_select_user(self):
         """Käsittelee käyttäjän valinnan."""

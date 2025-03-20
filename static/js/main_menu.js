@@ -1,6 +1,7 @@
 let users = [];
 let currentPage = 0;
 const usersPerPage = 10;
+//location.reload();  // Päivittää sivun
 
 function showUserNameInput() {
     showInputContainer("username-container", "username_input", handleSelectUserEnter);
@@ -39,12 +40,31 @@ function handleNewUserEnter(event) {
     handleEnter(event, addUser);
 }
 
-function closeGame() {
-    window.close();
+function logOutAndExitGame() {
+    logOut();
+    exitGame();
 }
 
-function logoutAndCloseGame() {
+function logOut() {
+    fetch("/log_out", {
+        method: "POST"
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Käyttäjä kirjattu ulos.");
+        } else {
+            alert("Uloskirjautuminen epäonnistui.");
+        }
+    })
+    .catch(error => console.error("Virhe uloskirjautumisessa:", error));
+}
 
+function exitGame() {
+    window.close();
+    fetch("/exit_game", {
+        method: "POST"
+    })
 }
 
 function fetchUserInfo() {

@@ -57,13 +57,14 @@
         // Funktio hakee sijaintitiedon palvelimelta ja päivittää kartan
         async function fetchLocation() {
             try {
-                let response = await fetch('location.json'); // Hakee sijaintitiedoston
+                //let response = await fetch('location.json'); // Hakee sijaintitiedoston
+                let response = await fetch('/location');
                 let data = await response.json(); // Muuntaa vastauksen JSON-muotoon
 
                 if(data.lat && data.lon) {
                     initializeMap(data.lat, data.lon) // Päivittää kartan
                 }
-                setTimeout(fetchLocation, 1000); // Uudelleenhaku 1 sekunnin välein
+                setTimeout(fetchLocation, 3000); // Uudelleenhaku 1 sekunnin välein
             } catch(error) {
                 console.error("Virhe haettaessa sijaintia:", error);
             }

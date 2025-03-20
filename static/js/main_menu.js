@@ -71,8 +71,8 @@ function startGame() {
         .then(response => response.json())
         .then(data => {
             if(data.success) {
-                // avataan map.html-sivu
-                alert("Peli alkaa.");
+                // siirrytään map.html-sivu
+                window.location.href = "/templates.map.html";
             } else {
                 alert("Sinun pitää kirjautua sisään, ennen kuin voit aloittaa pelin.");
             }

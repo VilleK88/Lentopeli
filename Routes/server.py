@@ -11,7 +11,6 @@ from Database import db
 # Määritetään palvelimen portti ja muut asetukset
 PORT = 8000
 MAX_CONTENT_LENGTH = 1024
-#ALLOWED_FILES = {"/templates/map.html", "/templates/location.json", "/templates/airplane.svg", "/templates/main_menu.html"}
 ALLOWED_FILES = {"/templates/map.html", "/templates/location.json", "/templates/airplane.svg", "/templates/main_menu.html"}
 MAP_FILE_PATH = "templates/map.html"
 LOCATION_FILE_PATH = "templates/location.json"
@@ -135,7 +134,7 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         }
 
         # Käsitellään staattiset tiedostot
-        if self.path in ALLOWED_FILES or self.path.startswith("/static/"):
+        if self.path in ALLOWED_FILES or self.path.startswith("/static/") or self.path.startswith("/templates/"):
             self.path = self.path.lstrip("/")
             super().do_GET()
             return

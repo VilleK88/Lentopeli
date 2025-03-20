@@ -1,0 +1,53 @@
+/* Pääcontainer, joka sisältää kartan ja valikon */
+.game-container {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Täysi näytön korkeus */
+}
+
+/* Kartta vie suurimman osan ruudusta */
+#map-container {
+    width: 100%;
+    height: calc(100vh - 60px); /* Jättää tilaa alavalikolle */
+    position: relative;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+/* Ingame-menu sijoitetaan ruudun alareunaan */
+#ingame-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.7); /* Tumma läpinäkyvä tausta */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Napit ingame-menussa */
+#ingame-menu button {
+    background-color: #fff;
+    color: #333;
+    border: 2px solid #444;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#ingame-menu button:hover {
+    background-color: #ddd;
+}
+
+#ingame-menu button:active {
+    transform: scale(0.95);
+}

@@ -29,7 +29,80 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
 
     # Käsittelee POST-pyynnöt, joita käytetään sijainnin päivittämiseen
     def do_POST(self):
-        if self.path == "/select_user":
+        """Käsittelee kaikki POST-pyynnöt reititysjärjestelmän kautta."""
+
+        # Määritetään POST-reitit ja niihin liittyvät funktiot
+        routes = {
+            "/select_user": self.handle_select_user,
+            "/add_user": self.handle_add_user
+        }
+
+        # Tarkistetaan, onko polku olemassa reitityksessä
+        handler = routes.get(self.path)
+
+        if handler:
+            handler() # Kutsutaan vastaavaa käsittelyfunktiota
+        else:
+            self.send_response(404)
+            self.end_headers()
+            self.wfile.write(json.dumps({"error": "Not found"}).encode())
+
+    def get_post_data(self):
+        """Lukee ja jäsentää JSON-datan POST-pyynnöstä."""
+        content_length = int(self.headers.get("Content-Length", 0))
+        post_data = self.rfile.read(content_length)
+
+        try:
+            return json.loads(post_data)
+        except json.JSONDecodeError:
+            self.send_response(400)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({"error": "Virheellinen JSON"}).encode())
+            return None
+
+    def send_json_response(self, status, data):
+        """Lähettää JSON-muotoisen vastauksen."""
+        self.send_response(status)
+        self.send_header("Content-type", "application/json")
+        self.end_headers()
+        self.wfile.write(json.dumps(data).encode())
+
+    def handle_select_user(self):
+        """Käsittelee käyttäjän valinnan."""
+        data = self.get_post_data()
+        if not data:
+            return
+
+        user_name = data.get("user_name")
+        command = data.get("command")
+
+        if command == "select_user":
+            result = user.select_user(user_name)
+            self.send_json_response(200, {"success": True})
+        else:
+            self.send_json_response(400, {"error": "Tuntematon komento"})
+
+    def handle_add_user(self):
+        """Käsittelee uuden käyttäjän lisäämisen."""
+        data = self.get_post_data()
+        if not data:
+            return
+
+        name = data.get("name", "").strip()
+
+        if not name:
+            self.send_json_response(400, {"success": False, "message": "Nimi ei voi olla tyhjä."})
+            return
+
+        success = user.add_new_user(name)
+
+        if success:
+            self.send_json_response(200, {"success": True, "message": f"Käyttäjä '{name}' lisätty tietokantaan."})
+        else:
+            self.send_json_response(200, {"success": False, "message": "Käyttäjänimi on jo käytössä tai virheellinen."})
+
+        """if self.path == "/select_user":
             content_length = int(self.headers["Content-Length"])
             post_data = self.rfile.read(content_length)
 
@@ -83,7 +156,7 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         else:
             self.send_response(404)
             self.end_headers()
-            self.wfile.write(b'{"error": "Not found"}')
+            self.wfile.write(b'{"error": "Not found"}')"""
 
 
         """"# Tarkistetaan, että pyyntö on /update_location, muuten palautetaan 404

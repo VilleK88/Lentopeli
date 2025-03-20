@@ -43,6 +43,10 @@ function closeGame() {
     window.close();
 }
 
+function logoutAndCloseGame() {
+
+}
+
 function fetchUserInfo() {
     fetch("/get_user")
         .then(response => response.json())

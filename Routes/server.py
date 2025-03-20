@@ -169,13 +169,6 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         else:
             self.send_json_response(404, {"error": "Not found"})
 
-    def send_json_response(self, status, data):
-        """Lähettää JSON-muotoisen vastauksen."""
-        self.send_response(status)
-        self.send_header("Content-type", "application/json")
-        self.end_headers()
-        self.wfile.write(json.dumps(data).encode())
-
     def handle_get_user(self):
         """Käsittelee käyttäjän tietojen haun."""
         user_data = {

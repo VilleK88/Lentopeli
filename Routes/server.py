@@ -45,7 +45,8 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             "/log_out": self.handle_logout,
             "/exit_game": self.handle_exit_game,
             "/start_game": self.handle_start_game,
-            "/update_location": self.handle_update_location
+            "/update_location": self.handle_update_location,
+            "/select_icao": self.handle_select_icao
         }
 
         # Tarkistetaan, onko polku olemassa reitityksessä

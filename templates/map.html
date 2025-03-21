@@ -28,11 +28,16 @@
     </div>
 
     <div id="ingame-menu">
-        <button onclick="selectICAO()">Syötä ICAO-koodi</button>
+        <button onclick="showInputIcao()">Syötä ICAO-koodi</button>
         <button onclick="goToShop()">Kauppa</button>
         <button onclick="goToCustomers()">Matkustajat</button>
         <button onclick="quitAndSave()">Tallenna ja lopeta</button>
         <button onclick="quitGame()">Lopeta</button>
+
+        <div id="icao-container" style="display: none;">
+            <input type="text" id="icao-input" placeholder="Syötä ICAO-koodi">
+            <button onclick="selectIcao()">OK</button>
+        </div>
     </div>
 </body>
 </html>

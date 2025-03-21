@@ -36,9 +36,9 @@ def flight_loop(screen, font, current_location, icao, remaining_distance, curren
         total_distance = 1
 
     # Alustetaan sää
-    weather = get_weather(lat1, lon1)
-    weather, turbulence_warning = update_weather_on_flight(weather)
-    last_weather_update = time.time()
+    #weather = get_weather(lat1, lon1)
+    #weather, turbulence_warning = update_weather_on_flight(weather)
+    #last_weather_update = time.time()
 
     # Alustetaan nopeus
     current_speed_kmh = max_speed_kmh

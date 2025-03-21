@@ -11,6 +11,7 @@ time_multiplier = 100
 remaining_distance = None # Jäljellä oleva etäisyys määränpäähän
 current_time = None # Nykyinen peliaika
 current_location = 60.3172, 24.9633 # Nykyinen sijainti (latitude, longitude)
+icao = None # lentokenttä jolle lennetään
 
 # Pygame-ikkunan asetukset
 screen = None # Pygame-ikkunaobjekti
@@ -40,7 +41,7 @@ def start():
 
 # Pääohjelman silmukka, joka pyörittää pelin kulkua
 def main_program():
-    global remaining_distance, current_location, current_time, time_multiplier, screen, font
+    global remaining_distance, current_location, current_time, time_multiplier, screen, font, icao
 
     # Käynnistetään peli ja saadaan lähtölentoaseman tiedot sekä Pygame-ikkuna
     current_icao = start()

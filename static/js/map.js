@@ -122,3 +122,41 @@ setInterval(fetchWeather, 5000);
 
 // Haetaan sää heti sivun latautuessa
 document.addEventListener("DOMContentLoaded", fetchWeather);
+
+function selectIcao() {
+    let icao = document.getElementById("icao-input").value;
+    let command = "select_icao";
+}
+
+function showInputIcao() {
+    hideContainer("ingame-menu");
+    showInputContainer("icao-container", "icao-input", handleSelectIcaoEnter)
+}
+
+function showInputContainer(container, input_field, handleEnterFunction) {
+    showContainer(container);
+    let icaoInput = document.getElementById(input_field);
+    icaoInput.value = "";
+    icaoInput.focus();
+    icaoInput.removeEventListener("keydown", handleEnterFunction);
+    icaoInput.addEventListener("keydown", handleEnterFunction);
+
+}
+
+function handleEnter(event, actionFunction) {
+    if(event.key === "Enter") {
+        actionFunction();
+    }
+}
+
+function handleSelectIcaoEnter(event) {
+    handleEnter(event, selectIcao);
+}
+
+function hideContainer(container) {
+    document.getElementById(container).style.display = "none";
+}
+
+function showContainer(container) {
+    document.getElementById(container).style.display = "block";
+}

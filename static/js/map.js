@@ -146,7 +146,6 @@ function selectIcao() {
 }
 
 function showInputIcao() {
-    //hideContainer("ingame-menu");
     showInputContainer("icao-container", "icao-input", handleSelectIcaoEnter)
 }
 

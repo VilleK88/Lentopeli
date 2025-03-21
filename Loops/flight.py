@@ -47,7 +47,7 @@ def flight_loop(screen, font, current_location, icao, remaining_distance, curren
         time.sleep(1) # Loopin nopeus
 
         # Keskeytä lento painamalla '1'
-        interrupt_flight()
+        #interrupt_flight()
 
         if stop_flight:
             # Tallennetaan nykyinen sijainti ja keskeytetään lento

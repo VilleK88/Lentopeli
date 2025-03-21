@@ -76,10 +76,11 @@ def main_program():
         #icao = get_valid_icao(screen, font, "ICAO-koodi: ")
 
         # Tarkistetaan, keskeytyikö lento ennen määränpäätä
-        #remaining_distance = flight.was_flight_interrupted(remaining_distance, current_icao, icao, current_location)
+        remaining_distance = flight.was_flight_interrupted(remaining_distance, current_icao, icao, current_location)
 
         # Käynnistetään lentosilmukka ja päivitetään tiedot
         flight.stop_flight = False
+        print(f"remaining distance main: {remaining_distance}")
         remaining_distance, current_time, current_location = flight.flight_loop(screen, font, current_location, icao, remaining_distance, current_time, time_multiplier)
 
         # Päivitetään nykyinen lentoasema ja asetetaan valikko takaisin aktiiviseksi

@@ -71,14 +71,6 @@ def flight_loop(screen, font, current_location, icao, remaining_distance, curren
         # Päivitä karttakuva
         server.update_server(new_lat, new_lon, True)
 
-        # Päivitetään sää
-        weather, last_weather_update = weather_timer_flight(weather, last_weather_update)
-        weather, turbulence_warning = update_weather_on_flight(weather)
-
-        # Päivitetään info teksti
-        update_info_text(current_time, weather, turbulence_warning, remaining_distance, current_speed_kmh, current_fuel,
-                         new_lat, new_lon, screen, font)
-
         """Tähän lisätään process_fligh-funktio"""
 
         # Polttoaineen loppumisen tarkistus
@@ -89,16 +81,16 @@ def flight_loop(screen, font, current_location, icao, remaining_distance, curren
     return remaining_distance, current_time, current_location
 
 # Päivittää sään ajastuksen
-def weather_timer_flight(weather, last_weather_update):
+"""def weather_timer_flight(weather, last_weather_update):
     if time.time() - last_weather_update >= 2.5:
         new_weather = get_weather(new_lat, new_lon)
         if new_weather:
             weather = new_weather
             last_weather_update = time.time()
-    return weather, last_weather_update
+    return weather, last_weather_update"""
 
 # Päivittää sään
-def update_weather_on_flight(weather):
+"""def update_weather_on_flight(weather):
     global current_speed_kmh, turbulence_warning
 
     if weather is None:
@@ -112,7 +104,7 @@ def update_weather_on_flight(weather):
         current_speed_kmh = max_speed_kmh
         turbulence_warning = ""
 
-    return weather, turbulence_warning
+    return weather, turbulence_warning"""
 
 # Päivittää info tekstin
 def update_info_text(current_time, weather, turbulence_warning, remaining_distance, current_speed_kmh, current_fuel, new_lat, new_lon, screen, font):

@@ -19,6 +19,7 @@ reputation = 0
 # Muut globaalit muuttujat
 main_menu_active = True
 ingame_menu_active = True
+target_airport = None
 
 # Päävalikko, jossa käyttäjä voi luoda uuden pelaajan, valita pelaajan tai aloittaa pelin
 def main_menu():
@@ -105,7 +106,7 @@ def user_info_on_screen(screen, font):
 """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
 # ingame menu
 def ingame_menu(current_icao, remaining_distance):
-    global user_id, ingame_menu_active
+    global user_id, ingame_menu_active, target_airport
 
     # Lista käytössä olevista näppäimistä
     """key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5] # Käytettävissä olevat painikkeet
@@ -123,33 +124,10 @@ def ingame_menu(current_icao, remaining_distance):
 
     while ingame_menu_active:
         time.sleep(1)
-        #wipe_pygame_screen(screen)
-        #draw_centered_list(screen, font, 100, flight_menu)
-        #user_info_on_screen(screen, font)
 
-        # Päivitetään sää
-        #weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
-        #weather, turbulence_warning = update_weather_on_ground(weather)
-        #weather_info_on_screen(weather, last_weather_update, screen, font)
-        #update_pygame_screen()
+    print(f"User Target airport: {target_airport}")
 
-        """char = press_button_list(key_list)
-        if char == pygame.K_1:
-            ingame_menu_active = False
-        elif char == pygame.K_4 and remaining_distance <= 0:
-            save_game_progress(user_id, flight.current_fuel, current_icao, False)
-            pygame.quit()
-            sys.exit()
-        elif char == pygame.K_5 and remaining_distance <= 0:
-            save_game_progress(user_id, flight.current_fuel, current_icao, True)
-            pygame.quit()
-            sys.exit()
-        elif char == pygame.K_2 and remaining_distance <= 0:
-            shop.shop(user_id, cash, screen, font) # Avaa kauppa
-        elif char == pygame.K_3 and remaining_distance <= 0:
-            customers.load_and_select_customer(current_icao, screen, font) # Avaa matkustajavalinnan"""
-
-    return ingame_menu_active
+    return ingame_menu_active, target_airport
 
 # Alustaa aloituslentokentän ja palauttaa sen ICAO-koodin
 def initialize_starting_airport():
@@ -158,7 +136,7 @@ def initialize_starting_airport():
     return starting_airport
 
 # Päivittää säätilan ja määrittää turbulenssivaroituksen
-def update_weather_on_ground(weather):
+"""def update_weather_on_ground(weather):
     if weather is None:
         weather = {"weather": "Tuntematon", "temp": 0, "wind": 0}
         turbulence_warning = ""
@@ -168,21 +146,21 @@ def update_weather_on_ground(weather):
     else:
         turbulence_warning = ""
 
-    return weather, turbulence_warning
+    return weather, turbulence_warning"""
 
 # Tarkistaa, onko sää päivitettävä ja päivittää sen 5 sekunnin välein
-def weather_timer_ground(weather, last_weather_update):
+"""def weather_timer_ground(weather, last_weather_update):
     if time.time() - last_weather_update >= 5:
         new_weather = get_weather(main.current_location[0], main.current_location[1])
         if new_weather:
             weather = new_weather
             last_weather_update = time.time()
-    return weather, last_weather_update
+    return weather, last_weather_update"""
 
 # Näyttää säätilan pygame-ikkunassa
-def weather_info_on_screen(weather, last_weather_update, screen, font):
+"""def weather_info_on_screen(weather, last_weather_update, screen, font):
     if user_name != "":
         weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
         weather, turbulence_warning = update_weather_on_ground(weather)
         draw_text(screen, f"Sää: {weather['weather']}, Tuuli: {weather['wind']:.2f} m/s {turbulence_warning}", 10, 365,
-                  font)
+                  font)"""

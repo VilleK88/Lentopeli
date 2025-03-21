@@ -1,7 +1,6 @@
 from Loops import flight, user
 from Routes import server
 from datetime import datetime
-from Utils.utils import get_valid_icao
 from Database.db import get_columns_and_tables, get_airport_coords
 
 # Pelin nopeuden määritys (mitä suurempi arvo, sitä nopeammin aika kuluu)
@@ -12,6 +11,7 @@ remaining_distance = None # Jäljellä oleva etäisyys määränpäähän
 current_time = None # Nykyinen peliaika
 current_location = 60.3172, 24.9633 # Nykyinen sijainti (latitude, longitude)
 icao = None # lentokenttä jolle lennetään
+menu_on = True
 
 # Pygame-ikkunan asetukset
 screen = None # Pygame-ikkunaobjekti
@@ -41,7 +41,7 @@ def start():
 
 # Pääohjelman silmukka, joka pyörittää pelin kulkua
 def main_program():
-    global remaining_distance, current_location, current_time, time_multiplier, screen, font, icao
+    global remaining_distance, current_location, current_time, time_multiplier, screen, font, icao, menu_on
 
     # Käynnistetään peli ja saadaan lähtölentoaseman tiedot sekä Pygame-ikkuna
     current_icao = start()
@@ -50,7 +50,7 @@ def main_program():
     # Käynnistetään palvelin ja asetetaan sen aloituskoordinaatit
     server.starting_coordinates(current_icao[2], current_icao[3])
 
-    menu_on = True # Määrittää, onko valikko aktiivinen
+    #menu_on = True # Määrittää, onko valikko aktiivinen
 
     # Pääpelisilmukka
     while True:
@@ -67,13 +67,16 @@ def main_program():
 
         # Käynnistetään pelin sisäinen valikko, jos se on aktiivinen
         while menu_on:
-            menu_on = user.ingame_menu(current_icao[1], remaining_distance)
+            menu_on, icao = user.ingame_menu(current_icao[1], remaining_distance)
+        print(f"menu_on: ", menu_on)
+
+        print(f"🔍 Debug: ennen asetusta, main.icao = {icao}")
 
         # Pyydetään käyttäjää syöttämään seuraavan lentoaseman ICAO-koodi
-        icao = get_valid_icao(screen, font, "ICAO-koodi: ")
+        #icao = get_valid_icao(screen, font, "ICAO-koodi: ")
 
         # Tarkistetaan, keskeytyikö lento ennen määränpäätä
-        remaining_distance = flight.was_flight_interrupted(remaining_distance, current_icao, icao, current_location)
+        #remaining_distance = flight.was_flight_interrupted(remaining_distance, current_icao, icao, current_location)
 
         # Käynnistetään lentosilmukka ja päivitetään tiedot
         flight.stop_flight = False
@@ -83,6 +86,11 @@ def main_program():
         current_icao = icao
         user.current_icao = current_icao[1]
         menu_on = True
+
+def update_target_icao(target_icao):
+    global icao
+    icao = target_icao
+
 
 if __name__ == '__main__':
     main_program()

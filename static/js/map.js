@@ -124,12 +124,29 @@ setInterval(fetchWeather, 5000);
 document.addEventListener("DOMContentLoaded", fetchWeather);
 
 function selectIcao() {
-    let icao = document.getElementById("icao-input").value;
+    let targetIcao = document.getElementById("icao-input").value;
     let command = "select_icao";
+
+    fetch("/select_icao", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({icao: targetIcao, command: command})
+    })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                hideContainer("icao-container");
+            }
+        })
+        .catch(error => {
+            console.error("Virhe:", error);
+        });
 }
 
 function showInputIcao() {
-    hideContainer("ingame-menu");
+    //hideContainer("ingame-menu");
     showInputContainer("icao-container", "icao-input", handleSelectIcaoEnter)
 }
 

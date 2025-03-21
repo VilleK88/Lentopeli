@@ -93,7 +93,21 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         """Käsittelee pelin käynnistyksen"""
         user.start_game()
         self.send_json_response(200, {"success": True, "message": "Peli alkaa."})
-        #webbrowser.open(f"http://127.0.0.1:{PORT}/templates/map.html")
+
+    def handle_select_icao(self):
+        data = self.get_post_data()
+        if not data:
+            return
+
+        icao = data.get("icao")
+        command = data.get("command")
+
+        if command == "select_icao":
+            airport = db.get_airport_coords(icao)
+            if airport:
+                self.send_json_response(200, {"success": True})
+        else:
+            self.send_json_response(400, {"error": "Tuntematon komento"})
 
     def handle_select_user(self):
         """Käsittelee käyttäjän valinnan."""

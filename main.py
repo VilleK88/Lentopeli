@@ -81,7 +81,7 @@ def main_program():
         # Käynnistetään lentosilmukka ja päivitetään tiedot
         flight.stop_flight = False
         print(f"remaining distance main: {remaining_distance}")
-        remaining_distance, current_time, current_location = flight.flight_loop(screen, font, current_location, icao, remaining_distance, current_time, time_multiplier)
+        remaining_distance, current_time, current_location = flight.flight_loop(current_location, icao, remaining_distance, current_time, time_multiplier)
 
         # Päivitetään nykyinen lentoasema ja asetetaan valikko takaisin aktiiviseksi
         current_icao = icao

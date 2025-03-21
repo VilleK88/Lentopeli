@@ -47,7 +47,7 @@ async function fetchLocation() {
         if (data.lat && data.lon) {
             initializeMap(data.lat, data.lon) // Päivittää kartan
         }
-        setTimeout(fetchLocation, 3000); // Uudelleenhaku 1 sekunnin välein
+        setTimeout(fetchLocation, 1000); // Uudelleenhaku 1 sekunnin välein
     } catch (error) {
         console.error("Virhe haettaessa sijaintia:", error);
     }

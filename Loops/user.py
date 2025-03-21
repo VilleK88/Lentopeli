@@ -1,5 +1,4 @@
 import main
-from Utils.utils import draw_text
 from Database.db import get_users_and_set_as_logged_in, check_if_name_in_db, add_user_to_db, get_logged_in_user_data, \
     get_inventory, get_airport_coords
 import time

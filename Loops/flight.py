@@ -3,7 +3,7 @@ import time
 from datetime import timedelta
 from geopy.distance import geodesic
 from Routes import server
-from Utils.utils import wipe_pygame_screen, update_pygame_screen, draw_centered_list, calculate_distance, calculate_distance_between_airports, draw_arrived_airport
+from Utils.utils import calculate_distance, calculate_distance_between_airports
 
 # Lentokoneen tiedot
 max_speed_kmh = 780
@@ -80,47 +80,6 @@ def flight_loop(current_location, icao, remaining_distance, current_time, time_m
 
     return remaining_distance, current_time, current_location
 
-# Päivittää sään ajastuksen
-"""def weather_timer_flight(weather, last_weather_update):
-    if time.time() - last_weather_update >= 2.5:
-        new_weather = get_weather(new_lat, new_lon)
-        if new_weather:
-            weather = new_weather
-            last_weather_update = time.time()
-    return weather, last_weather_update"""
-
-# Päivittää sään
-"""def update_weather_on_flight(weather):
-    global current_speed_kmh, turbulence_warning
-
-    if weather is None:
-        weather = {"weather": "Tuntematon", "temp": 0, "wind": 0}
-        turbulence_warning = ""
-
-    if weather["wind"] > 15:
-        current_speed_kmh = max_speed_kmh * 0.8
-        turbulence_warning = ", Kova tuuli!"
-    else:
-        current_speed_kmh = max_speed_kmh
-        turbulence_warning = ""
-
-    return weather, turbulence_warning"""
-
-# Päivittää info tekstin
-def update_info_text(current_time, weather, turbulence_warning, remaining_distance, current_speed_kmh, current_fuel, new_lat, new_lon, screen, font):
-    wipe_pygame_screen(screen)
-    info_text = [
-        f"Aika: {current_time.strftime('%H:%M')}",
-        f"Sää: {weather['weather']}, Tuuli: {weather['wind']:.2f} m/s {turbulence_warning}",
-        f"Matkaa jäljellä: {remaining_distance:.2f} km",
-        f"Nopeus: {current_speed_kmh:.2f} km/h",
-        f"Polttoaine: {current_fuel:.2f} L",
-        f"Sijainti: ({new_lat:.5f}, {new_lon:.5f})",
-        f"Paina '1' muuttaaksesi kurssia."
-    ]
-    draw_centered_list(screen, font, 30, info_text)
-    update_pygame_screen()
-
 # Pysäyttää lennon painamalla '1'
 def interrupt_flight():
     global stop_flight
@@ -137,5 +96,5 @@ def was_flight_interrupted(remaining_distance, current_icao, icao, current_locat
     return remaining_distance
 
 def process_arrived_at_airport(current_icao1, current_icao2, screen, font):
-    draw_arrived_airport(current_icao1, current_icao2, screen, 165, font)
     # Kutsutaan tässä customers.py lennonloppumis-funktiota.
+    return

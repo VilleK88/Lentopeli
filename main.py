@@ -75,9 +75,5 @@ def main_program():
         user.ingame_menu_active = True
         menu_on = True
 
-def update_target_icao(target_icao):
-    global icao
-    icao = target_icao
-
 if __name__ == '__main__':
     main_program()

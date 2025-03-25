@@ -117,9 +117,6 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             airport = db.get_airport_coords(icao)
             if airport:
                 self.send_json_response(200, {"success": True})
-                #main.icao = airport
-                print(f"Server airport: ", airport)
-                #print(f"✅ Server: main.icao päivitetty: {main.icao}")
                 user.target_airport = airport
                 user.ingame_menu_active = False
         else:

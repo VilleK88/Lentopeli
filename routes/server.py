@@ -165,7 +165,8 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             "/get_user": self.handle_get_user,
             "/get_users": self.handle_get_users,
             "/location": self.handle_get_location,
-            "/get_weather": self.handle_get_weather
+            "/get_weather": self.handle_get_weather,
+            "/get_in_game_menu_on": self.handle_get_in_game_menu_on
         }
 
         # Käsitellään staattiset tiedostot
@@ -194,6 +195,10 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_json_response(200, weather_data)
         else:
             self.send_json_response(400, {"error": "Sijaintia ei ole asetettu"})
+
+    def handle_get_in_game_menu_on(self):
+        data = {"in_game_menu_on": user.ingame_menu_active}
+        self.send_json_response(200, data)
 
     def handle_get_user(self):
         """Käsittelee käyttäjän tietojen haun."""

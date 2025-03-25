@@ -12,7 +12,7 @@ icao = None # lentokenttä jolle lennetään
 
 # Käynnistää pelin ja alustaa tarvittavat asetukset
 def start():
-    global remaining_distance, current_time, current_location, screen, font
+    global remaining_distance, current_time, current_location
 
     # Tarkistetaan ja luodaan tarvittavat tietokantataulukot ja sarakkeet
     get_columns_and_tables()
@@ -34,7 +34,7 @@ def start():
 
 # Pääohjelman silmukka, joka pyörittää pelin kulkua
 def main_program():
-    global remaining_distance, current_location, current_time, time_multiplier, screen, font, icao#, menu_on
+    global remaining_distance, current_location, current_time, time_multiplier, icao
 
     # Käynnistetään peli ja saadaan lähtölentoaseman tiedot sekä Pygame-ikkuna
     current_icao = start()

@@ -138,6 +138,7 @@ function selectIcao() {
         .then(data => {
             if(data.success) {
                 hideContainer("icao-container");
+                showContainer("stop-flight-container");
             }
         })
         .catch(error => {
@@ -146,7 +147,24 @@ function selectIcao() {
 }
 
 function stopFlight() {
+    let command = "stop_flight";
 
+    fetch("/stop_flight", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({command: command})
+    })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                console.log("Lento pysäytetty");
+            }
+        })
+        .catch(error => {
+            console.error("Virhe:", error);
+        });
 }
 
 function showInputIcao() {

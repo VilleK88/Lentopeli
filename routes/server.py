@@ -100,7 +100,10 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         if not data:
             return
 
+        command = data.get("command")
 
+        if command == "stop_flight":
+            flight.stop_flight = True
 
     def handle_select_icao(self):
         data = self.get_post_data()

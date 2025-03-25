@@ -28,27 +28,22 @@ def get_columns_and_tables():
 
     result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'logged_in'")
     if not result:
-        #print("Saraketta 'logged_in' ei löydy, luodaan se....")
         commit_to_db("alter table game add column logged_in boolean default false")
 
     result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'current_fuel'")
     if not result:
-        print("Saraketta 'current_fuel' ei löydy, luodaan se....")
         commit_to_db("alter table game add column current_fuel float default 25941")
 
     result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'reputation'")
     if not result:
-        print("Saraketta 'reputation' ei löydy, luodaan se....")
         commit_to_db("alter table game add column reputation int default 10")
 
     result = get_info_from_db("select column_name from information_schema.columns where table_name = 'game' and column_name = 'current_icao'")
     if not result:
-        print("Saraketta 'current_icao' ei löydy, luodaan se....")
         commit_to_db("alter table game add column current_icao text default 'EFHK'")
 
     result = get_info_from_db("select table_name from information_schema.tables where table_name = 'inventory'")
     if not result:
-        print("Taulukkoa 'inventory' ei löydy, luodaan se....")
         commit_to_db("""create table if not exists inventory (
             inventory_id varchar(40) character set latin1 collate latin1_swedish_ci not null primary key,
             cash float default 100,

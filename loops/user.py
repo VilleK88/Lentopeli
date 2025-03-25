@@ -95,27 +95,11 @@ def get_user_data():
 
 """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
 # ingame menu
-def ingame_menu(current_icao, remaining_distance):
+def ingame_menu():
     global user_id, ingame_menu_active, target_airport
-
-    # Lista käytössä olevista näppäimistä
-    """key_list = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5] # Käytettävissä olevat painikkeet
-    if remaining_distance <= 0:
-        flight_menu = ["1 - Syötä ICAO-koodi", "2 - Kauppa", "3 - Matkustajat",
-            "4 - Tallenna ja lopeta", "5 - Tallenna, lopeta ja kirjaudu ulos"]
-    else:
-        flight_menu = ["1 - Syötä ICAO-koodi"]"""
-    #ingame_menu_active = True # Loopin tila
-
-    # Haetaan säätila
-    #weather = get_weather(main.current_location[0], main.current_location[1])
-    #weather, turbulence_warning = update_weather_on_ground(weather)
-    #last_weather_update = time.time()
 
     while ingame_menu_active:
         time.sleep(1)
-
-    print(f"User Target airport: {target_airport}")
 
     return ingame_menu_active, target_airport
 
@@ -124,33 +108,3 @@ def initialize_starting_airport():
     global current_icao
     starting_airport = current_icao
     return starting_airport
-
-# Päivittää säätilan ja määrittää turbulenssivaroituksen
-"""def update_weather_on_ground(weather):
-    if weather is None:
-        weather = {"weather": "Tuntematon", "temp": 0, "wind": 0}
-        turbulence_warning = ""
-
-    if weather["wind"] > 15:
-        turbulence_warning = ", Kova tuuli!"
-    else:
-        turbulence_warning = ""
-
-    return weather, turbulence_warning"""
-
-# Tarkistaa, onko sää päivitettävä ja päivittää sen 5 sekunnin välein
-"""def weather_timer_ground(weather, last_weather_update):
-    if time.time() - last_weather_update >= 5:
-        new_weather = get_weather(main.current_location[0], main.current_location[1])
-        if new_weather:
-            weather = new_weather
-            last_weather_update = time.time()
-    return weather, last_weather_update"""
-
-# Näyttää säätilan pygame-ikkunassa
-"""def weather_info_on_screen(weather, last_weather_update, screen, font):
-    if user_name != "":
-        weather, last_weather_update = weather_timer_ground(weather, last_weather_update)
-        weather, turbulence_warning = update_weather_on_ground(weather)
-        draw_text(screen, f"Sää: {weather['weather']}, Tuuli: {weather['wind']:.2f} m/s {turbulence_warning}", 10, 365,
-                  font)"""

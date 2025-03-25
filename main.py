@@ -60,7 +60,7 @@ def main_program():
 
         # Käynnistetään pelin sisäinen valikko, jos se on aktiivinen
         while menu_on:
-            menu_on, icao = user.ingame_menu(current_icao[1], remaining_distance)
+            menu_on, icao = user.ingame_menu()
 
         # Tarkistetaan, keskeytyikö lento ennen määränpäätä
         remaining_distance = flight.was_flight_interrupted(remaining_distance, current_icao, icao, current_location)

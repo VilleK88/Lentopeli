@@ -2,8 +2,8 @@ import os
 import json
 import random
 import mysql.connector
-from Routes.config import db_config
-from Database.db import connect_db
+from routes.config import db_config
+from database.db import connect_db
 
 # 🔹 Globaalit muuttujat (Global variables)
 current_customer = None  # Nykyinen asiakas
@@ -14,7 +14,7 @@ inventory = {}           # Pelaajan varasto (aloitustilanne)
 
 # 🔹 Lataa asiakkaat JSON-tiedostosta
 def load_customers():
-    file_path = os.path.join(os.path.dirname(__file__), "../Database/customersdb.json")
+    file_path = os.path.join(os.path.dirname(__file__), "../database/customersdb.json")
     try:
         with open(file_path, "r", encoding="utf-8") as file:
             customers = json.load(file)

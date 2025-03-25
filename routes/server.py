@@ -5,8 +5,8 @@ import json
 import requests
 import os
 import sys
-from Loops import user, flight
-from Database import db
+from loops import user, flight
+from database import db
 import time
 from dotenv import load_dotenv
 import main
@@ -46,7 +46,8 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             "/exit_game": self.handle_exit_game,
             "/start_game": self.handle_start_game,
             "/update_location": self.handle_update_location,
-            "/select_icao": self.handle_select_icao
+            "/select_icao": self.handle_select_icao,
+            "/stop_flight": self.handle_stop_flight
         }
 
         # Tarkistetaan, onko polku olemassa reitityksessä
@@ -93,6 +94,13 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         """Käsittelee pelin käynnistyksen"""
         user.start_game()
         self.send_json_response(200, {"success": True, "message": "Peli alkaa."})
+
+    def handle_stop_flight(self):
+        data = self.get_post_data()
+        if not data:
+            return
+
+
 
     def handle_select_icao(self):
         data = self.get_post_data()

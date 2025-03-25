@@ -1,5 +1,5 @@
 import mysql.connector
-from Routes.config import db_config
+from routes.config import db_config
 import uuid
 
 # Yhdistää MySQL-tietokantaan käyttäen asetustiedoston konfiguraatiota

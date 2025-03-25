@@ -145,6 +145,10 @@ function selectIcao() {
         });
 }
 
+function stopFlight() {
+
+}
+
 function showInputIcao() {
     showInputContainer("icao-container", "icao-input", handleSelectIcaoEnter)
 }

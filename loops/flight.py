@@ -2,8 +2,8 @@ import pygame
 import time
 from datetime import timedelta
 from geopy.distance import geodesic
-from Routes import server
-from Utils.utils import calculate_distance, calculate_distance_between_airports
+from routes import server
+from utils.utils import calculate_distance, calculate_distance_between_airports
 
 # Lentokoneen tiedot
 max_speed_kmh = 780

@@ -1,7 +1,7 @@
-from Loops import flight, user
-from Routes import server
+from loops import flight, user
+from routes import server
 from datetime import datetime
-from Database.db import get_columns_and_tables, get_airport_coords
+from database.db import get_columns_and_tables, get_airport_coords
 
 # Pelin nopeuden määritys (mitä suurempi arvo, sitä nopeammin aika kuluu)
 time_multiplier = 100

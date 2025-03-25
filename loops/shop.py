@@ -1,7 +1,7 @@
 import pygame
 import mysql.connector
-from Routes.config import db_config
-from Utils.utils import (
+from routes.config import db_config
+from utils.utils import (
     wipe_pygame_screen,
     update_pygame_screen,
     draw_centered_shop_list,

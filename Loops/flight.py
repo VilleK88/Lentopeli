@@ -45,6 +45,7 @@ def flight_loop(current_location, icao, remaining_distance, current_time, time_m
 
     while remaining_distance > 0:
         time.sleep(1) # Loopin nopeus
+        print(f"Remaining distance: {remaining_distance}")
 
         # Keskeytä lento painamalla '1'
         #interrupt_flight()

@@ -93,15 +93,6 @@ def get_user_data():
         cash = result_inventory[1]
         flight.current_fuel = result_inventory[0]
 
-# Näyttää käyttäjän tiedot ruudulla
-def user_info_on_screen(screen, font):
-    global user_id, user_name, current_icao, cash#, current_fuel
-
-    if user_id != "" and user_name != "":
-        draw_text(screen, f"{user_name}", 10, 10, font)
-        draw_text(screen, f"{current_icao}", 10, 40, font)
-        draw_text(screen, f"{flight.current_fuel:.0f}", 10, 70, font)
-
 """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
 # ingame menu
 def ingame_menu(current_icao, remaining_distance):

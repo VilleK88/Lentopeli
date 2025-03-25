@@ -11,7 +11,7 @@ remaining_distance = None # Jäljellä oleva etäisyys määränpäähän
 current_time = None # Nykyinen peliaika
 current_location = 60.3172, 24.9633 # Nykyinen sijainti (latitude, longitude)
 icao = None # lentokenttä jolle lennetään
-menu_on = True
+#menu_on = True
 
 # Pygame-ikkunan asetukset
 screen = None # Pygame-ikkunaobjekti
@@ -41,7 +41,7 @@ def start():
 
 # Pääohjelman silmukka, joka pyörittää pelin kulkua
 def main_program():
-    global remaining_distance, current_location, current_time, time_multiplier, screen, font, icao, menu_on
+    global remaining_distance, current_location, current_time, time_multiplier, screen, font, icao#, menu_on
 
     # Käynnistetään peli ja saadaan lähtölentoaseman tiedot sekä Pygame-ikkuna
     current_icao = start()
@@ -50,7 +50,7 @@ def main_program():
     # Käynnistetään palvelin ja asetetaan sen aloituskoordinaatit
     server.starting_coordinates(current_icao[2], current_icao[3])
 
-    #menu_on = True # Määrittää, onko valikko aktiivinen
+    menu_on = True # Määrittää, onko valikko aktiivinen
 
     # Pääpelisilmukka
     while True:
@@ -86,6 +86,7 @@ def main_program():
         # Päivitetään nykyinen lentoasema ja asetetaan valikko takaisin aktiiviseksi
         current_icao = icao
         user.current_icao = current_icao[1]
+        user.ingame_menu_active = True
         menu_on = True
 
 def update_target_icao(target_icao):

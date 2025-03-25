@@ -3,19 +3,12 @@ from routes import server
 from datetime import datetime
 from database.db import get_columns_and_tables, get_airport_coords
 
-# Pelin nopeuden määritys (mitä suurempi arvo, sitä nopeammin aika kuluu)
-time_multiplier = 100
-
 # Pelin muuttujat
+time_multiplier = 100 # Pelin nopeuden määritys (mitä suurempi arvo, sitä nopeammin aika kuluu)
 remaining_distance = None # Jäljellä oleva etäisyys määränpäähän
 current_time = None # Nykyinen peliaika
 current_location = 60.3172, 24.9633 # Nykyinen sijainti (latitude, longitude)
 icao = None # lentokenttä jolle lennetään
-#menu_on = True
-
-# Pygame-ikkunan asetukset
-screen = None # Pygame-ikkunaobjekti
-font = None # Pygame-kirjasinobjekti
 
 # Käynnistää pelin ja alustaa tarvittavat asetukset
 def start():
@@ -68,19 +61,12 @@ def main_program():
         # Käynnistetään pelin sisäinen valikko, jos se on aktiivinen
         while menu_on:
             menu_on, icao = user.ingame_menu(current_icao[1], remaining_distance)
-        print(f"menu_on: ", menu_on)
-
-        print(f"🔍 Debug: ennen asetusta, main.icao = {icao}")
-
-        # Pyydetään käyttäjää syöttämään seuraavan lentoaseman ICAO-koodi
-        #icao = get_valid_icao(screen, font, "ICAO-koodi: ")
 
         # Tarkistetaan, keskeytyikö lento ennen määränpäätä
         remaining_distance = flight.was_flight_interrupted(remaining_distance, current_icao, icao, current_location)
 
         # Käynnistetään lentosilmukka ja päivitetään tiedot
         flight.stop_flight = False
-        print(f"remaining distance main: {remaining_distance}")
         remaining_distance, current_time, current_location = flight.flight_loop(current_location, icao, remaining_distance, current_time, time_multiplier)
 
         # Päivitetään nykyinen lentoasema ja asetetaan valikko takaisin aktiiviseksi

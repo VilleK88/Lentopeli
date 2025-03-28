@@ -72,7 +72,7 @@ def flight_loop(current_location, icao, remaining_distance, current_time, time_m
         # Päivitä karttakuva
         server.update_server(new_lat, new_lon, True)
 
-        """Tähän lisätään process_fligh-funktio"""
+        """Tähän lisätään process_customers-funktio"""
 
         # Polttoaineen loppumisen tarkistus
         if current_fuel <= 0:

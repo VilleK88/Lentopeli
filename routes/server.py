@@ -1,13 +1,7 @@
-import webbrowser
-import threading
 import http.server
-import json
-import requests
-import os
-import sys
+import json, os, sys, threading, webbrowser, time, requests
 from loops import user, flight
 from database import db
-import time
 from dotenv import load_dotenv
 import main
 

@@ -1,24 +1,24 @@
 from flask import Flask, request, jsonify, send_from_directory
-#import http.server
 import json, os, sys, threading, webbrowser, time, requests
 from loops import user, flight
 from database import db
 from dotenv import load_dotenv
 import main
 
-app = Flask(__name__)
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+app = Flask(
+    __name__,
+    static_folder=os.path.join(BASE_DIR, "static"),
+    template_folder=os.path.join(BASE_DIR, "templates")
+)
 # Määritetään palvelimen portti ja muut asetukset
 PORT = 8000
 MAX_CONTENT_LENGTH = 1024
 STATIC_DIR = "static"
-TEMPLATES_DIR = os.path.abspath("templates")
-ALLOWED_FILES = {"/templates/map.html", "/templates/location.json", "/templates/airplane.svg", "/templates/main_menu.html"}
-#MAP_FILE_PATH = "templates/map.html"
-#LOCATION_FILE_PATH = "templates/location.json"
+TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 LOCATION_FILE_PATH = os.path.join(TEMPLATES_DIR, "location.json")
 MAP_FILE_PATH = os.path.join(TEMPLATES_DIR, "map.html")
 PLAYER_FILE_PATH = "database/players.json"
-#URL = f"http://127.0.0.1:{PORT}/templates/main_menu.html"
 URL = f"http://127.0.0.1:{PORT}/main_menu.html"
 
 # Alustetaan säämuuttujat
@@ -113,10 +113,21 @@ def handle_get_users():
 @app.route("/location", methods=["GET"])
 def handle_get_location():
     try:
-        with open(LOCATION_FILE_PATH) as f:
-            return jsonify(json.load(f))
-    except FileNotFoundError:
-        return jsonify({"error": "Location file not found"}), 404
+        if not os.path.exists(LOCATION_FILE_PATH):
+            return jsonify({"error": "Location file not found"}), 404
+
+        with open(LOCATION_FILE_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+            if "lat" in data and "lon" in data:
+                return jsonify(data)
+            else:
+                return jsonify({"error": "Invalid content in the file location.json"}), 400
+
+    except json.JSONDecodeError as e:
+        return jsonify({"error": f"JSON-error: {str(e)}"}), 400
+    except Exception as e:
+        return jsonify({"error": f"Unknown error {str(e)}"}), 500
 
 @app.route("/get_weather", methods=["GET"])
 def handle_get_weather():
@@ -144,10 +155,6 @@ def serve_static(path):
 
 # Käynnistää Flask-palvelimen, joka toimii paikallisella koneella
 def run_flask_server():
-    #with http.server.HTTPServer(("127.0.0.1", PORT), CustomHandler) as httpd:
-        #print(f"Palvelin käynnissä osoitteessa http://127.0.0.1:{PORT}")
-        #webbrowser.open(URL) # Avaa selaimen etusivulle
-        #httpd.serve_forever()
     print(f"Palvelin käynnissä osoitteeessa {URL}")
     webbrowser.open(URL)
     app.run(host="127.0.0.1", port=PORT, use_reloader=False)

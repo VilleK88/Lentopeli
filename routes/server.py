@@ -1,25 +1,25 @@
-import webbrowser
-import threading
-import http.server
-import json
-import requests
-import os
-import sys
+from flask import Flask, request, jsonify, send_from_directory
+import json, os, sys, threading, webbrowser, time, requests
 from loops import user, flight
 from database import db
-import time
 from dotenv import load_dotenv
 import main
 
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+app = Flask(
+    __name__,
+    static_folder=os.path.join(BASE_DIR, "static"),
+    template_folder=os.path.join(BASE_DIR, "templates")
+)
 # Määritetään palvelimen portti ja muut asetukset
 PORT = 8000
 MAX_CONTENT_LENGTH = 1024
-ALLOWED_FILES = {"/templates/map.html", "/templates/location.json", "/templates/airplane.svg", "/templates/main_menu.html"}
-MAP_FILE_PATH = "templates/map.html"
-LOCATION_FILE_PATH = "templates/location.json"
-PLAYER_FILE_PATH = "database/players.json"
-URL = f"http://127.0.0.1:{PORT}/templates/main_menu.html"
 STATIC_DIR = "static"
+TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
+LOCATION_FILE_PATH = os.path.join(TEMPLATES_DIR, "location.json")
+MAP_FILE_PATH = os.path.join(TEMPLATES_DIR, "map.html")
+PLAYER_FILE_PATH = "database/players.json"
+URL = f"http://127.0.0.1:{PORT}/main_menu.html"
 
 # Alustetaan säämuuttujat
 last_weather_update = 0
@@ -31,227 +31,137 @@ def starting_coordinates(lat, lon):
     with open(LOCATION_FILE_PATH, "w") as file:
         json.dump(location_data, file)
 
-# HTTP-palvelimen käsittelijäluokka, joka hallitsee GET- ja POST-pyynnöt
-class CustomHandler(http.server.SimpleHTTPRequestHandler):
+@app.route("/select_user", methods=["POST"])
+def handle_select_user():
+    data = request.get_json()
+    if data.get("command") == "select_user":
+        user.select_user(data.get("user_name"))
+        return jsonify({"success": True})
+    return jsonify({"error": "Tuntematon komento"}), 400
 
-    # Käsittelee POST-pyynnöt, joita käytetään sijainnin päivittämiseen
-    def do_POST(self):
-        """Käsittelee kaikki POST-pyynnöt reititysjärjestelmän kautta."""
+@app.route("/add_user", methods=["POST"])
+def handle_add_user():
+    data = request.get_json()
+    name = data.get("name", "").strip()
+    if not name:
+        return jsonify({"success": False, "message": "Nimi ei voi olla tyhjä."}), 400
 
-        # Määritetään POST-reitit ja niihin liittyvät funktiot
-        routes = {
-            "/select_user": self.handle_select_user,
-            "/add_user": self.handle_add_user,
-            "/log_out": self.handle_logout,
-            "/exit_game": self.handle_exit_game,
-            "/start_game": self.handle_start_game,
-            "/update_location": self.handle_update_location,
-            "/select_icao": self.handle_select_icao,
-            "/stop_flight": self.handle_stop_flight
-        }
+    success = user.add_new_user(name)
+    msg = f"Käyttäjä '{name}' lisätty tietokantaan." if success else "Käyttäjänimi on jo käytössä tai virheellinen."
+    return jsonify({"success": success, "message": msg})
 
-        # Tarkistetaan, onko polku olemassa reitityksessä
-        handler = routes.get(self.path)
+@app.route("/log_out", methods=["POST"])
+def handle_logout():
+    db.log_out()
+    return jsonify({"success": True, "message": "Käyttäjä kirjattu ulos"})
 
-        if handler:
-            handler() # Kutsutaan vastaavaa käsittelyfunktiota
-        else:
-            self.send_response(404)
-            self.end_headers()
-            self.wfile.write(json.dumps({"error": "Not found"}).encode())
+@app.route("/exit_game", methods=["POST"])
+def handle_exit_game():
+    sys.exit()
 
-    def get_post_data(self):
-        """Lukee ja jäsentää JSON-datan POST-pyynnöstä."""
-        content_length = int(self.headers.get("Content-Length", 0))
-        post_data = self.rfile.read(content_length)
+@app.route("/start_game", methods=["POST"])
+def handle_start_game():
+    user.start_game()
+    return jsonify({"success": True, "message": "Peli alkaa."})
 
-        try:
-            return json.loads(post_data)
-        except json.JSONDecodeError:
-            self.send_response(400)
-            self.send_header("Content-type", "application/json")
-            self.end_headers()
-            self.wfile.write(json.dumps({"error": "Virheellinen JSON"}).encode())
-            return None
+@app.route("/stop_flight", methods=["POST"])
+def handle_stop_flight():
+    data = request.get_json()
+    if data.get("command") == "stop_flight":
+        flight.stop_flight = True
+        return jsonify({"success": True})
+    return jsonify({"error": "Tuntematon komento"}), 400
 
-    def send_json_response(self, status, data):
-        """Lähettää JSON-muotoisen vastauksen."""
-        self.send_response(status)
-        self.send_header("Content-type", "application/json")
-        self.end_headers()
-        self.wfile.write(json.dumps(data).encode())
+@app.route("/select_icao", methods=["POST"])
+def handle_select_icao():
+    data = request.get_json()
+    if data.get("command") == "select_icao":
+        airport = db.get_airport_coords(data.get("icao"))
+        if airport:
+            user.target_airport = airport
+            user.ingame_menu_active = False
+            return jsonify({"success": True})
+    return jsonify({"error": "Tuntematon komento"}), 400
 
-    def handle_logout(self):
-        """Käsittelee käyttäjän uloskirjautumisen"""
-        db.log_out()
-        self.send_json_response(200, {"success": True, "message": "Käyttäjä kirjattu ulos"})
+@app.route("/update_location", methods=["POST"])
+def handle_update_location():
+    data = request.get_json()
+    try:
+        with open(LOCATION_FILE_PATH, "w") as f:
+            json.dump(data, f)
+        return jsonify({"message": "Location updated"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-    def handle_exit_game(self):
-        """Sulkee ohjelman"""
-        sys.exit()
+@app.route("/get_user", methods=["GET"])
+def handle_get_user():
+    return jsonify({
+        "user_name": user.user_name,
+        "airport_name": user.airport_name,
+        "current_icao": user.current_icao,
+        "cash": user.cash,
+        "fuel": flight.current_fuel
+    })
 
-    def handle_start_game(self):
-        """Käsittelee pelin käynnistyksen"""
-        user.start_game()
-        self.send_json_response(200, {"success": True, "message": "Peli alkaa."})
+@app.route("/get_users", methods=["GET"])
+def handle_get_users():
+    users = db.show_current_users()
+    if users:
+        return jsonify([{"id": u[0], "screen_name": u[1]} for u in users])
+    return jsonify({"error": "No users found"}), 404
 
-    def handle_stop_flight(self):
-        data = self.get_post_data()
-        if not data:
-            return
+@app.route("/location", methods=["GET"])
+def handle_get_location():
+    try:
+        if not os.path.exists(LOCATION_FILE_PATH):
+            return jsonify({"error": "Location file not found"}), 404
 
-        command = data.get("command")
+        with open(LOCATION_FILE_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
 
-        if command == "stop_flight":
-            flight.stop_flight = True
-
-    def handle_select_icao(self):
-        data = self.get_post_data()
-        if not data:
-            return
-
-        icao = data.get("icao")
-        command = data.get("command")
-
-        if command == "select_icao":
-            airport = db.get_airport_coords(icao)
-            if airport:
-                self.send_json_response(200, {"success": True})
-                user.target_airport = airport
-                user.ingame_menu_active = False
-        else:
-            self.send_json_response(400, {"error": "Tuntematon komento"})
-
-    def handle_select_user(self):
-        """Käsittelee käyttäjän valinnan."""
-        data = self.get_post_data()
-        if not data:
-            return
-
-        user_name = data.get("user_name")
-        command = data.get("command")
-
-        if command == "select_user":
-            result = user.select_user(user_name)
-            self.send_json_response(200, {"success": True})
-        else:
-            self.send_json_response(400, {"error": "Tuntematon komento"})
-
-    def handle_add_user(self):
-        """Käsittelee uuden käyttäjän lisäämisen."""
-        data = self.get_post_data()
-        if not data:
-            return
-
-        name = data.get("name", "").strip()
-
-        if not name:
-            self.send_json_response(400, {"success": False, "message": "Nimi ei voi olla tyhjä."})
-            return
-
-        success = user.add_new_user(name)
-
-        if success:
-            self.send_json_response(200, {"success": True, "message": f"Käyttäjä '{name}' lisätty tietokantaan."})
-        else:
-            self.send_json_response(200, {"success": False, "message": "Käyttäjänimi on jo käytössä tai virheellinen."})
-
-    # Käsittelee GET-pyynnöt, kuten sijaintitiedon hakemisen
-    def do_GET(self):
-        """Käsittelee kaikki GET-pyynnöt dynaamisen reitityksen kautta."""
-
-        # Määritetään GET-reitit ja niihin liittyvät funktiot
-        routes = {
-            "/get_user": self.handle_get_user,
-            "/get_users": self.handle_get_users,
-            "/location": self.handle_get_location,
-            "/get_weather": self.handle_get_weather,
-            "/get_in_game_menu_on": self.handle_get_in_game_menu_on
-        }
-
-        # Käsitellään staattiset tiedostot
-        if self.path in ALLOWED_FILES or self.path.startswith("/static/") or self.path.startswith("/templates/"):
-            self.path = self.path.lstrip("/")
-            super().do_GET()
-            return
-
-        # Haetaan reitti sanakirjasta ja suoritetaan funktio, jos löytyy
-        handler = routes.get(self.path)
-        if handler:
-            handler()
-        else:
-            self.send_json_response(404, {"error": "Not found"})
-
-    def handle_get_weather(self):
-        """Palauttaa ajankohtaiset säätiedot JSON-muodossa."""
-        if main.current_location:
-            lat, lon = main.current_location
-            print(f"main.current_location: ", main.current_location)
-            weather_data = fetch_weather(lat, lon)
-
-            if "error" in weather_data:
-                self.send_json_response(500, weather_data)
+            if "lat" in data and "lon" in data:
+                return jsonify(data)
             else:
-                self.send_json_response(200, weather_data)
-        else:
-            self.send_json_response(400, {"error": "Sijaintia ei ole asetettu"})
+                return jsonify({"error": "Invalid content in the file location.json"}), 400
 
-    def handle_get_in_game_menu_on(self):
-        data = {"in_game_menu_on": user.ingame_menu_active}
-        self.send_json_response(200, data)
+    except json.JSONDecodeError as e:
+        return jsonify({"error": f"JSON-error: {str(e)}"}), 400
+    except Exception as e:
+        return jsonify({"error": f"Unknown error {str(e)}"}), 500
 
-    def handle_get_user(self):
-        """Käsittelee käyttäjän tietojen haun."""
-        user_data = {
-            "user_name": user.user_name,
-            "airport_name": user.airport_name,
-            "current_icao": user.current_icao,
-            "cash": user.cash,
-            "fuel": flight.current_fuel
-         }
-        self.send_json_response(200, user_data)
+@app.route("/get_weather", methods=["GET"])
+def handle_get_weather():
+    if main.current_location:
+        lat, lon = main.current_location
+        print("main.current_location:", main.current_location)
+        return jsonify(fetch_weather(lat, lon))
+    return jsonify({"error": "Sijaintia ei ole asetettu"}), 400
 
-    def handle_get_users(self):
-        """Käsittelee kaikkien käyttäjien haun."""
-        users = db.show_current_users()
-        if users:
-            user_list = [{"id": player[0], "screen_name": player[1]} for player in users]
-            self.send_json_response(200, user_list)
-        else:
-            self.send_json_response(404, {"error": "No users found"})
+@app.route("/get_in_game_menu_on", methods=["GET"])
+def handle_get_in_game_menu_on():
+    return jsonify({"in_game_menu_on": user.ingame_menu_active})
 
-    def handle_get_location(self):
-        """Palauttaa lentokoneen sijaintitiedot JSON-muodossa."""
-        try:
-            with open(LOCATION_FILE_PATH, "r") as file:
-                data = json.load(file)
-                self.send_json_response(200, data)
-        except FileNotFoundError:
-            self.send_json_response(404, {"error": "Location file not found"})
+@app.route("/<filename>.html")
+def serve_html(filename):
+    return send_from_directory(TEMPLATES_DIR, f"{filename}.html")
 
-    def handle_update_location(self):
-        """Päivittää lentokoneen sijainnin."""
-        data = self.get_post_data()
-        if not data:
-            return
+@app.route("/location.json")
+def serve_location_json():
+    return send_from_directory(TEMPLATES_DIR, "location.json")
 
-        try:
-            with open(LOCATION_FILE_PATH, "w") as file:
-                json.dump(data, file)
-            self.send_json_response(200, {"message": "Location updated"})
-        except Exception as e:
-            self.send_json_response(500, {"error": str(e)})
+@app.route("/static/<path:path>")
+def serve_static(path):
+    return send_from_directory(STATIC_DIR, path)
 
-# Käynnistää HTTP-palvelimen, joka toimii paikallisella koneella
-def run_http_server():
-    with http.server.HTTPServer(("127.0.0.1", PORT), CustomHandler) as httpd:
-        print(f"Palvelin käynnissä osoitteessa http://127.0.0.1:{PORT}")
-        webbrowser.open(URL) # Avaa selaimen etusivulle
-        httpd.serve_forever()
+# Käynnistää Flask-palvelimen, joka toimii paikallisella koneella
+def run_flask_server():
+    print(f"Palvelin käynnissä osoitteeessa {URL}")
+    webbrowser.open(URL)
+    app.run(host="127.0.0.1", port=PORT, use_reloader=False)
 
 # Käynnistää palvelimen erillisessä säikeessä, jotta ohjelma ei jää jumiin
 def start_server():
-    server_thread = threading.Thread(target=run_http_server, daemon=True)
+    server_thread = threading.Thread(target=run_flask_server, daemon=True)
     server_thread.start()
 
 # Päivittää palvelimelle lentokoneen sijainnin, jos se on ilmassa

@@ -56,7 +56,8 @@ async function fetchLocation() {
 // Funktio hakee alkuperäisen sijainnin ja aloittaa sijaintipäivityksen, jos lentokone on ilmassa
 async function fetchInitialLocation() {
     try {
-        let response = await fetch('location.json'); // Hakee sijaintitiedoston
+        //let response = await fetch('location.json'); // Hakee sijaintitiedoston
+        let response = await fetch('/location'); // Hakee sijaintitiedoston
         let data = await response.json(); // Muuntaa vastauksen JSON-muotoon
 
         if (data.lat && data.lon) {

@@ -72,7 +72,7 @@ function startGame() {
         .then(data => {
             if(data.success) {
                 // siirrytään map.html-sivu
-                window.location.href = "/templates/map.html";
+                window.location.href = "/map.html";
             } else {
                 alert("Sinun pitää kirjautua sisään, ennen kuin voit aloittaa pelin.");
             }

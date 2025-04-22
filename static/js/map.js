@@ -76,7 +76,7 @@ async function fetchInitialLocation() {
 // Käynnistää alkuperäisen sijainninhaun, kun sivu latautuu
 window.onload = fetchInitialLocation;
 
-function fetchUserInfo() {
+/*function fetchUserInfo() {
     fetch("/get_user")
         .then(response => response.json())
         .then(data => {
@@ -92,7 +92,27 @@ function fetchUserInfo() {
             document.getElementById("user-info").innerText = "Tietojen haku epäonnistui";
         });
 }
-document.addEventListener("DOMContentLoaded", fetchUserInfo)
+document.addEventListener("DOMContentLoaded", fetchUserInfo)*/
+
+async function fetchUserInfo() {
+    try {
+        let response = await fetch("/get_user");
+        let data = await response.json();
+        if(data) {
+            document.getElementById("user-info").innerText =
+                `Käyttäjä: ${data.user_name}
+                Lentoasema ${data.airport_name}
+                ICAO: ${data.current_icao}
+                Käteinen: ${data.cash.toFixed(2)} €
+                Polttoaine: ${data.fuel.toFixed(2)} L`;
+        }
+    } catch(error) {
+        console.error("Virhe haettaessa sijaintia: ", error);
+    }
+}
+
+// Päivitetään käyttäjätiedot 1 sekunnin välein
+setInterval(fetchUserInfo, 1000);
 
 // Haetaan reaaliaikainen sää
 async function fetchWeather() {

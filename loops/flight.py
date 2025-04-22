@@ -97,6 +97,6 @@ def was_flight_interrupted(remaining_distance, current_icao, icao, current_locat
     return remaining_distance
 
 def process_arrived_at_airport(current_icao):
-    # Tarkistetaan mm. onko asias oikealla lentoasemalle. Ottaa tästä parametrin vastaan.
+    # Tarkistetaan mm. onko asiakas oikealla lentoasemalle. Ottaa tästä parametrin vastaan.
     # Kutsutaan tässä customers.py lennonloppumis-funktiota.
     return

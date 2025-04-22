@@ -1,7 +1,6 @@
 let users = [];
 let currentPage = 0;
 const usersPerPage = 10;
-//location.reload();  // Päivittää sivun
 
 function showUserNameInput() {
     showInputContainer("username-container", "username_input", handleSelectUserEnter);
@@ -70,12 +69,10 @@ function exitGame() {
         })
         .then(data => {
             console.log("Palvelimen vastaus:", data);
-            //alert("Peli sulkeutuu.");
             window.close();
         })
         .catch(error => {
             console.error("Virhe pelin lopetuksessa:", error);
-            //alert("Pelin lopetus epäonnistui.");
         });
 }
 

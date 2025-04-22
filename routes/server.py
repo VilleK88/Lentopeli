@@ -57,30 +57,26 @@ def handle_logout():
 
 @app.route("/exit_menu", methods=["GET", "POST"])
 def handle_exit_menu():
-    print("Lopeta peli")
-    "sys.exit()"
-    def shutdown():
-        import time
-        time.sleep(1)
-        os._exit(0)
-
     threading.Thread(target=shutdown).start()
     return jsonify({"status": "Palvelin sammuu"}), 200
 
 @app.route("/exit_menu_and_logout", methods=["POST"])
 def handle_exit_menu_and_logout():
     db.log_out()
-    sys.exit()
+    threading.Thread(target=shutdown).start()
+    return jsonify({"status": "Palvelin sammuu"}), 200
 
 @app.route("/exit_game", methods=["POST"])
 def handle_exit_game():
     user.save_game_progress(user.user_id, user.current_icao, flight.current_fuel, False)
-    sys.exit()
+    threading.Thread(target=shutdown).start()
+    return jsonify({"status": "Palvelin sammuu"}), 200
 
 @app.route("/exit_game_and_logout", methods=["POST"])
 def handle_exit_game_and_logout():
     user.save_game_progress(user.user_id, user.current_icao, flight.current_fuel, True)
-    sys.exit()
+    threading.Thread(target=shutdown).start()
+    return jsonify({"status": "Palvelin sammuu"}), 200
 
 @app.route("/start_game", methods=["POST"])
 def handle_start_game():
@@ -258,3 +254,7 @@ def fetch_weather(lat, lon):
 
     except requests.RequestException as e:
         return {"error": f"Yhteysvirhe: {e}"}
+
+def shutdown():
+    time.sleep(1)
+    os._exit(0)

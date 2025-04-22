@@ -98,7 +98,7 @@ def get_user_data():
 def ingame_menu():
     global user_id, ingame_menu_active, target_airport, current_icao
 
-    save_game_progress(user_id, flight.current_fuel, current_icao, False);
+    save_game_progress(user_id, flight.current_fuel, current_icao, False)
 
     while ingame_menu_active:
         time.sleep(1)

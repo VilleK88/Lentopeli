@@ -11,6 +11,14 @@ var airplaneIcon = L.icon({
     popupAnchor: [0, -25] // Ponnahdusikkunan ankkuripiste
 });
 
+function quitGame() {
+
+}
+
+function quitGameAndLogOut() {
+
+}
+
 // Funktio, joka alustaa kartan ja sijoittaa lentokoneen siihen
 function initializeMap(lat, lon) {
     if (!map) {
@@ -75,24 +83,6 @@ async function fetchInitialLocation() {
 
 // Käynnistää alkuperäisen sijainninhaun, kun sivu latautuu
 window.onload = fetchInitialLocation;
-
-/*function fetchUserInfo() {
-    fetch("/get_user")
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("user-info").innerText =
-                `Käyttäjä: ${data.user_name}
-                Lentoasema: ${data.airport_name}
-                ICAO: ${data.current_icao}
-                Käteinen: ${data.cash} €
-                Polttoaine: ${data.fuel} L`;
-        })
-        .catch(error => {
-            console.error("Virhe käyttäjätietojen haussa:", error);
-            document.getElementById("user-info").innerText = "Tietojen haku epäonnistui";
-        });
-}
-document.addEventListener("DOMContentLoaded", fetchUserInfo)*/
 
 async function fetchUserInfo() {
     try {

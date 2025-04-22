@@ -11,12 +11,3 @@ def calculate_distance(current_location, icao2):
     koord1 = current_location[0], current_location[1]
     koord2 = icao2[2], icao2[3]
     return geodesic(koord1, koord2).kilometers
-
-# Tarkistaa löytyykö syötetty ICAO-koodi tietokannasta
-#def get_valid_icao():
-    #active = True
-    #while active:
-        #icao = get_icao_input(screen, font, prompt, True)
-        #airport = get_airport_coords(icao)
-        #if airport:
-            #return airport

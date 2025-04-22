@@ -61,9 +61,22 @@ function logOut() {
 }
 
 function exitGame() {
-    window.close();
-    fetch("/exit_game", { method: "POST" })
-        .catch(error => console.error("Virhe uloskirjautumisessa:", error));
+    fetch("/exit_menu", { method: "POST" })
+        .then(response => {
+            if(!response.ok) {
+                throw new Error("Palvelin ei hyväksynyt pyyntöä");
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log("Palvelimen vastaus:", data);
+            //alert("Peli sulkeutuu.");
+            window.close();
+        })
+        .catch(error => {
+            console.error("Virhe pelin lopetuksessa:", error);
+            //alert("Pelin lopetus epäonnistui.");
+        });
 }
 
 function startGame() {

@@ -33,11 +33,6 @@ def main_menu():
         airport = get_airport_coords(starting_airport)
         main.current_location = airport[2], airport[3]
 
-    # Haetaan ja päivitetään säätila
-    #weather = get_weather(main.current_location[0], main.current_location[1])
-    #weather, turbulence_warning = update_weather_on_ground(weather)
-    #last_weather_update = time.time()
-
     while main_menu_active:
         time.sleep(1)
 

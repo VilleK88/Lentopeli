@@ -55,7 +55,7 @@ def main_program():
         if remaining_distance != None:
             if remaining_distance <= 0:
                 print(f"Saavuit {current_icao[0]}, ICAO: {current_icao[1]}.")
-                """process_arrived_at_airport(current_icao) kutsutaan tässä"""
+                flight.process_arrived_at_airport(current_icao)
         else:
             remaining_distance = 0 # Alustetaan etäisyys nollaksi, jos ei ole määritetty
 

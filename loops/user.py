@@ -1,6 +1,6 @@
 import main
 from database.db import get_users_and_set_as_logged_in, check_if_name_in_db, add_user_to_db, get_logged_in_user_data, \
-    get_inventory, get_airport_coords
+    get_inventory, get_airport_coords, save_game_progress
 import time
 from loops import flight
 
@@ -96,7 +96,9 @@ def get_user_data():
 """ Huolto/kauppa koodi kutsutaan ingame_menusta user.py """
 # ingame menu
 def ingame_menu():
-    global user_id, ingame_menu_active, target_airport
+    global user_id, ingame_menu_active, target_airport, current_icao
+
+    save_game_progress(user_id, flight.current_fuel, current_icao, False);
 
     while ingame_menu_active:
         time.sleep(1)

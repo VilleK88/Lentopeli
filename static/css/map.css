@@ -1,3 +1,7 @@
+html {
+    font-family: Verdana sans-serif;
+}
+
 .game-container {
     position: relative;
     width: 100%;

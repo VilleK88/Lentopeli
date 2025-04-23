@@ -21,7 +21,8 @@ function quitGame() {
         })
         .then(data => {
             console.log("Palvelimen vastaus:", data);
-            window.close();
+            //window.close();
+            alert("Palvelin on suljettu. Voit nyt sulkea tämän välilehden.");
         })
         .catch(error => {
             console.error("Virhe pelin lopetuksessa:", error);
@@ -38,7 +39,8 @@ function quitGameAndLogOut() {
         })
         .then(data => {
             console.log("Palvelimen vastaus:", data);
-            window.close();
+            //window.close();
+            alert("Palvelin on suljettu. Voit nyt sulkea tämän välilehden.");
         })
         .catch(error => {
             console.error("Virhe pelin lopetuksessa:", error);

@@ -68,6 +68,7 @@ def handle_exit_menu_and_logout():
 
 @app.route("/exit_game", methods=["POST"])
 def handle_exit_game():
+    print("Lopeta peli: exit game")
     if user.ingame_menu_active:
         user.save_game_progress(user.user_id, flight.current_fuel, user.current_icao, False)
     threading.Thread(target=shutdown).start()
@@ -75,6 +76,7 @@ def handle_exit_game():
 
 @app.route("/exit_game_and_logout", methods=["POST"])
 def handle_exit_game_and_logout():
+    print("Lopeta peli: exit game and logout")
     if user.ingame_menu_active:
         user.save_game_progress(user.user_id, flight.current_fuel, user.current_icao, True)
     threading.Thread(target=shutdown).start()

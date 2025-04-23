@@ -98,8 +98,8 @@ function fetchUserInfo() {
                 `Käyttäjä: ${data.user_name}
                 Lentoasema: ${data.airport_name}
                 ICAO: ${data.current_icao}
-                Käteinen: ${data.cash} €
-                Polttoaine: ${data.fuel} L`;
+                Käteinen: ${data.cash.toFixed(2)} €
+                Polttoaine: ${data.fuel.toFixed(2)} L`;
         })
         .catch(error => {
             console.error("Virhe käyttäjätietojen haussa:", error);

@@ -73,7 +73,7 @@ def main_program():
         # Päivitetään nykyinen lentoasema ja asetetaan valikko takaisin aktiiviseksi
         current_icao = icao
         user.current_icao = current_icao[1]
-        user.airport_name = current_icao[0];
+        user.airport_name = current_icao[0]
         user.ingame_menu_active = True
         menu_on = True
 

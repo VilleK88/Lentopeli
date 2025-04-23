@@ -68,13 +68,15 @@ def handle_exit_menu_and_logout():
 
 @app.route("/exit_game", methods=["POST"])
 def handle_exit_game():
-    user.save_game_progress(user.user_id, user.current_icao, flight.current_fuel, False)
+    if user.ingame_menu_active:
+        user.save_game_progress(user.user_id, flight.current_fuel, user.current_icao, False)
     threading.Thread(target=shutdown).start()
     return jsonify({"status": "Palvelin sammuu"}), 200
 
 @app.route("/exit_game_and_logout", methods=["POST"])
 def handle_exit_game_and_logout():
-    user.save_game_progress(user.user_id, user.current_icao, flight.current_fuel, True)
+    if user.ingame_menu_active:
+        user.save_game_progress(user.user_id, flight.current_fuel, user.current_icao, True)
     threading.Thread(target=shutdown).start()
     return jsonify({"status": "Palvelin sammuu"}), 200
 

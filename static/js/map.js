@@ -12,11 +12,37 @@ var airplaneIcon = L.icon({
 });
 
 function quitGame() {
-
+    fetch("/exit_game", {method: "POST"})
+        .then(response => {
+            if(!response.ok) {
+                throw new Error("Palvelin ei hyväksynyt pyyntöä");
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log("Palvelimen vastaus:", data);
+            window.close();
+        })
+        .catch(error => {
+            console.error("Virhe pelin lopetuksessa:", error);
+        });
 }
 
 function quitGameAndLogOut() {
-
+    fetch("/exit_game_and_logout", {method: "POST"})
+        .then(response => {
+            if(!response.ok) {
+                throw new Error("Palvelin ei hyväksynyt pyyntöä");
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log("Palvelimen vastaus:", data);
+            window.close();
+        })
+        .catch(error => {
+            console.error("Virhe pelin lopetuksessa:", error);
+        });
 }
 
 // Funktio, joka alustaa kartan ja sijoittaa lentokoneen siihen

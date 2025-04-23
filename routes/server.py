@@ -116,6 +116,19 @@ def handle_update_location():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/get_coords_for_icon", methods=["GET"])
+def handle_get_coords_for_icon():
+    dest_icao = request.args.get("dest_icao")
+    current_airport = db.get_airport_coords(user.current_icao)
+    dest_airport = db.get_airport_coords(dest_icao)
+    return jsonify({
+        "success": True,
+        "lat1": current_airport[2],
+        "lon1": current_airport[3],
+        "lat2": dest_airport[2],
+        "lon2": dest_airport[3]
+    })
+
 @app.route("/get_user", methods=["GET"])
 def handle_get_user():
     return jsonify({

@@ -59,11 +59,17 @@ function initializeMap(lat, lon) {
         }).addTo(map)
 
         // Lisätään lentokoneen merkki kartalle
-        marker = L.marker([lat, lon], {icon: airplaneIcon}).addTo(map);
+        //marker = L.marker([lat, lon], {icon: airplaneIcon}).addTo(map);
+        marker = L.marker([lat, lon], {
+            icon: getRotatedAirplaneIcon(0)
+        }).addTo(map);
+        lastLat = lat;
+        lastLon = lon;
+
     } else {
         // Jos kartta on jo olemassa, päivitetään sijainti vain tarvittaessa
         if (lastLat !== lat || lastLon !== lon) {
-            marker.setLatLng([lat, lon]) // Päivitetään merkin sijainti
+            marker.setLatLng([lat, lon]); // Päivitetään merkin sijainti
             map.setView([lat, lon], map.getZoom(), {animate: true}); // Liikutetaan näkymää
 
             // Päivitetään viimeisimmät koordinaatit
@@ -81,7 +87,24 @@ async function fetchLocation() {
         let data = await response.json(); // Muuntaa vastauksen JSON-muotoon
 
         if (data.lat && data.lon) {
-            initializeMap(data.lat, data.lon) // Päivittää kartan
+            if (lastLat !== null && lastLon !== null) {
+                // Lasketaan kulma ja päivitetään kuvake
+                if (lastLat !== data.lat || lastLon !== data.lon) {
+                    let angle = calculateIconAngle(lastLat, lastLon, data.lat, data.lon);
+                    marker.setLatLng([data.lat, data.lon]);
+                    marker.setIcon(getRotatedAirplaneIcon(angle));
+                    map.setView([data.lat, data.lon], map.getZoom(), {animate: true});
+                }
+            } else {
+                // Jos ensimmäinen kerta: pelkkä setLatLng + ikoni
+                marker.setLatLng([data.lat, data.lon]);
+            }
+
+            // Päivitetään viimeisin sijainti joka tapauksessa
+            lastLat = data.lat;
+            lastLon = data.lon;
+
+            //initializeMap(data.lat, data.lon) // Päivittää kartan
         }
         setTimeout(fetchLocation, 1000); // Uudelleenhaku 1 sekunnin välein
     } catch (error) {
@@ -178,6 +201,7 @@ function selectIcao() {
             if(data.success) {
                 hideContainer("icao-container");
                 showContainer("stop-flight-container");
+                getCoordsForIcon(targetIcao);
             }
         })
         .catch(error => {
@@ -204,6 +228,36 @@ function stopFlight() {
         .catch(error => {
             console.error("Virhe:", error);
         });
+}
+
+function getCoordsForIcon(destination_icao) {
+    fetch(`/get_coords_for_icon?dest_icao=${destination_icao}`)
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                let angle = calculateIconAngle(data.lat1, data.lon1, data.lat2, data.lon2);
+                marker.setIcon(getRotatedAirplaneIcon(angle));
+            }
+        })
+        .catch(error => console.error("Virhe koordinaattien haussa:", error));
+}
+
+function getRotatedAirplaneIcon(angleDegrees) {
+    let correction = 100;
+    let correctedAngle = (angleDegrees + correction + 360) % 360;
+    return L.divIcon({
+        className: 'rotated-airplane-icon',
+        html: `<img src="/static/images/airplane.svg" style="width: 50px; height: 50px; transform: rotate(${correctedAngle}deg);">`,
+        iconSize: [50, 50],
+        iconAnchor: [25, 25]
+    });
+}
+
+function calculateIconAngle(lat1, lon1, lat2, lon2) {
+    let dy = lat2 - lat1;
+    let dx = Math.cos(Math.PI / 180 * lat1) * (lon2 - lon1);
+    let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+    return (angle + 360) % 360;
 }
 
 function showInputIcao() {

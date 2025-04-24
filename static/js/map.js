@@ -243,7 +243,7 @@ function getCoordsForIcon(destination_icao) {
 }
 
 function getRotatedAirplaneIcon(angleDegrees) {
-    let correction = 100;
+    let correction = 95; // 100
     let correctedAngle = (angleDegrees + correction + 360) % 360;
     return L.divIcon({
         className: 'rotated-airplane-icon',

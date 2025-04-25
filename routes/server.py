@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, send_from_directory
-import json, os, sys, threading, webbrowser, time, requests
+import json, os, threading, webbrowser, time, requests
 from loops import user, flight
 from database import db
 from dotenv import load_dotenv

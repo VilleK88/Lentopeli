@@ -5,7 +5,7 @@ var lastLon = null; // Viimeisin longitude (pituusaste)
 
 // Määritetään lentokoneen kuvake kartalle
 var airplaneIcon = L.icon({
-    iconUrl: '/static/images/airplane.svg', // Kuvake tiedostosta airplane.svg
+    iconUrl: '/static/images/airplane_icon.png', // Kuvake tiedostosta airplane.svg
     iconSize: [50, 50], // Kuvakkeen koko
     iconAnchor: [25, 25], // Ankkurointipiste kuvan sisällä
     popupAnchor: [0, -25] // Ponnahdusikkunan ankkuripiste
@@ -243,21 +243,29 @@ function getCoordsForIcon(destination_icao) {
 }
 
 function getRotatedAirplaneIcon(angleDegrees) {
-    let correction = 95; // 100
-    let correctedAngle = (angleDegrees + correction + 360) % 360;
     return L.divIcon({
         className: 'rotated-airplane-icon',
-        html: `<img src="/static/images/airplane.svg" style="width: 50px; height: 50px; transform: rotate(${correctedAngle}deg);">`,
+        html: `<img src="/static/images/airplane_icon.png" style="width: 50px; height: 50px; transform: rotate(${angleDegrees}deg);">`,
         iconSize: [50, 50],
         iconAnchor: [25, 25]
     });
 }
 
 function calculateIconAngle(lat1, lon1, lat2, lon2) {
-    let dy = lat2 - lat1;
-    let dx = Math.cos(Math.PI / 180 * lat1) * (lon2 - lon1);
-    let angle = Math.atan2(dy, dx) * 180 / Math.PI;
-    return (angle + 360) % 360;
+    const toRadians = deg => deg * Math.PI / 180;
+    const toDegrees = rad => rad * 180 / Math.PI;
+
+    const lat1_rad = toRadians(lat1);
+    const lat2_rad = toRadians(lat2);
+    const delta_lambda = toRadians(lon2 - lon1);
+
+    const y = Math.sin(delta_lambda) * Math.cos(lat2_rad);
+    const x = Math.cos(lat1_rad) * Math.sin(lat2_rad) -
+              Math.sin(lat1_rad) * Math.cos(lat2_rad) * Math.cos(delta_lambda);
+
+    let angle = Math.atan2(y, x);
+    let bearing = (toDegrees(angle) + 360) % 360;
+    return bearing;
 }
 
 function showInputIcao() {

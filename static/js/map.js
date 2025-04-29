@@ -3,14 +3,6 @@ var marker; // Lentokoneen merkki kartalla
 var lastLat = null; // Viimeisin latitude (leveysaste)
 var lastLon = null; // Viimeisin longitude (pituusaste)
 
-// Määritetään lentokoneen kuvake kartalle
-/*var airplaneIcon = L.icon({
-    iconUrl: '/static/images/airplane_icon.png', // Kuvake tiedostosta airplane.svg
-    iconSize: [50, 50], // Kuvakkeen koko
-    iconAnchor: [25, 25], // Ankkurointipiste kuvan sisällä
-    popupAnchor: [0, -25] // Ponnahdusikkunan ankkuripiste
-});*/
-
 function quitGame() {
     fetch("/exit_game", {method: "POST"})
         .then(response => {
@@ -21,7 +13,6 @@ function quitGame() {
         })
         .then(data => {
             console.log("Palvelimen vastaus:", data);
-            //window.close();
             alert("Palvelin on suljettu. Voit nyt sulkea tämän välilehden.");
         })
         .catch(error => {

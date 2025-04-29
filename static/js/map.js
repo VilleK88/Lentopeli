@@ -4,12 +4,12 @@ var lastLat = null; // Viimeisin latitude (leveysaste)
 var lastLon = null; // Viimeisin longitude (pituusaste)
 
 // Määritetään lentokoneen kuvake kartalle
-var airplaneIcon = L.icon({
+/*var airplaneIcon = L.icon({
     iconUrl: '/static/images/airplane_icon.png', // Kuvake tiedostosta airplane.svg
     iconSize: [50, 50], // Kuvakkeen koko
     iconAnchor: [25, 25], // Ankkurointipiste kuvan sisällä
     popupAnchor: [0, -25] // Ponnahdusikkunan ankkuripiste
-});
+});*/
 
 function quitGame() {
     fetch("/exit_game", {method: "POST"})
@@ -39,7 +39,6 @@ function quitGameAndLogOut() {
         })
         .then(data => {
             console.log("Palvelimen vastaus:", data);
-            //window.close();
             alert("Palvelin on suljettu. Voit nyt sulkea tämän välilehden.");
         })
         .catch(error => {
@@ -59,7 +58,6 @@ function initializeMap(lat, lon) {
         }).addTo(map)
 
         // Lisätään lentokoneen merkki kartalle
-        //marker = L.marker([lat, lon], {icon: airplaneIcon}).addTo(map);
         marker = L.marker([lat, lon], {
             icon: getRotatedAirplaneIcon(0)
         }).addTo(map);
@@ -82,7 +80,6 @@ function initializeMap(lat, lon) {
 // Funktio hakee sijaintitiedon palvelimelta ja päivittää kartan
 async function fetchLocation() {
     try {
-        //let response = await fetch('location.json'); // Hakee sijaintitiedoston
         let response = await fetch('/location');
         let data = await response.json(); // Muuntaa vastauksen JSON-muotoon
 
@@ -103,8 +100,6 @@ async function fetchLocation() {
             // Päivitetään viimeisin sijainti joka tapauksessa
             lastLat = data.lat;
             lastLon = data.lon;
-
-            //initializeMap(data.lat, data.lon) // Päivittää kartan
         }
         setTimeout(fetchLocation, 1000); // Uudelleenhaku 1 sekunnin välein
     } catch (error) {
@@ -115,7 +110,6 @@ async function fetchLocation() {
 // Funktio hakee alkuperäisen sijainnin ja aloittaa sijaintipäivityksen, jos lentokone on ilmassa
 async function fetchInitialLocation() {
     try {
-        //let response = await fetch('location.json'); // Hakee sijaintitiedoston
         let response = await fetch('/location'); // Hakee sijaintitiedoston
         let data = await response.json(); // Muuntaa vastauksen JSON-muotoon
 

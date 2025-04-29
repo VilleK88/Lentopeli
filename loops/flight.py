@@ -16,10 +16,11 @@ zoom = 10
 new_lat = 0
 new_lon = 0
 turbulence_warning = ""
+in_flight = False
 
 def flight_loop(current_location, icao, remaining_distance, current_time, time_multiplier):
 
-    global stop_flight, zoom, new_lat, new_lon, turbulence_warning, current_speed_kmh, current_fuel
+    global stop_flight, zoom, new_lat, new_lon, turbulence_warning, current_speed_kmh, current_fuel, in_flight
 
     print("\n📍 Paina '1' muuttaakseksi kurssia tai odota...\n")
 
@@ -35,13 +36,10 @@ def flight_loop(current_location, icao, remaining_distance, current_time, time_m
     if total_distance == 0:
         total_distance = 1
 
-    # Alustetaan sää
-    #weather = get_weather(lat1, lon1)
-    #weather, turbulence_warning = update_weather_on_flight(weather)
-    #last_weather_update = time.time()
-
     # Alustetaan nopeus
     current_speed_kmh = max_speed_kmh
+
+    in_flight = True
 
     while remaining_distance > 0:
         time.sleep(1) # Loopin nopeus
@@ -54,6 +52,7 @@ def flight_loop(current_location, icao, remaining_distance, current_time, time_m
             # Tallennetaan nykyinen sijainti ja keskeytetään lento
             current_location = (new_lat, new_lon)
             stop_flight = False
+            in_flight = False
             break
 
         # Päivitetään matka, polttoaine ja aika

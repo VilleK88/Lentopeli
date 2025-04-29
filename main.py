@@ -76,6 +76,7 @@ def main_program():
         user.airport_name = current_icao[0]
         user.ingame_menu_active = True
         menu_on = True
+        flight.in_flight = False
 
 if __name__ == '__main__':
     main_program()

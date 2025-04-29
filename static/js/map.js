@@ -1,7 +1,8 @@
-var map; // Karttaobjekti
-var marker; // Lentokoneen merkki kartalla
-var lastLat = null; // Viimeisin latitude (leveysaste)
-var lastLon = null; // Viimeisin longitude (pituusaste)
+let map; // Karttaobjekti
+let marker; // Lentokoneen merkki kartalla
+let lastLat = null; // Viimeisin latitude (leveysaste)
+let lastLon = null; // Viimeisin longitude (pituusaste)
+let in_flight = false;
 
 function quitGame() {
     fetch("/exit_game", {method: "POST"})
@@ -131,6 +132,12 @@ async function fetchUserInfo() {
                 ICAO: ${data.current_icao}
                 Käteinen: ${data.cash.toFixed(2)} €
                 Polttoaine: ${data.fuel.toFixed(2)} L`;
+            in_flight = data.in_flight;
+            if(in_flight) {
+                showContainer("stop-flight-container");
+            } else {
+                hideContainer("stop-flight-container");
+            }
         }
     } catch(error) {
         console.error("Virhe haettaessa sijaintia: ", error);
@@ -185,7 +192,7 @@ function selectIcao() {
         .then(data => {
             if(data.success) {
                 hideContainer("icao-container");
-                showContainer("stop-flight-container");
+                //showContainer("stop-flight-container");
                 getCoordsForIcon(targetIcao);
             }
         })

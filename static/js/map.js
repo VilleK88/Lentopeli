@@ -23,7 +23,7 @@ function getAirports() {
                 const airportMarker = L.marker([lat, lon])
                     .addTo(map)
                     .bindPopup(
-                        `<strong>${airport.ident}</strong><br>${airport.name}<br>${a_distance.toFixed(0)} km`
+                        `<strong>${airport.ident}</strong><br>${airport.name}<br>${a_distance.toFixed(0)} km<br><button onclick="selectAirportFromMarker('${airport.ident}')">Valitse tämä lentokenttä</button>`
                     );
             });
         })
@@ -33,6 +33,11 @@ function getAirports() {
 }
 
 document.addEventListener("DOMContentLoaded", getAirports);
+
+function selectAirportFromMarker(icao) {
+    document.getElementById("icao-input").value = icao;
+    selectIcao();
+}
 
 function quitGame() {
     fetch("/exit_game", {method: "POST"})

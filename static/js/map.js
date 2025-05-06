@@ -3,6 +3,7 @@ let marker; // Lentokoneen merkki kartalla
 let lastLat = null; // Viimeisin latitude (leveysaste)
 let lastLon = null; // Viimeisin longitude (pituusaste)
 let in_flight = false;
+let remaining_distance = 0;
 
 function quitGame() {
     fetch("/exit_game", {method: "POST"})
@@ -131,8 +132,10 @@ async function fetchUserInfo() {
                 Lentoasema ${data.airport_name}
                 ICAO: ${data.current_icao}
                 Käteinen: ${data.cash.toFixed(2)} €
-                Polttoaine: ${data.fuel.toFixed(2)} L`;
+                Polttoaine: ${data.fuel.toFixed(2)} L
+                Matka: ${remaining_distance.toFixed(0)} km`;
             in_flight = data.in_flight;
+            remaining_distance = data.remaining_distance;
             if(in_flight) {
                 showContainer("stop-flight-container");
             } else {

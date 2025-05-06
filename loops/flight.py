@@ -17,10 +17,11 @@ new_lat = 0
 new_lon = 0
 turbulence_warning = ""
 in_flight = False
+pub_re_distance = 0
 
 def flight_loop(current_location, icao, remaining_distance, current_time, time_multiplier):
 
-    global stop_flight, zoom, new_lat, new_lon, turbulence_warning, current_speed_kmh, current_fuel, in_flight
+    global stop_flight, zoom, new_lat, new_lon, turbulence_warning, current_speed_kmh, current_fuel, in_flight, pub_re_distance
 
     print("\n📍 Paina '1' muuttaakseksi kurssia tai odota...\n")
 
@@ -44,6 +45,7 @@ def flight_loop(current_location, icao, remaining_distance, current_time, time_m
     while remaining_distance > 0:
         time.sleep(1) # Loopin nopeus
         print(f"Remaining distance: {remaining_distance}")
+        pub_re_distance = remaining_distance
 
         # Keskeytä lento painamalla '1'
         #interrupt_flight()

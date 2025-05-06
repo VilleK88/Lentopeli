@@ -137,7 +137,8 @@ def handle_get_user():
         "current_icao": user.current_icao,
         "cash": user.cash,
         "fuel": flight.current_fuel,
-        "in_flight": flight.in_flight
+        "in_flight": flight.in_flight,
+        "remaining_distance": flight.pub_re_distance
     })
 
 @app.route("/get_users", methods=["GET"])

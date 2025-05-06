@@ -4,7 +4,7 @@ from datetime import datetime
 from database.db import get_columns_and_tables, get_airport_coords
 
 # Pelin muuttujat
-time_multiplier = 100 # Pelin nopeuden määritys (mitä suurempi arvo, sitä nopeammin aika kuluu)
+time_multiplier = 120 # Pelin nopeuden määritys (mitä suurempi arvo, sitä nopeammin aika kuluu)
 remaining_distance = None # Jäljellä oleva etäisyys määränpäähän
 current_time = None # Nykyinen peliaika
 icao = None # lentokenttä jolle lennetään

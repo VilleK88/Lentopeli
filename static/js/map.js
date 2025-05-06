@@ -129,6 +129,7 @@ async function fetchUserInfo() {
         if(data) {
             in_flight = data.in_flight;
             remaining_distance = data.remaining_distance;
+            updateLighting(data.current_time);
 
             let infoText = `Klo: ${data.current_time}
             Käyttäjä: ${data.user_name}
@@ -153,6 +154,20 @@ async function fetchUserInfo() {
 
 // Päivitetään käyttäjätiedot 1 sekunnin välein
 setInterval(fetchUserInfo, 1000);
+
+function updateLighting(current_time) {
+    const mapElement = document.getElementById("map");
+    let hours = parseInt(current_time.split(":")[0]);
+    mapElement.classList.remove("daylight", "dusk", "night");
+
+    if (hours >= 6 && hours < 18) {
+        mapElement.classList.add("daylight");
+    } else if ((hours >= 18 && hours < 21) || (hours >= 3 && hours < 6)) {
+        mapElement.classList.add("dusk");
+    } else {
+        mapElement.classList.add("night");
+    }
+}
 
 function toggleSnowEffect(enable) {
     const snowContainer = document.getElementById("snow-container");

@@ -21,6 +21,7 @@ html {
     height: 100%;
     position: relative;
     z-index: 0;
+    transition: filter 1s ease-in-out;
 }
 
 #ingame-menu {
@@ -246,4 +247,16 @@ html {
         transform: translateY(100vh) rotate(10deg);
         opacity: 0;
     }
+}
+
+.daylight {
+    filter: brightness(1);
+}
+
+.dusk {
+    filter: brightness(0.7);
+}
+
+.night {
+    filter: brightness(0.4);
 }

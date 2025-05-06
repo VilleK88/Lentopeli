@@ -171,7 +171,6 @@ def handle_get_location():
 def handle_get_weather():
     if main.current_location:
         lat, lon = main.current_location
-        print("main.current_location:", main.current_location)
         return jsonify(fetch_weather(lat, lon))
     return jsonify({"error": "Sijaintia ei ole asetettu"}), 400
 

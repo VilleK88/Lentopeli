@@ -166,11 +166,13 @@ async function fetchWeather() {
         }
 
         document.getElementById("weather-info").innerHTML = `
-            Lämpötila: ${data.temperature}°C <br>
+            Sää: ${data.weather} <br>
+            Lämpötila: ${data.temperature}°C <br>         
             Tuuli: ${data.wind_speed} m/s <br>
             Suunta: ${data.wind_direction}° <br>
             ${data.turbulence_warning ? "<span style='color:red;'>Varoitus: Turbulenssia!</span>" : ""}
         `;
+
     } catch (error) {
         console.error("Virhe säätietojen haussa:", error);
         document.getElementById("weather-info").innerText = "Säätietoja ei saatavilla.";

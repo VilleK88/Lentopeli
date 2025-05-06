@@ -6,6 +6,34 @@ let in_flight = false;
 let remaining_distance = 0;
 const weatherEffectContainer = document.getElementById("weather-effect-container");
 
+function getAirports() {
+    fetch("/get_airports")
+        .then(response => {
+            if(!response.ok) {
+                throw new Error("Verkkopyyntö epäonnistui");
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Läheiset lentokentät:", data);
+            data.forEach(airport => {
+                const lat = airport.latitude_deg;
+                const lon = airport.longitude_deg;
+
+                const airportMarker = L.marker([lat, lon])
+                    .addTo(map)
+                    .bindPopup(
+                        `<strong>${airport.ident}</strong><br>${airport.name}<br>${airport.distance} m`
+                    );
+            });
+        })
+        .catch(error => {
+            console.error("Virhe haettaessa lentokenttiä:", error);
+        });
+}
+
+document.addEventListener("DOMContentLoaded", getAirports);
+
 function quitGame() {
     fetch("/exit_game", {method: "POST"})
         .then(response => {

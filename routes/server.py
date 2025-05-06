@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 import json, os, threading, webbrowser, time, requests
+
+import utils.utils
 from loops import user, flight
 from database import db
 from dotenv import load_dotenv
@@ -174,6 +176,11 @@ def handle_get_weather():
         lat, lon = flight.current_location
         return jsonify(fetch_weather(lat, lon))
     return jsonify({"error": "Sijaintia ei ole asetettu"}), 400
+
+@app.route("/get_airports", methods=["GET"])
+def handle_get_airports():
+    lat, lon = flight.current_location
+    return jsonify(utils.utils.get_airports(lat, lon))
 
 @app.route("/get_in_game_menu_on", methods=["GET"])
 def handle_get_in_game_menu_on():

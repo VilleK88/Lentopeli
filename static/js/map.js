@@ -4,6 +4,7 @@ let lastLat = null; // Viimeisin latitude (leveysaste)
 let lastLon = null; // Viimeisin longitude (pituusaste)
 let in_flight = false;
 let remaining_distance = 0;
+const weatherEffectContainer = document.getElementById("weather-effect-container");
 
 function quitGame() {
     fetch("/exit_game", {method: "POST"})
@@ -170,10 +171,9 @@ function updateLighting(current_time) {
 }
 
 function toggleSnowEffect(enable) {
-    const snowContainer = document.getElementById("snow-container");
     if (enable) {
         // Jos ei ole jo lunta, lisätään
-        if (snowContainer.childElementCount === 0) {
+        if (weatherEffectContainer.childElementCount === 0) {
             for (let i = 0; i < 50; i++) {
                 const flake = document.createElement("div");
                 flake.className = "snowflake";
@@ -181,30 +181,28 @@ function toggleSnowEffect(enable) {
                 flake.style.left = Math.random() * 100 + "vw";
                 flake.style.animationDuration = (Math.random() * 3 + 2) + "s";
                 flake.style.fontSize = (Math.random() * 10 + 10) + "px";
-                snowContainer.appendChild(flake);
+                weatherEffectContainer.appendChild(flake);
             }
         }
     } else {
-        snowContainer.innerHTML = ""; // Poistaa kaikki hiutaleet
+        weatherEffectContainer.innerHTML = ""; // Poistaa kaikki hiutaleet
     }
 }
 
 function toggleRainEffect(enable) {
-    const rainContainer = document.getElementById("rain-container");
-
     if (enable) {
-        if (rainContainer.childElementCount === 0) {
+        if (weatherEffectContainer.childElementCount === 0) {
             for (let i = 0; i < 100; i++) {
                 const drop = document.createElement("div");
                 drop.className = "raindrop";
                 drop.style.left = Math.random() * 100 + "vw";
                 drop.style.animationDuration = (Math.random() * 1 + 0.5) + "s";
                 drop.style.animationDelay = Math.random() * 5 + "s";
-                rainContainer.appendChild(drop);
+                weatherEffectContainer.appendChild(drop);
             }
         }
     } else {
-        rainContainer.innerHTML = "";
+        weatherEffectContainer.innerHTML = "";
     }
 }
 

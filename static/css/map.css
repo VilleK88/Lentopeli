@@ -249,3 +249,42 @@ html {
 .night {
     filter: brightness(0.4);
 }
+
+#fog-container {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 60;
+    background: rgba(200, 200, 200, 0.2);
+    backdrop-filter: blur(4px);
+    display: none;
+    transition: opacity 1s ease;
+}
+
+#lightning-container {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 70;
+}
+
+.flash {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    opacity: 0;
+    animation: flash 0.3s ease;
+}
+
+@keyframes flash {
+    0%   { opacity: 0; }
+    10%  { opacity: 0.8; }
+    100% { opacity: 0; }
+}

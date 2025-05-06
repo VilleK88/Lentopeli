@@ -170,6 +170,11 @@ function updateLighting(current_time) {
     }
 }
 
+function toggleFogEffect(enable) {
+    const fogContainer = document.getElementById("fog-container");
+    fogContainer.style.display = enable ? "block" : "none";
+}
+
 function toggleSnowEffect(enable) {
     if (enable) {
         // Jos ei ole jo lunta, lisätään
@@ -206,6 +211,25 @@ function toggleRainEffect(enable) {
     }
 }
 
+function triggerLightningFlash() {
+    const lightningContainer = document.getElementById("lightning-container");
+    const flash = document.createElement("div");
+    flash.className = "flash";
+    lightningContainer.appendChild(flash);
+    setTimeout(() => lightningContainer.removeChild(flash), 300);
+}
+
+function startLightningEffect(enable) {
+    if (!enable) return;
+
+    setInterval(() => {
+        if (Math.random() < 0.3) { // satunnainen välähdys
+            triggerLightningFlash();
+        }
+    }, 4000); // joka 4s mahdollisuus salamaan
+}
+
+
 // Haetaan reaaliaikainen sää
 async function fetchWeather() {
     try {
@@ -228,6 +252,8 @@ async function fetchWeather() {
         const conditionText = data.weather ? data.weather.toLowerCase() : "";
         toggleSnowEffect(conditionText.includes("snow") || conditionText.includes("lumi"));
         toggleRainEffect(conditionText.includes("rain") || conditionText.includes("sade"));
+        toggleFogEffect(conditionText.includes("fog") || conditionText.includes("sumu"));
+        startLightningEffect(conditionText.includes("thunder") || conditionText.includes("ukkonen"));
 
     } catch (error) {
         console.error("Virhe säätietojen haussa:", error);

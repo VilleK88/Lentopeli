@@ -214,15 +214,36 @@ html {
     }
 }
 
-#rain-overlay {
+#rain-container {
+    pointer-events: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    background-image: url("/static/images/rain.gif");
-    background-size: cover;
-    opacity: 0.4;
-    z-index: 999;
+    overflow: hidden;
+    z-index: 60;
+}
+
+.raindrop {
+    position: absolute;
+    top: -25px;
+    width: 2px;
+    height: 20px;
+    background: rgba(0, 136, 255, 0.6);
+    animation: fall-rain linear infinite;
+    opacity: 0.8;
+    border-radius: 1px;
+    transform: rotate(15deg);
+}
+
+@keyframes fall-rain {
+    0% {
+        transform: translateY(0) rotate(10deg);
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateY(100vh) rotate(10deg);
+        opacity: 0;
+    }
 }

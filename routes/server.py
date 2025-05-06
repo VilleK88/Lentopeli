@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 import json, os, threading, webbrowser, time, requests
+
+import main
 from loops import user, flight
 from database import db
 from dotenv import load_dotenv
@@ -130,6 +132,7 @@ def handle_get_coords_for_icon():
 
 @app.route("/get_user", methods=["GET"])
 def handle_get_user():
+    print("server current_tine:", flight.pub_current_time)
     return jsonify({
         "user_name": user.user_name,
         "airport_name": user.airport_name,
@@ -137,7 +140,8 @@ def handle_get_user():
         "cash": user.cash,
         "fuel": flight.current_fuel,
         "in_flight": flight.in_flight,
-        "remaining_distance": flight.pub_re_distance
+        "remaining_distance": flight.pub_re_distance,
+        "current_time": flight.pub_current_time.strftime("%H:%M:%S") if flight.pub_current_time else ""
     })
 
 @app.route("/get_users", methods=["GET"])

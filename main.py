@@ -22,6 +22,9 @@ def start():
 
     # Alustetaan peliaika
     current_time = datetime.now()
+    print("current_time:", current_time)
+    flight.pub_current_time = current_time
+    print("flight current_time:", flight.pub_current_time)
 
     # Haetaan kirjautuneen käyttäjän lähtölentoasema
     starting_airport = user.initialize_starting_airport()

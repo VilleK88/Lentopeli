@@ -18,10 +18,11 @@ new_lon = 0
 turbulence_warning = ""
 in_flight = False
 pub_re_distance = 0
+pub_current_time = 0
 
 def flight_loop(icao, remaining_distance, current_time, time_multiplier):
 
-    global stop_flight, zoom, new_lat, new_lon, turbulence_warning, current_speed_kmh, current_fuel, in_flight, pub_re_distance, current_location
+    global stop_flight, zoom, new_lat, new_lon, turbulence_warning, current_speed_kmh, current_fuel, in_flight, pub_re_distance, current_location, pub_current_time
 
     print("\n📍 Paina '1' muuttaakseksi kurssia tai odota...\n")
 
@@ -63,6 +64,7 @@ def flight_loop(icao, remaining_distance, current_time, time_multiplier):
             remaining_distance = 0
         current_fuel -= (fuel_per_km * (current_speed_kmh * time_multiplier / 3600))
         current_time += timedelta(seconds=time_multiplier)
+        pub_current_time = current_time
 
         # Lasketaan uusi sijainti koordinaateissa
         progress = 1 - (remaining_distance / total_distance)

@@ -130,7 +130,8 @@ async function fetchUserInfo() {
             in_flight = data.in_flight;
             remaining_distance = data.remaining_distance;
 
-            let infoText = `Käyttäjä: ${data.user_name}
+            let infoText = `Klo: ${data.current_time}
+            Käyttäjä: ${data.user_name}
                 Lentoasema ${data.airport_name}
                 ICAO: ${data.current_icao}
                 Käteinen: ${data.cash.toFixed(2)} €
@@ -192,7 +193,6 @@ function toggleRainEffect(enable) {
     }
 }
 
-
 // Haetaan reaaliaikainen sää
 async function fetchWeather() {
     try {
@@ -205,8 +205,7 @@ async function fetchWeather() {
             return;
         }
 
-        document.getElementById("weather-info").innerHTML = `
-            Sää: ${data.weather} <br>
+        document.getElementById("weather-info").innerHTML = `Sää: ${data.weather} <br>
             Lämpötila: ${data.temperature}°C <br>         
             Tuuli: ${data.wind_speed} m/s <br>
             Suunta: ${data.wind_direction}° <br>

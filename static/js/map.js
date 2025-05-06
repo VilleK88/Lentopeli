@@ -127,20 +127,23 @@ async function fetchUserInfo() {
         let response = await fetch("/get_user");
         let data = await response.json();
         if(data) {
-            document.getElementById("user-info").innerText =
-                `Käyttäjä: ${data.user_name}
+            in_flight = data.in_flight;
+            remaining_distance = data.remaining_distance;
+
+            let infoText = `Käyttäjä: ${data.user_name}
                 Lentoasema ${data.airport_name}
                 ICAO: ${data.current_icao}
                 Käteinen: ${data.cash.toFixed(2)} €
-                Polttoaine: ${data.fuel.toFixed(2)} L
-                Matka: ${remaining_distance.toFixed(0)} km`;
-            in_flight = data.in_flight;
-            remaining_distance = data.remaining_distance;
+                Polttoaine: ${data.fuel.toFixed(2)} L`;
+
             if(in_flight) {
+                infoText += `\nMatka: ${remaining_distance.toFixed(0)} km`;
                 showContainer("stop-flight-container");
             } else {
                 hideContainer("stop-flight-container");
             }
+
+            document.getElementById("user-info").innerText = infoText;
         }
     } catch(error) {
         console.error("Virhe haettaessa sijaintia: ", error);

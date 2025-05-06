@@ -153,6 +153,36 @@ async function fetchUserInfo() {
 // Päivitetään käyttäjätiedot 1 sekunnin välein
 setInterval(fetchUserInfo, 1000);
 
+function toggleSnowEffect(enable) {
+    const snowContainer = document.getElementById("snow-container");
+    console.log("Snow effect toggle:", enable);
+    if (enable) {
+        // Jos ei ole jo lunta, lisätään
+        if (snowContainer.childElementCount === 0) {
+            console.log("Adding snowflake");
+            for (let i = 0; i < 50; i++) {
+                const flake = document.createElement("div");
+                flake.className = "snowflake";
+                flake.innerText = "❄";
+                flake.style.left = Math.random() * 100 + "vw";
+                flake.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                flake.style.fontSize = (Math.random() * 10 + 10) + "px";
+                snowContainer.appendChild(flake);
+            }
+        }
+    } else {
+        snowContainer.innerHTML = ""; // Poistaa kaikki hiutaleet
+    }
+}
+
+function toggleRainEffect(show) {
+    const rainOverlay = document.getElementById("rain-overlay");
+    if (rainOverlay) {
+        rainOverlay.style.display = show ? "block" : "none";
+    }
+}
+
+
 // Haetaan reaaliaikainen sää
 async function fetchWeather() {
     try {
@@ -172,6 +202,10 @@ async function fetchWeather() {
             Suunta: ${data.wind_direction}° <br>
             ${data.turbulence_warning ? "<span style='color:red;'>Varoitus: Turbulenssia!</span>" : ""}
         `;
+
+        const conditionText = data.weather ? data.weather.toLowerCase() : "";
+        toggleSnowEffect(conditionText.includes("snow") || conditionText.includes("lumi"));
+        toggleRainEffect(conditionText.includes("rain") || conditionText.includes("sade"));
 
     } catch (error) {
         console.error("Virhe säätietojen haussa:", error);

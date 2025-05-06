@@ -237,16 +237,19 @@ function getCoordsForIcon(destination_icao) {
 function getRotatedAirplaneIcon(angleDegrees) {
     return L.divIcon({
         className: 'rotated-airplane-icon',
-        //html: `<img src="/static/images/airplane_icon.png" style="width: 50px; height: 50px; transform: rotate(${angleDegrees}deg);">`,
         html: `
-            <div class="plane-icon-wrapper" style="transform: rotate(${angleDegrees}deg);">
-                <img src="/static/images/airplane_icon.png" class="airplane-img">
-                <div class="nav-light red"></div>
-                <div class="nav-light green"></div>
-                <div class="nav-light white"></div>
+            <div class="plane-icon-wrapper">
+                <div class="rotating-image" style="transform: rotate(${angleDegrees}deg);">
+                    <img src="/static/images/airplane_icon.png" class="airplane-img">
+                    <div class="nav-light red"></div>
+                    <div class="nav-light green"></div>
+                    <div class="nav-light white"></div>
+                    <div class="trail trail-left"></div>
+                    <div class="trail trail-right"></div>
+                </div>
             </div>
         `,
-        iconSize: [50, 50],
+        iconSize: [50, 70],
         iconAnchor: [25, 25]
     });
 }

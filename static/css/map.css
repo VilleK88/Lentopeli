@@ -259,7 +259,7 @@ html {
     height: 100%;
     z-index: 60;
     background: rgba(200, 200, 200, 0.2);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(1px);
     display: none;
     transition: opacity 1s ease;
 }

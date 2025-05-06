@@ -19,11 +19,11 @@ function getAirports() {
             data.forEach(airport => {
                 const lat = airport.latitude_deg;
                 const lon = airport.longitude_deg;
-
+                const a_distance = airport.distance / 1000
                 const airportMarker = L.marker([lat, lon])
                     .addTo(map)
                     .bindPopup(
-                        `<strong>${airport.ident}</strong><br>${airport.name}<br>${airport.distance} m`
+                        `<strong>${airport.ident}</strong><br>${airport.name}<br>${a_distance.toFixed(0)} km`
                     );
             });
         })

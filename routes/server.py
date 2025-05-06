@@ -132,7 +132,6 @@ def handle_get_coords_for_icon():
 
 @app.route("/get_user", methods=["GET"])
 def handle_get_user():
-    print("server current_tine:", flight.pub_current_time)
     return jsonify({
         "user_name": user.user_name,
         "airport_name": user.airport_name,

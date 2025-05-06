@@ -238,14 +238,16 @@ function getRotatedAirplaneIcon(angleDegrees) {
     return L.divIcon({
         className: 'rotated-airplane-icon',
         html: `
-            <div class="plane-icon-wrapper">
-                <div class="rotating-image" style="transform: rotate(${angleDegrees}deg);">
+            <div class="plane-icon-wrapper" style="transform: rotate(${angleDegrees}deg);">
+                ${in_flight ? `
+                    <div class="trail trail-left"></div>
+                    <div class="trail trail-right"></div>
+                ` : ''}
+                <div class="rotating-image">
                     <img src="/static/images/airplane_icon.png" class="airplane-img">
                     <div class="nav-light red"></div>
                     <div class="nav-light green"></div>
                     <div class="nav-light white"></div>
-                    <div class="trail trail-left"></div>
-                    <div class="trail trail-right"></div>
                 </div>
             </div>
         `,

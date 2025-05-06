@@ -3,7 +3,6 @@ import json, os, threading, webbrowser, time, requests
 from loops import user, flight
 from database import db
 from dotenv import load_dotenv
-import main
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 app = Flask(
@@ -169,8 +168,8 @@ def handle_get_location():
 
 @app.route("/get_weather", methods=["GET"])
 def handle_get_weather():
-    if main.current_location:
-        lat, lon = main.current_location
+    if flight.current_location:
+        lat, lon = flight.current_location
         return jsonify(fetch_weather(lat, lon))
     return jsonify({"error": "Sijaintia ei ole asetettu"}), 400
 
@@ -232,10 +231,6 @@ def fetch_weather(lat, lon):
     API_KEY = os.getenv("OPENWEATHER_API_KEY")
     if not API_KEY:
         return {"error": "API-avain puuttuu"}
-
-    # Jos viimeisimmästä päivityksestä on alle 3 minuuttia, käytetään välimuistia
-    if time.time() - last_weather_update < 180 and cached_weather:
-        return cached_weather
 
     # Määritetään OpenWeatherMap API:n URL
     BASE_URL = "https://api.openweathermap.org/data/2.5/weather"

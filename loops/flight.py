@@ -1,11 +1,11 @@
-import pygame
-import time
+import pygame, time
 from datetime import timedelta
 from geopy.distance import geodesic
 from routes import server
 from utils.utils import calculate_distance, calculate_distance_between_airports
 
 # Lentokoneen tiedot
+current_location = 60.3172, 24.9633 # Nykyinen sijainti (latitude, longitude)
 max_speed_kmh = 780
 current_speed_kmh = 0
 fuel_capacity = 25941
@@ -19,9 +19,9 @@ turbulence_warning = ""
 in_flight = False
 pub_re_distance = 0
 
-def flight_loop(current_location, icao, remaining_distance, current_time, time_multiplier):
+def flight_loop(icao, remaining_distance, current_time, time_multiplier):
 
-    global stop_flight, zoom, new_lat, new_lon, turbulence_warning, current_speed_kmh, current_fuel, in_flight, pub_re_distance
+    global stop_flight, zoom, new_lat, new_lon, turbulence_warning, current_speed_kmh, current_fuel, in_flight, pub_re_distance, current_location
 
     print("\n📍 Paina '1' muuttaakseksi kurssia tai odota...\n")
 
@@ -80,7 +80,7 @@ def flight_loop(current_location, icao, remaining_distance, current_time, time_m
             remaining_distance = 0
             break
 
-    return remaining_distance, current_time, current_location
+    return remaining_distance, current_time
 
 # Pysäyttää lennon painamalla '1'
 def interrupt_flight():
@@ -90,7 +90,9 @@ def interrupt_flight():
             if event.key == pygame.K_1:
                 stop_flight = True
 
-def was_flight_interrupted(remaining_distance, current_icao, icao, current_location):
+def was_flight_interrupted(remaining_distance, current_icao, icao):
+    global current_location
+
     if remaining_distance <= 0:
         remaining_distance = calculate_distance_between_airports(current_icao, icao)
     else:

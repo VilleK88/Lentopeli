@@ -198,7 +198,7 @@ async function fetchWeather() {
     try {
         let response = await fetch("/get_weather");
         let data = await response.json();
-
+        console.log("Hae sää");
         if(data.error) {
             document.getElementById("weather-info").innerText = "Säätietoja ei saatavilla.";
             console.error("Säätietojen virhe:", data.error);

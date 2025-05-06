@@ -7,12 +7,11 @@ from database.db import get_columns_and_tables, get_airport_coords
 time_multiplier = 100 # Pelin nopeuden määritys (mitä suurempi arvo, sitä nopeammin aika kuluu)
 remaining_distance = None # Jäljellä oleva etäisyys määränpäähän
 current_time = None # Nykyinen peliaika
-current_location = 60.3172, 24.9633 # Nykyinen sijainti (latitude, longitude)
 icao = None # lentokenttä jolle lennetään
 
 # Käynnistää pelin ja alustaa tarvittavat asetukset
 def start():
-    global remaining_distance, current_time, current_location
+    global remaining_distance, current_time
 
     # Tarkistetaan ja luodaan tarvittavat tietokantataulukot ja sarakkeet
     get_columns_and_tables()
@@ -34,11 +33,11 @@ def start():
 
 # Pääohjelman silmukka, joka pyörittää pelin kulkua
 def main_program():
-    global remaining_distance, current_location, current_time, time_multiplier, icao
+    global remaining_distance, current_time, time_multiplier, icao
 
     # Käynnistetään peli ja saadaan lähtölentoaseman tiedot sekä Pygame-ikkuna
     current_icao = start()
-    current_location = current_icao[2], current_icao[3]
+    flight.current_location = current_icao[2], current_icao[3]
 
     # Käynnistetään palvelin ja asetetaan sen aloituskoordinaatit
     server.starting_coordinates(current_icao[2], current_icao[3])
@@ -63,11 +62,11 @@ def main_program():
             menu_on, icao = user.ingame_menu()
 
         # Tarkistetaan, keskeytyikö lento ennen määränpäätä
-        remaining_distance = flight.was_flight_interrupted(remaining_distance, current_icao, icao, current_location)
+        remaining_distance = flight.was_flight_interrupted(remaining_distance, current_icao, icao)
 
         # Käynnistetään lentosilmukka ja päivitetään tiedot
         flight.stop_flight = False
-        remaining_distance, current_time, current_location = flight.flight_loop(current_location, icao, remaining_distance, current_time, time_multiplier)
+        remaining_distance, current_time = flight.flight_loop(icao, remaining_distance, current_time, time_multiplier)
 
         # Päivitetään nykyinen lentoasema ja asetetaan valikko takaisin aktiiviseksi
         current_icao = icao

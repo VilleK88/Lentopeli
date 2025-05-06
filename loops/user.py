@@ -31,7 +31,7 @@ def main_menu():
     # Haetaan lentoaseman koordinaatit, jos aloitusasema on määritetty
     if starting_airport:
         airport = get_airport_coords(starting_airport)
-        main.current_location = airport[2], airport[3]
+        flight.current_location = airport[2], airport[3]
 
     while main_menu_active:
         time.sleep(1)
@@ -46,7 +46,7 @@ def start_game():
 
 # Funktio käyttäjän valintaan tietokannasta
 def select_user(name):
-    global user_id, user_name, weather, current_icao
+    global user_id, user_name, current_icao
 
     result = get_users_and_set_as_logged_in(name)
     if result:
@@ -54,7 +54,7 @@ def select_user(name):
         user_name = result[1]
         get_user_data()
         airport = get_airport_coords(current_icao)
-        main.current_location = airport[2], airport[3]
+        flight.current_location = airport[2], airport[3]
         return True
 
 # Funktio uuden käyttäjän lisäämiseksi tietokantaan

@@ -5,8 +5,12 @@ let lastLon = null; // Viimeisin longitude (pituusaste)
 let in_flight = false;
 let remaining_distance = 0;
 const weatherEffectContainer = document.getElementById("weather-effect-container");
+let airportMarkers = [];
+let boolGetAirportsOnce = false;
 
 function getAirports() {
+    airportMarkers.forEach(m => map.removeLayer(m));
+    airportMarkers = [];
     fetch("/get_airports")
         .then(response => {
             if(!response.ok) {
@@ -25,6 +29,7 @@ function getAirports() {
                     .bindPopup(
                         `<strong>${airport.ident}</strong><br>${airport.name}<br>${a_distance.toFixed(0)} km<br><button onclick="selectAirportFromMarker('${airport.ident}')">Valitse tämä lentokenttä</button>`
                     );
+                airportMarkers.push(airportMarker);
             });
         })
         .catch(error => {
@@ -36,6 +41,7 @@ document.addEventListener("DOMContentLoaded", getAirports);
 
 function selectAirportFromMarker(icao) {
     document.getElementById("icao-input").value = icao;
+    map.closePopup();
     selectIcao();
 }
 
@@ -175,8 +181,13 @@ async function fetchUserInfo() {
             if(in_flight) {
                 infoText += `\nMatka: ${remaining_distance.toFixed(0)} km`;
                 showContainer("stop-flight-container");
+                boolGetAirportsOnce = true;
             } else {
                 hideContainer("stop-flight-container");
+                if(boolGetAirportsOnce) {
+                    getAirports();
+                    boolGetAirportsOnce = false;
+                }
             }
 
             document.getElementById("user-info").innerText = infoText;
@@ -303,6 +314,9 @@ document.addEventListener("DOMContentLoaded", fetchWeather);
 function selectIcao() {
     let targetIcao = document.getElementById("icao-input").value;
     let command = "select_icao";
+
+    airportMarkers.forEach(m => map.removeLayer(m));
+    airportMarkers = [];
 
     fetch("/select_icao", {
         method: "POST",

@@ -16,7 +16,7 @@ def calculate_distance(current_location, icao2):
 
 def get_airports(lat, lon):
     airports_list = []
-    max_distance = 900000 # metres
+    max_distance = 2000000 # metres
     current_coords = lat, lon
 
     conn = connect_db()

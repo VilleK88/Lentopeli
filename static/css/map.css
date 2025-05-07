@@ -238,16 +238,20 @@ html {
     }
 }
 
-.daylight {
+.leaflet-tile-container {
+    transition: filter 1s ease-in-out;
+}
+
+.daylight .leaflet-tile-container {
     filter: brightness(1);
 }
 
-.dusk {
+.dusk .leaflet-tile-container {
     filter: brightness(0.7);
 }
 
-.night {
-    filter: brightness(0.4);
+.night .leaflet-tile-container {
+    filter: brightness(0.65);
 }
 
 #fog-container {

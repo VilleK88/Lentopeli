@@ -360,7 +360,7 @@ function stopFlight() {
 }
 
 function getCoordsForIcon(destination_icao) {
-    fetch(`/get_coords_for_icon?dest_icao=${destination_icao}`)
+    fetch(`/get_coords_for_icao?dest_icao=${destination_icao}`)
         .then(response => response.json())
         .then(data => {
             if(data.success) {

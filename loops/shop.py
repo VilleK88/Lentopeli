@@ -1,88 +1,52 @@
-import pygame
-import mysql.connector
-from routes.config import db_config
-from utils.utils import (
-    wipe_pygame_screen,
-    update_pygame_screen,
-    draw_centered_shop_list,
-    draw_text_to_center_x,
-    draw_text
-)
-import time
+from loops.inventorymanager import InventoryManager
 
 
-def shop(player_id, cash, screen, font):
-    products = {
-        "fruits": 10,
-        "alcohol": 15,
-        "snacks": 8,
-        "soda": 5,
-        "meals": 12,
-        "water": 3,
-        "fuel": 100
-    }
-    products_list = [f"{item}: {price}€" for item, price in products.items()]
-
-    input_text = ""
-    active = True
-
-    while active:
-        wipe_pygame_screen(screen)
-        draw_text(screen, "ESC - Poistu", 5, 5, font)
-        draw_centered_shop_list(screen, font, 25, products_list)
-        draw_text_to_center_x(screen, input_text, 370, font)
-        update_pygame_screen()
-
-        # Käsitellään näppäinkomennot
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:  # ESC sulkee kaupan
-                    active = False
-                elif event.key == pygame.K_RETURN:  # Enter käsittelee syötteen ja tekee oston
-                    selection = input_text.strip().lower()
-                    if selection == "poistu":  # Poistuu kaupasta, jos syötteessä on "poistu"
-                        active = False
-                    elif selection in products:
-                        price = products[selection]
-                        if cash >= price:
-                            cash -= price
-                            update_inventory(player_id, selection)
-                            wipe_pygame_screen(screen)
-                            draw_text_to_center_x(screen, f"Ostit {selection}. Käteistä jäljellä: {cash}€", 180, font)
-                            update_pygame_screen()
-                            time.sleep(2)
-                        else:
-                            wipe_pygame_screen(screen)
-                            draw_text_to_center_x(screen, "Ei tarpeeksi rahaa!", 180, font)
-                            update_pygame_screen()
-                            time.sleep(2)
-                    else:
-                        wipe_pygame_screen(screen)
-                        draw_text_to_center_x(screen, "Tuotetta ei löydy kaupasta.", 180, font)
-                        update_pygame_screen()
-                        time.sleep(2)
-                    input_text = ""  # Nollataan syöte
-                elif event.key == pygame.K_BACKSPACE:  # Poistetaan merkkejä syötteestä
-                    input_text = input_text[:-1]
-                else:
-                    input_text += event.unicode  # Lisätään syöte, jos se ei ole erikoisnäppäin
-
-    return cash
+class Product:
+    def __init__(self, name, price, description):
+        self.name = name
+        self.price = price
+        self.description = description
 
 
-def update_inventory(player_id, item):
-    if item not in ["fruits", "alcohol", "snacks", "soda", "meals", "water", "fuel"]:
-        print("Virheellinen tuotteen nimi!")
-        return
-    if item == "fuel":
-        item = "current_fuel"
+class Shop:
+    def __init__(self):
+        self.inventory_manager = InventoryManager()
+        self.products = {
+            "fruits": Product("fruits", 10, "Terveellinen välipala matkustajille"),
+            "alcohol": Product("alcohol", 15, "Laadukkaita alkoholijuomia"),
+            "snacks": Product("snacks", 8, "Pientä naposteltavaa matkalle"),
+            "soda": Product("soda", 5, "Virvoitusjuomia koko perheelle"),
+            "meals": Product("meals", 12, "Lämpimiä aterioita pitkille lennoille"),
+            "water": Product("water", 3, "Puhdasta vettä"),
+            "fuel": Product("fuel", 100, "Lentopolttoaine (10 litraa)")
+        }
 
-    conn = mysql.connector.connect(**db_config)
-    cursor = conn.cursor()
+    def get_products_list(self):
+        return [{"name": product.name, "price": product.price, "description": product.description}
+                for product in self.products.values()]
 
-    sql = f"UPDATE inventory SET {item} = {item} + 1 WHERE inventory_id = %s"
-    cursor.execute(sql, (player_id,))
+    def purchase_product(self, player_id, selection, cash):
+        """
+        Ostaa tuotteen pelaajalle
 
-    conn.commit()
-    cursor.close()
-    conn.close()
+        Args:
+            player_id: Pelaajan ID
+            selection: Valitun tuotteen nimi
+            cash: Pelaajan käteinen
+
+        Returns:
+            (True/False, viesti, uusi käteismäärä)
+        """
+        selection = selection.lower()
+        if selection not in self.products:
+            return False, "Tuotetta ei löydy kaupasta.", cash
+
+        product = self.products[selection]
+        if cash < product.price:
+            return False, "Ei tarpeeksi rahaa!", cash
+
+        # Päivitä inventaario ja vähennä käteinen
+        self.inventory_manager.update_inventory(player_id, selection, product.price)
+        new_cash = cash - product.price
+
+        return True, f"Ostit {selection}. Käteistä jäljellä: {new_cash}€", new_cash

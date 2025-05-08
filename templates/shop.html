@@ -1,10 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lentokoneen Kauppa</title>
+  <link rel="stylesheet" href="/static/css/shop.css">
 </head>
 <body>
+  <div class="container">
+    <button id="back-to-map-btn" onclick="window.location.href='/map.html'">Takaisin Kartalle</button>
 
+    <!-- Pelaajan tiedot -->
+    <div id="player-info" class="player-info">
+      <!-- Pelaajan tiedot tulevat JavaScript-koodista -->
+    </div>
+
+    <!-- Kauppa otsikko -->
+    <h1 class="shop-title">Lentokoneen Kauppa</h1>
+
+    <!-- Tuotekategoriat -->
+    <div class="category-tabs">
+      <button class="tab-button active" onclick="filterProducts('all')">Kaikki</button>
+      <button class="tab-button" onclick="filterProducts('food')">Ruoka & Juoma</button>
+      <button class="tab-button" onclick="filterProducts('fuel')">Polttoaine</button>
+    </div>
+
+    <!-- Tuotteet -->
+    <div id="shop-items" class="shop-items-grid">
+      <!-- Tuotteet tulevat JavaScript-koodista -->
+      <div class="loading">Ladataan tuotteita...</div>
+    </div>
+  </div>
+
+  <script src="/static/js/shop.js"></script>
 </body>
 </html>

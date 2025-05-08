@@ -1,10 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customers</title>
+    <link rel="stylesheet" href="/static/css/customers.css">
+    <script src="/static/js/customers.js" defer></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-users"></i> Customer Management</h1>
+            <div class="nav-links">
+                <a href="map.html" class="nav-link"><i class="fas fa-map-marked-alt"></i> Back to Map</a>
+            </div>
+        </header>
 
+        <main>
+            <!-- Customer Section -->
+            <section class="customer-section" id="customer-section">
+                <div class="customer-card">
+                    <div class="customer-header">
+                        <h2>Current Customer</h2>
+                        <div class="customer-mood" id="customer-mood">😐 -/10</div>
+                    </div>
+
+                    <div class="mood-bar">
+                        <div class="mood-bar-fill mood-neutral" id="mood-bar-fill" style="width: 50%;"></div>
+                    </div>
+
+                    <div class="customer-info">
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-user"></i> Name:</div>
+                            <div class="info-value" id="customer-name">Loading...</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-plane-arrival"></i> Destination:</div>
+                            <div class="info-value" id="customer-destination">Loading...</div>
+                        </div>
+                    </div>
+
+                    <div class="customer-preferences">
+                        <div class="preference-section">
+                            <h3><i class="fas fa-heart"></i> Likes</h3>
+                            <div class="preference-items" id="customer-likes">Loading...</div>
+                        </div>
+                        <div class="preference-section">
+                            <h3><i class="fas fa-thumbs-down"></i> Dislikes</h3>
+                            <div class="preference-items" id="customer-dislikes">Loading...</div>
+                        </div>
+                    </div>
+
+                    <div id="customer-reaction" class="reaction" style="display: none;">😊</div>
+
+                    <div class="product-actions">
+                        <h3>Offer Products</h3>
+                        <div class="product-buttons">
+                            <button class="product-offer-btn" data-product="fruits"><i class="fas fa-apple-alt"></i> Fruits</button>
+                            <button class="product-offer-btn" data-product="snacks"><i class="fas fa-cookie"></i> Snacks</button>
+                            <button class="product-offer-btn" data-product="meals"><i class="fas fa-utensils"></i> Meals</button>
+                            <button class="product-offer-btn" data-product="water"><i class="fas fa-tint"></i> Water</button>
+                            <button class="product-offer-btn" data-product="alcohol"><i class="fas fa-wine-glass-alt"></i> Alcohol</button>
+                            <button class="product-offer-btn" data-product="soda"><i class="fas fa-glass-cheers"></i> Soda</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- No Customer Message -->
+            <div class="no-customer" id="no-customer-message">
+                <i class="fas fa-user-slash"></i>
+                <h2>No Active Customer</h2>
+                <p>There is currently no customer on board.</p>
+            </div>
+
+            <!-- Customer Database Section -->
+            <section class="customer-database">
+                <h2><i class="fas fa-database"></i> Customer Database</h2>
+                <table class="customer-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Destination</th>
+                            <th>Likes</th>
+                            <th>Dislikes</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customer-database-body">
+                        <!-- Database entries will be loaded dynamically -->
+                        <tr>
+                            <td colspan="5" class="text-center">Loading customers...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+
+        <footer>
+            <p>In-flight Customer Management System &copy; 2025</p>
+        </footer>
+    </div>
+
+    <!-- Notification Area -->
+    <div id="notification-area" class="notification-area"></div>
+
+    <!-- Add a new JavaScript file for customer database functionality -->
+    <script src="/static/js/customer_database.js" defer></script>
 </body>
 </html>

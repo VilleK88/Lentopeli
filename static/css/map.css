@@ -1,3 +1,4 @@
+/* Existing styles */
 .game-container {
     position: relative;
     width: 100%;
@@ -100,3 +101,166 @@
     gap: 5px;
 }
 
+/* Custom styles for the inventory and customer panels */
+#inventory-sidebar {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 250px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 14px;
+    z-index: 10;
+}
+
+#inventory-sidebar h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #fff;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 8px;
+}
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.inventory-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.inventory-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.item-icon {
+    font-size: 1.2em;
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.item-details {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.item-name {
+    font-size: 12px;
+}
+
+.item-amount {
+    font-weight: bold;
+    color: #3498db;
+}
+
+.use-item-btn {
+    background-color: rgba(52, 152, 219, 0.7);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 2px 5px;
+    font-size: 10px;
+    cursor: pointer;
+    margin-top: 3px;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.use-item-btn:hover {
+    background-color: rgba(52, 152, 219, 1);
+}
+
+/* Asiakastietopaneelin muutokset - pienempi ja alempana */
+#customer-info-panel {
+  position: fixed;
+  top: 330px; /* Sijainti alempana kuin aiemmin */
+  right: 10px;
+  width: 200px; /* Pienempi leveys */
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px; /* Pienempi padding */
+  border-radius: 10px;
+  font-size: 12px; /* Pienempi fonttikoko */
+  z-index: 100 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Varmistetaan, että asiakaskortti näkyy kunnolla mutta on pienempi */
+.customer-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px; /* Pienempi padding */
+  margin-bottom: 8px; /* Pienempi marginaali */
+  display: block !important;
+  visibility: visible !important;
+}
+
+.customer-loading, .customer-empty {
+  text-align: center;
+  padding: 8px;
+  color: #ccc;
+  font-weight: bold;
+  font-size: 11px; /* Pienempi fonttikoko */
+}
+
+.customer-content {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 6px; /* Pienempi padding */
+}
+
+.customer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px; /* Pienempi marginaali */
+  padding-bottom: 4px; /* Pienempi padding */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.customer-name {
+  font-weight: bold;
+  font-size: 14px; /* Pienempi fonttikoko */
+}
+
+.customer-mood {
+  font-size: 12px; /* Pienempi fonttikoko */
+}
+
+.customer-destination {
+  margin-bottom: 6px; /* Pienempi marginaali */
+  font-size: 11px; /* Pienempi fonttikoko */
+}
+
+.customer-label {
+  font-weight: bold;
+}
+
+.customer-preferences {
+  font-size: 10px; /* Pienempi fonttikoko */
+}
+
+.likes, .dislikes {
+  margin-top: 4px; /* Pienempi marginaali */
+  display: flex;
+  align-items: center;
+}
+
+.likes span, .dislikes span {
+  margin-right: 4px; /* Pienempi marginaali */
+  font-size: 12px; /* Pienempi fonttikoko */
+}

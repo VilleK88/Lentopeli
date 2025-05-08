@@ -183,9 +183,10 @@ async function fetchUserInfo() {
                 showContainer("stop-flight-container");
                 boolGetAirportsOnce = true;
             } else {
-                hideContainer("stop-flight-container");
                 if(boolGetAirportsOnce) {
                     getAirports();
+                    hideContainer("stop-flight-container");
+                    removeTrails();
                     boolGetAirportsOnce = false;
                 }
             }
@@ -199,6 +200,11 @@ async function fetchUserInfo() {
 
 // Päivitetään käyttäjätiedot 1 sekunnin välein
 setInterval(fetchUserInfo, 1000);
+
+function removeTrails() {
+    const trails = document.querySelectorAll('.trail-left, .trail-right');
+    trails.forEach(trail => trail.remove());
+}
 
 function updateLighting(current_time) {
     const mapElement = document.getElementById("map");

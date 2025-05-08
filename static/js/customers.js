@@ -1,5 +1,3 @@
-// customers.js - Customer management functionality (fixed version)
-
 // Main customer management functionality
 const CustomerManager = {
     currentCustomer: null,

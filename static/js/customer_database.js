@@ -1,4 +1,4 @@
-// Customer Database Manager - Fixed version
+// Customer Database Manager
 const CustomerDatabaseManager = {
     customers: [],
 

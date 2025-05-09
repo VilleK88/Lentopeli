@@ -22,7 +22,7 @@ def get_airports(lat, lon):
     conn = connect_db()
     if conn:
         cursor = conn.cursor()
-        cursor.execute("select ident, type, name, latitude_deg, longitude_deg from airport")
+        cursor.execute("SELECT ident, type, name, latitude_deg, longitude_deg FROM airport WHERE type IN ('large_airport', 'medium_airport')")
         airports = cursor.fetchall()
 
         for ident, type, name, lat2, lon2 in airports:

@@ -1,4 +1,4 @@
-import pygame, time
+import time
 from datetime import timedelta
 from geopy.distance import geodesic
 from routes import server
@@ -48,9 +48,6 @@ def flight_loop(icao, remaining_distance, current_time, time_multiplier):
         print(f"Remaining distance: {remaining_distance}")
         pub_re_distance = remaining_distance
 
-        # Keskeytä lento painamalla '1'
-        #interrupt_flight()
-
         if stop_flight:
             # Tallennetaan nykyinen sijainti ja keskeytetään lento
             current_location = (new_lat, new_lon)
@@ -83,14 +80,6 @@ def flight_loop(icao, remaining_distance, current_time, time_multiplier):
             break
 
     return remaining_distance, current_time
-
-# Pysäyttää lennon painamalla '1'
-def interrupt_flight():
-    global stop_flight
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_1:
-                stop_flight = True
 
 def was_flight_interrupted(remaining_distance, current_icao, icao):
     global current_location
